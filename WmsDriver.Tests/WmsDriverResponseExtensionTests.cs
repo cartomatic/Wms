@@ -9,7 +9,7 @@ using Cartomatic.Wms.WmsDriverExtensions;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace WmsDriver.Tests
+namespace Cartomatic.Wms.WmsDriver.Tests
 {
     [TestFixture]
     public class WmsDriverResponseExtensionsTests

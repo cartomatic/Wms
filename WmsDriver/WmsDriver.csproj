@@ -7,7 +7,7 @@
     <ProjectGuid>{E623C471-93AF-4D10-A656-D05EA17C7F51}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmsDriver</RootNamespace>
+    <RootNamespace>Cartomatic.Wms</RootNamespace>
     <AssemblyName>WmsDriver</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -39,10 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionCode.cs" />
+    <Compile Include="Extensions\WmsDriverResponseExtensions.cs" />
+    <Compile Include="Extensions\WmsServiceDescriptionExtensions.cs" />
     <Compile Include="IWmsBoundingBox.cs" />
+    <Compile Include="IWmsDriverResponse.cs" />
+    <Compile Include="IWmsServiceDescription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WmsBoundingBox.cs" />
     <Compile Include="WmsDriverResponse.cs" />
+    <Compile Include="WmsServiceDescription.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

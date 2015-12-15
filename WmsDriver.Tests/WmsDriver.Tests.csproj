@@ -7,7 +7,7 @@
     <ProjectGuid>{8C6F15E1-1C2E-4726-8221-50D3B17DCA54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmsDriver.Tests</RootNamespace>
+    <RootNamespace>Cartomatic.Wms.WmsDriver.Tests</RootNamespace>
     <AssemblyName>WmsDriver.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,6 +53,9 @@
   <ItemGroup>
     <Compile Include="WmsBoundingBoxTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WmsDriverResponseExtensionTests.cs" />
+    <Compile Include="WmsServiceDescriptionExtensionsTests.cs" />
+    <Compile Include="WmsServiceDescriptionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
