@@ -1,4 +1,4 @@
-namespace Cartomatic.WmsDriver
+namespace Cartomatic.Wms
 {
     public interface IWmsBoundingBox
     {

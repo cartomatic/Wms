@@ -232,3 +232,4 @@ _Pvt_Extensions
 
 #ncrunch
 *.ncrunchproject
+*.ncrunchsolution

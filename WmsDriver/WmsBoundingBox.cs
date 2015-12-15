@@ -5,7 +5,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cartomatic.WmsDriver
+namespace Cartomatic.Wms
 {
     public class WmsBoundingBox : IWmsBoundingBox
     {
