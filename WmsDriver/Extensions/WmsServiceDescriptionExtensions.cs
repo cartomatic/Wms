@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cartomatic.Utils.Serialization;
 
 namespace Cartomatic.Wms.WmsDriverExtensions
 {
@@ -41,6 +42,78 @@ namespace Cartomatic.Wms.WmsDriverExtensions
             sd.MaxHeight = 2048;
 
             return sd;
+        }
+
+        /// <summary>
+        /// Creates WmsServiceInstance from json
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static IWmsServiceDescription WmsServiceDescriptionFromJson(this string json)
+        {
+            return json.DeserializeFromJson<WmsServiceDescription>();
+        }
+
+        public static void Merge(this IWmsServiceDescription sdBase,
+            IWmsServiceDescription sdToBeMerged, params string[] concat )
+        {
+            sdBase.Merge(sdToBeMerged, (IEnumerable<string>)concat);
+        }
+
+        public static void Merge(this IWmsServiceDescription sdBase,
+            IWmsServiceDescription sdToBeMerged, IEnumerable<string> concat = null )
+        {
+            if (sdToBeMerged == null) return; //ignore null objects!
+
+            //get the object properties
+            var props = sdBase.GetType().GetProperties();
+
+            //now test the properties in order to transfer the values only if needed
+            foreach (var p in props)
+            {
+                //get the type of a property
+                var pv = p.GetValue(sdToBeMerged);
+
+                if (p.PropertyType == typeof(string))
+                {
+                    //only transfer strings if not null and not empty
+                    if (!string.IsNullOrEmpty(pv as string))
+                    {
+                        //if user specified that this property should be merged, do so
+                        if (concat != null && concat.Contains(p.Name))
+                        {
+                            p.SetValue(
+                                sdBase,
+                                string.Concat(p.GetValue(sdBase), " ", pv)
+                            );
+                        }
+                        //otherwise simply set the property value
+                        else
+                        {
+                            p.SetValue(sdBase, pv);
+                        }
+                    }
+                }
+                else if (p.PropertyType == typeof(int?))
+                {
+                    if (pv != null) p.SetValue(sdBase, pv);
+                }
+                else if (p.PropertyType == typeof(List<string>))
+                {
+                    //Note:
+                    //if keywords are declared, then do not override but rather combine
+                    if (pv != null)
+                    {
+                        foreach (var s in pv as List<string>)
+                        {
+                            if (!sdBase.Keywords.Exists(keyword => keyword == s))
+                            {
+                                sdBase.Keywords.Add(s);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

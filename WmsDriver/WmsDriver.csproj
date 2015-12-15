@@ -50,6 +50,12 @@
     <Compile Include="WmsDriverResponse.cs" />
     <Compile Include="WmsServiceDescription.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
+      <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
+      <Name>Serialization</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
