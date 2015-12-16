@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8C6F15E1-1C2E-4726-8221-50D3B17DCA54}</ProjectGuid>
+    <ProjectGuid>{AFBD8FCD-F2DC-4588-B676-2F2D97904E27}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cartomatic.Wms.WmsDriver.Tests</RootNamespace>
+    <RootNamespace>WmsDriver.Tests</RootNamespace>
     <AssemblyName>WmsDriver.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -51,9 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WmsBoundingBoxTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WmsBoundingBoxTests.cs" />
+    <Compile Include="WmsDriverExceptionTests.cs" />
     <Compile Include="WmsDriverResponseExtensionTests.cs" />
+    <Compile Include="WmsDriverTests.cs" />
     <Compile Include="WmsServiceDescriptionExtensionsTests.cs" />
     <Compile Include="WmsServiceDescriptionTests.cs" />
   </ItemGroup>
@@ -61,6 +63,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
+      <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
+      <Name>Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WmsDriver\WmsDriver.csproj">
       <Project>{e623c471-93af-4d10-a656-d05ea17c7f51}</Project>
       <Name>WmsDriver</Name>

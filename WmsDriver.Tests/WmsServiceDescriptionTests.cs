@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cartomatic.Utils.Serialization;
+using Cartomatic.Wms;
 using Cartomatic.Wms.WmsDriverExtensions;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cartomatic.Wms.WmsDriver.Tests
+namespace WmsDriver.Tests
 {
     [TestFixture]
     public class WmsServiceDescriptionTests

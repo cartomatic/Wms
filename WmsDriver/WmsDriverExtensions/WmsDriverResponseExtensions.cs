@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cartomatic.Wms.WmsDriverExtensions
+﻿namespace Cartomatic.Wms.WmsDriverExtensions
 {
     public static class WmsDriverResponseExtensions
     {

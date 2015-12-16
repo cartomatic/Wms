@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cartomatic.Wms</RootNamespace>
-    <AssemblyName>WmsDriver</AssemblyName>
+    <AssemblyName>Cartomatic.Wms.WmsDriver</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,20 +40,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExceptionCode.cs" />
-    <Compile Include="Extensions\WmsDriverResponseExtensions.cs" />
-    <Compile Include="Extensions\WmsServiceDescriptionExtensions.cs" />
+    <Compile Include="WmsDriverException.cs" />
+    <Compile Include="WmsDriverExtensions\WmsServiceDescriptionExtensions.cs" />
     <Compile Include="IWmsBoundingBox.cs" />
+    <Compile Include="IWmsDriver.cs" />
     <Compile Include="IWmsDriverResponse.cs" />
     <Compile Include="IWmsServiceDescription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WmsBoundingBox.cs" />
+    <Compile Include="WmsDriverExtensions\WmsDriverResponseExtensions.cs" />
     <Compile Include="WmsDriverResponse.cs" />
+    <Compile Include="WmsDriver\PrepareDriver.cs" />
+    <Compile Include="WmsDriver\HandleDriverException.cs" />
+    <Compile Include="WmsDriver\_Blank.cs" />
+    <Compile Include="WmsDriver\HandleRequest.cs" />
+    <Compile Include="WmsDriver\Constructor.cs" />
     <Compile Include="WmsServiceDescription.cs" />
+    <Compile Include="WmsDriver\DataModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
       <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
       <Name>Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Web\Web.csproj">
+      <Project>{45666acc-c047-4608-8213-f109504ee551}</Project>
+      <Name>Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

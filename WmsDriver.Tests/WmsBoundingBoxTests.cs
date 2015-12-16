@@ -3,7 +3,7 @@ using Cartomatic.Wms;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cartomatic.Wms.WmsDriver.Tests
+namespace WmsDriver.Tests
 {
     [TestFixture]
     public class WmsBoundingBoxTests
