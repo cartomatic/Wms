@@ -15,22 +15,24 @@ namespace Cartomatic.Wms
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public IWmsDriverResponse Handle(string url)
+        public IWmsDriverResponse HandleRequest(string url)
         {
-            return Handle(url.CreateHttpWebRequest());
+            return HandleRequest(url.CreateHttpWebRequest());
         }
 
 
-        public IWmsDriverResponse Handle(HttpWebRequest request)
+        public IWmsDriverResponse HandleRequest(HttpWebRequest request)
         {
             IWmsDriverResponse output = null;
+
+            ExtractRequestParams(request);
 
             try
             {
                 PrepareDriver();
 
                 //run all the initial request checkups
-
+                Validate(HandleRequestValidationRules);
 
                 //when ready delegate request handling based on the required operation
 

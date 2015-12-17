@@ -31,7 +31,7 @@ namespace WmsDriver.Tests
         {
             var drv = MakeWmsDriver() ;
 
-            drv.Handle(string.Empty);
+            drv.HandleRequest(string.Empty);
 
             (drv as FakeWmsDriver).PrepareCalled.Should().BeTrue();
         }
@@ -43,7 +43,7 @@ namespace WmsDriver.Tests
 
             drv.ServiceDescription.Should().BeNull();
 
-            drv.Handle(string.Empty);
+            drv.HandleRequest(string.Empty);
             
             drv.ServiceDescription.Should().NotBeNull();
         }

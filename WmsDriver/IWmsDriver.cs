@@ -10,8 +10,8 @@ namespace Cartomatic.Wms
     {
         IWmsServiceDescription ServiceDescription { get; set; }
     
-        IWmsDriverResponse Handle(string url);
+        IWmsDriverResponse HandleRequest(string url);
 
-        IWmsDriverResponse Handle(System.Net.HttpWebRequest request);
+        IWmsDriverResponse HandleRequest(System.Net.HttpWebRequest request);
     }
 }
