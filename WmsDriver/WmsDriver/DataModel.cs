@@ -16,27 +16,27 @@ namespace Cartomatic.Wms
         /// <summary>
         /// A list of supported GetFeatureInfo formats
         /// </summary>
-        public List<string> SupportedGetFeatureInfoFormats { get; private set; }
+        public Dictionary<string, List<string>> SupportedGetFeatureInfoFormats { get; protected set; }
 
         /// <summary>
         /// A list of supported GetCapabilities formats
         /// </summary>
-        public List<string> SupportedGetCapabilitiesFormats { get; private set; }
+        public Dictionary<string, List<string>> SupportedGetCapabilitiesFormats { get; protected set; }
 
         /// <summary>
         /// A list of supported GetMap formats
         /// </summary>
-        public List<string> SupportedGetMapFormats { get; private set; }
+        public Dictionary<string, List<string>> SupportedGetMapFormats { get; protected set; }
 
         /// <summary>
         /// A list of supported Exception formats
         /// </summary>
-        public List<string> SupportedExceptionFormats { get; private set; }
+        public Dictionary<string, List<string>> SupportedExceptionFormats { get; protected set; }
 
         /// <summary>
         /// A list of supported WMS versions
         /// </summary>
-        public List<string> SupportedVersions { get; protected internal set; }
+        public List<string> SupportedVersions { get; protected set; }
 
         /// <summary>
         /// Whether or not the png outpout should be size optimised; Note that this may be heavish operation...

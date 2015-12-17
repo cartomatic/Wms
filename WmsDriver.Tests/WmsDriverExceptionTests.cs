@@ -18,7 +18,7 @@ namespace WmsDriver.Tests
         {
             var e = new WmsDriverException();
 
-            e.WmsWmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
+            e.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
             e.Message.Should().Be("Unknown exception.");
         }
 
@@ -29,7 +29,7 @@ namespace WmsDriver.Tests
 
             var e = new WmsDriverException(msg);
 
-            e.WmsWmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
+            e.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
             e.Message.Should().Be(msg);
         }
 
@@ -41,7 +41,7 @@ namespace WmsDriver.Tests
 
             var e = new WmsDriverException(msg, ec);
 
-            e.WmsWmsExceptionCode.Should().Be(ec);
+            e.WmsExceptionCode.Should().Be(ec);
             e.Message.Should().Be(msg);
         }
 
@@ -53,7 +53,7 @@ namespace WmsDriver.Tests
 
             var e = new WmsDriverException(msg, inex);
 
-            e.WmsWmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
+            e.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
             e.Message.Should().Be(msg);
             e.InnerException.Should().BeSameAs(inex);
         }
@@ -67,7 +67,7 @@ namespace WmsDriver.Tests
 
             var e = new WmsDriverException(msg, ec, inex);
 
-            e.WmsWmsExceptionCode.Should().Be(ec);
+            e.WmsExceptionCode.Should().Be(ec);
             e.Message.Should().Be(msg);
             e.InnerException.Should().BeSameAs(inex);
         }

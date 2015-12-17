@@ -11,10 +11,10 @@ namespace Cartomatic.Wms
         public WmsDriver()
         {
             //just init some of the data containers
-            SupportedGetFeatureInfoFormats = new List<string>();
-            SupportedGetCapabilitiesFormats = new List<string>();
-            SupportedGetMapFormats = new List<string>();
-            SupportedExceptionFormats = new List<string>();
+            SupportedGetFeatureInfoFormats = new Dictionary<string, List<string>>();
+            SupportedGetCapabilitiesFormats = new Dictionary<string, List<string>>();
+            SupportedGetMapFormats = new Dictionary<string, List<string>>();
+            SupportedExceptionFormats = new Dictionary<string, List<string>>();
             SupportedVersions = new List<string>();
         }
     }

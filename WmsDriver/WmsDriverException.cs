@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Cartomatic.Wms
 {
-    public class WmsDriverException : Exception
+    public class WmsDriverException : Exception, IWmsDriverException
     {
-        public WmsExceptionCode WmsWmsExceptionCode { get; set; }
+        public WmsExceptionCode WmsExceptionCode { get; set; }
     
         public WmsDriverException()
             : this("Unknown exception.")
@@ -35,9 +36,7 @@ namespace Cartomatic.Wms
         public WmsDriverException(string msg, WmsExceptionCode wmsExceptionCode, Exception inner)
             : base(msg, inner)
         {
-            WmsWmsExceptionCode = wmsExceptionCode;
+            WmsExceptionCode = wmsExceptionCode;
         }
-
-
     }
 }

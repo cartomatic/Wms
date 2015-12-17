@@ -13,7 +13,16 @@ namespace Cartomatic.Wms
         /// <summary>
         /// Performs driver specific setup; expected to throw WmsDriverException when unable to set up the driver properly;
         /// </summary>
-        protected internal virtual void Prepare()
+        protected internal virtual void PrepareDriver()
+        {
+            ValidateWmsDescription();
+        }
+
+
+        /// <summary>
+        /// If no wms description is provided, a default data set is provided instead
+        /// </summary>
+        protected internal virtual void ValidateWmsDescription()
         {
             //if no wms service description provided, use the default one
             if (ServiceDescription == null)

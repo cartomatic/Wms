@@ -1,7 +1,14 @@
-﻿namespace Cartomatic.Wms
+﻿using System.Dynamic;
+
+namespace Cartomatic.Wms
 {
     public interface IWmsDriverResponse
     {
+        /// <summary>
+        /// Exception if any
+        /// </summary>
+        IWmsDriverException WmsDriverException { get; set; }
+
         /// <summary>
         /// Mime of the response
         /// </summary>

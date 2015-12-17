@@ -27,8 +27,7 @@ namespace Cartomatic.Wms
 
             try
             {
-                //prepare driver
-
+                PrepareDriver();
 
                 //run all the initial request checkups
 
@@ -36,14 +35,17 @@ namespace Cartomatic.Wms
                 //when ready delegate request handling based on the required operation
 
 
+                //before defaulting to unsupported operation, try to find a handler by reflection
+                //so can easily hook in the extra vendor ops if required
+
             }
             catch (WmsDriverException drve)
             {
-
+                output = HandleWmsDriverException(drve);
             }
             catch (Exception ex)
             {
-                
+                output = HandleWmsDriverException(ex);
             }
 
             return output;
