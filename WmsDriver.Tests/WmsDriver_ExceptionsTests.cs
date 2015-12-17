@@ -12,46 +12,13 @@ using NUnit.Framework;
 namespace WmsDriver.Tests
 {
     [TestFixture]
-    public class WmsDriverTests
+    public class WmsDriver_ExceptionTests
     {
-        [Test]
-        public void Constructor_WhenCalled_ShouldAlwaysInitDataContainers()
-        {
-            var drv = MakeWmsDriver() as FakeWmsDriver;
-
-            drv.SupportedGetFeatureInfoFormats.Should().NotBeNull();
-            drv.SupportedGetCapabilitiesFormats.Should().NotBeNull();
-            drv.SupportedGetMapFormats.Should().NotBeNull();
-            drv.SupportedExceptionFormats.Should().NotBeNull();
-            drv.SupportedVersions.Should().NotBeNull();
-        }
-
-        [Test]
-        public void Handle_Always_CallsPrepareDriver()
-        {
-            var drv = MakeWmsDriver() ;
-
-            drv.Handle(string.Empty);
-
-            (drv as FakeWmsDriver).PrepareCalled.Should().BeTrue();
-        }
-
-        [Test]
-        public void Handle_WhenServiceDescriptionNotProvided_CreatesDefaultWmsServiceDescription()
-        {
-            var drv = MakeWmsDriver();
-
-            drv.ServiceDescription.Should().BeNull();
-
-            drv.Handle(string.Empty);
-            
-            drv.ServiceDescription.Should().NotBeNull();
-        }
-
+        
         [Test]
         public void Handle_WhenFailingWithWmsDriverException_ProperlyHandlesWmsResponse()
         {
-            var drv = MakeWmsDriver(wmsEx: true) as FakeWmsDriverFailsWithWmsDriverException;
+            var drv = MakeWmsDriver() as FakeWmsDriverFailsWithWmsDriverException;
 
             var response = drv.Handle(string.Empty);
 
@@ -88,26 +55,12 @@ namespace WmsDriver.Tests
 
 
 
-        private IWmsDriver MakeWmsDriver(bool wmsEx = false, bool stdEx = false)
+        private IWmsDriver MakeWmsDriver(bool stdEx = false)
         {
-            if(wmsEx)
-                return new FakeWmsDriverFailsWithWmsDriverException();
-
-            if(stdEx)
+            if (stdEx)
                 return new FakeWmsDriverFailsWithException();
-
-            return new FakeWmsDriver();
-        }
-
-        private class FakeWmsDriver : Cartomatic.Wms.WmsDriver
-        {
-            public bool PrepareCalled { get; private set; }
-            
-            protected internal override void PrepareDriver()
-            {
-                PrepareCalled = true;
-                base.PrepareDriver();
-            }
+            else
+                return new FakeWmsDriverFailsWithWmsDriverException();
         }
 
         private class FakeWmsDriverFailsWithWmsDriverException : Cartomatic.Wms.WmsDriver

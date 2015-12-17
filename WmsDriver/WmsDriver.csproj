@@ -60,6 +60,10 @@
     <Compile Include="WmsDriver\DataModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OgcSchemas\OgcSchemas.Wms\OgcSchemas.Wms.csproj">
+      <Project>{b8398792-4bb8-4ad0-b55d-3e638e008d83}</Project>
+      <Name>OgcSchemas.Wms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
       <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
       <Name>Serialization</Name>

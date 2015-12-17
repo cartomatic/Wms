@@ -55,7 +55,8 @@
     <Compile Include="WmsBoundingBoxTests.cs" />
     <Compile Include="WmsDriverExceptionTests.cs" />
     <Compile Include="WmsDriverResponseExtensionTests.cs" />
-    <Compile Include="WmsDriverTests.cs" />
+    <Compile Include="WmsDriver_ExceptionsTests.cs" />
+    <Compile Include="WmsDriver_BasicTests.cs" />
     <Compile Include="WmsServiceDescriptionExtensionsTests.cs" />
     <Compile Include="WmsServiceDescriptionTests.cs" />
   </ItemGroup>
