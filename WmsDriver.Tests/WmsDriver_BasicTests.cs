@@ -15,18 +15,6 @@ namespace WmsDriver.Tests
     public class WmsDriver_BasicTests
     {
         [Test]
-        public void Constructor_WhenCalled_ShouldAlwaysInitDataContainers()
-        {
-            var drv = MakeWmsDriver() as FakeWmsDriver;
-
-            drv.SupportedGetFeatureInfoFormats.Should().NotBeNull();
-            drv.SupportedGetCapabilitiesFormats.Should().NotBeNull();
-            drv.SupportedGetMapFormats.Should().NotBeNull();
-            drv.SupportedExceptionFormats.Should().NotBeNull();
-            drv.SupportedVersions.Should().NotBeNull();
-        }
-
-        [Test]
         public void Handle_Always_CallsPrepareDriver()
         {
             var drv = MakeWmsDriver() ;

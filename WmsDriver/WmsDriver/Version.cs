@@ -25,5 +25,19 @@ namespace Cartomatic.Wms
 
             return max;
         }
+
+        /// <summary>
+        /// Gets declared or max supported version in a case request does not declare expected version
+        /// </summary>
+        /// <returns></returns>
+        protected internal string GetDeclaredOrMaxSupportedVersion()
+        {
+            var version = GetParam("version");
+            if (string.IsNullOrEmpty(version))
+            {
+                version = GetMaxSupportedVersion();
+            }
+            return version;
+        }
     }
 }

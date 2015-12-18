@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Cartomatic.Wms
 {
@@ -14,9 +15,9 @@ namespace Cartomatic.Wms
         public IWmsServiceDescription ServiceDescription { get; set; }
 
         /// <summary>
-        /// A list of supported GetFeatureInfo formats
+        /// A list of supported WMS versions
         /// </summary>
-        public Dictionary<string, List<string>> SupportedGetFeatureInfoFormats { get; protected set; }
+        public List<string> SupportedVersions { get; protected set; }
 
         /// <summary>
         /// A list of supported GetCapabilities formats
@@ -24,9 +25,19 @@ namespace Cartomatic.Wms
         public Dictionary<string, List<string>> SupportedGetCapabilitiesFormats { get; protected set; }
 
         /// <summary>
+        /// Default formats of GetCapabilities for each supported version
+        /// </summary>
+        public Dictionary<string, string> DefaultGetCapabilitiesFormats { get; protected set; }
+
+        /// <summary>
         /// A list of supported GetMap formats
         /// </summary>
         public Dictionary<string, List<string>> SupportedGetMapFormats { get; protected set; }
+
+        /// <summary>
+        /// A list of supported GetFeatureInfo formats
+        /// </summary>
+        public Dictionary<string, List<string>> SupportedGetFeatureInfoFormats { get; protected set; }
 
         /// <summary>
         /// A list of supported Exception formats
@@ -34,14 +45,21 @@ namespace Cartomatic.Wms
         public Dictionary<string, List<string>> SupportedExceptionFormats { get; protected set; }
 
         /// <summary>
-        /// A list of supported WMS versions
+        /// Default exception formats for each supported version
         /// </summary>
-        public List<string> SupportedVersions { get; protected set; }
-
+        public Dictionary<string, string> DefaultExceptionFormats { get; protected set; }
+        
+        
         /// <summary>
         /// Whether or not the png outpout should be size optimised; Note that this may be heavish operation...
         /// </summary>
         public bool OptimisePng { get; set; }
+
+
+        /// <summary>
+        /// Processed request
+        /// </summary>
+        protected  WebRequest Request { get; set; }
 
     }
 }

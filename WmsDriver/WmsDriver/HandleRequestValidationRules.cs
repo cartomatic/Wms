@@ -12,8 +12,30 @@ namespace Cartomatic.Wms
 
         protected internal Dictionary<string, IValidationRule> HandleRequestValidationRules = new Dictionary<string, IValidationRule>()
         {
+            { "service_params_containers_instantiated", new ValidationRule()
+                {
+                    Message = "SETUP ERROR: Some of the following objects were not initialised: SupportedGetCapabilitiesFormats, DefaultGetCapabilitiesFormats, SupportedGetMapFormats, SupportedGetFeatureInfoFormats, SupportedExceptionFormats, DefaultExceptionFormats, SupportedVersions",
+                    WmsEcExceptionCode = WmsExceptionCode.NotApplicable,
+                    Action = (drv, a) =>
+                    {
+                        var containers = new List<object>()
+                        {
+                            drv.SupportedGetCapabilitiesFormats,
+                            drv.DefaultGetCapabilitiesFormats,
+                            drv.SupportedGetMapFormats,
+                            drv.SupportedGetFeatureInfoFormats,
+                            drv.SupportedExceptionFormats,
+                            drv.DefaultExceptionFormats,
+                            drv.SupportedVersions
+                        };
+
+                        if (containers.Any(c => c == null))
+                            throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+                    }
+                }
+            },
             //Driver must specify at least one service version it supports
-            { "service_version_specified", new ValidationRule()
+            { "service_versions_specified", new ValidationRule()
                 {
                     Message = "SETUP ERROR: Driver must specify at least one service VERSION it supports.",
                     WmsEcExceptionCode = WmsExceptionCode.NotApplicable,
@@ -27,7 +49,7 @@ namespace Cartomatic.Wms
 
             //driver must define at least one GetCapabilities format for each supported service version
             {
-                "getcaps_format_specified", new ValidationRule()
+                "getcaps_formats_specified", new ValidationRule()
                 {
                     Message = "SETUP ERROR: Driver must specify at least one GetCapabilities format for each supported service version.",
                     WmsEcExceptionCode = WmsExceptionCode.NotApplicable,
@@ -36,18 +58,35 @@ namespace Cartomatic.Wms
                         if (drv.SupportedGetCapabilitiesFormats == null || drv.SupportedGetCapabilitiesFormats.Count == 0)
                             throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
 
-                        foreach (var version in drv.SupportedGetCapabilitiesFormats)
+                        foreach (var version in drv.SupportedVersions)
                         {
-                            if (version.Value == null || version.Value.Count == 0)
+                            if (!drv.SupportedGetCapabilitiesFormats.ContainsKey(version))
+                                throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+
+                            if (drv.SupportedGetCapabilitiesFormats[version] == null || drv.SupportedGetCapabilitiesFormats[version].Count == 0)
                                 throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
                         }
                     }
                 }
             },
+            { "default_getcaps_format_specified_and_supported", new ValidationRule()
+                {
+                    Message = "SETUP ERROR: One of the default caps format does not seem to be supported.",
+                    WmsEcExceptionCode = WmsExceptionCode.NotApplicable,
+                    Action = (drv, a) =>
+                    {
+                        foreach (var version in drv.SupportedVersions)
+                        {
+                            if(!drv.DefaultGetCapabilitiesFormats.ContainsKey(version) || !drv.SupportedGetCapabilitiesFormats[version].Contains(drv.DefaultGetCapabilitiesFormats[version]))
+                                throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+                        }
+                    }
+                }
+            },       
 
             //driver must define at least one GetMap format for each supported service version
             {
-                "getmap_format_specified", new ValidationRule()
+                "getmap_formats_specified", new ValidationRule()
                 {
                     Message = "SETUP ERROR: Driver must specify at least one GetMap format for each supported service version.",
                     WmsEcExceptionCode = WmsExceptionCode.NotApplicable,
@@ -56,14 +95,54 @@ namespace Cartomatic.Wms
                         if (drv.SupportedGetMapFormats == null || drv.SupportedGetMapFormats.Count == 0)
                             throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
 
-                        foreach (var version in drv.SupportedGetMapFormats)
+                        foreach (var version in drv.SupportedVersions)
                         {
-                            if (version.Value == null || version.Value.Count == 0)
+                            if (!drv.SupportedGetMapFormats.ContainsKey(version))
+                                throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+
+                            if (drv.SupportedGetMapFormats[version] == null || drv.SupportedGetMapFormats[version].Count == 0)
                                 throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
                         }
                     }
                 }
             },
+
+
+            { "exception_formats_specified", new ValidationRule()
+                {
+                    Message = "SETUP ERROR: Driver must specify at least one Exception format for each supported version",
+                    WmsEcExceptionCode = WmsExceptionCode.NotApplicable,
+                    Action = (drv, a) =>
+                    {
+                        if (drv.SupportedExceptionFormats == null || drv.SupportedExceptionFormats.Count == 0)
+                            throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+
+
+                        foreach (var version in drv.SupportedVersions)
+                        {
+                            if (!drv.SupportedExceptionFormats.ContainsKey(version))
+                                throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+
+                            if (drv.SupportedExceptionFormats[version] == null || drv.SupportedExceptionFormats[version].Count == 0)
+                                throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+                        }
+                    }
+                }
+            },    
+            { "default_exception_format_specified_and_supported", new ValidationRule()
+                {
+                    Message = "SETUP ERROR: Driver must specify a defualt exception format for each version specified",
+                    WmsEcExceptionCode = WmsExceptionCode.NotApplicable,
+                    Action = (drv, a) =>
+                    {
+                        foreach (var version in drv.SupportedVersions)
+                        {
+                            if (!drv.DefaultExceptionFormats.ContainsKey(version) || !drv.SupportedExceptionFormats[version].Contains(drv.DefaultExceptionFormats[version]))
+                                throw new WmsDriverException(a.Message, a.WmsEcExceptionCode);
+                        }
+                    }
+                }
+            },    
 
             //request param should always be present
             {
@@ -103,14 +182,10 @@ namespace Cartomatic.Wms
                     {
                         var p = drv.GetParam("version");
                         if(!string.IsNullOrEmpty(p) && !drv.SupportedVersions.Exists(sv => sv == p))
-                            throw new WmsDriverException(string.Format(a.Message, string.Concat(", ", drv.SupportedVersions)), a.WmsEcExceptionCode);
+                            throw new WmsDriverException(string.Format(a.Message, string.Join(", ", drv.SupportedVersions)), a.WmsEcExceptionCode);
                     }
                 }
             }
-
-
-            
-            
 
             //{
             //    "", new ValidationRule()

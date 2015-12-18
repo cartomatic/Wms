@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Cartomatic.Wms;
 using FluentAssertions;
 using NUnit.Framework;
@@ -12,12 +8,24 @@ namespace WmsDriver.Tests
     [TestFixture]
     public class WmsDriver_HandleRequestInitialCheckupTests
     {
+
+        [Test]
+        public void HandleRequest_Always_InternalDataContainersAreInitialised()
+        {
+            var drv = MakeWmsDriver();
+            var testedValidationRule = drv.HandleRequestValidationRules["service_params_containers_instantiated"];
+
+            var response = drv.HandleRequest("http://some.url/");
+
+            response.WmsDriverException.Message.Should().NotBe(testedValidationRule.Message);
+        }
+
         //need to have at least one supported version
         [Test]
         public void HandleRequest_WhenNoSupportedVersionsDefined_GeneratesWmsDriverException()
         {
             var drv = MakeWmsDriver(addVersion: false);
-            var testedValidationRule = drv.HandleRequestValidationRules["service_version_specified"];
+            var testedValidationRule = drv.HandleRequestValidationRules["service_versions_specified"];
 
             var response = drv.HandleRequest("http://some.url/");
 
@@ -26,12 +34,11 @@ namespace WmsDriver.Tests
             response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
         }
 
-        //need to have at least one get capabilities format
         [Test]
         public void HandleRequest_WhenNoGetCapabilitiesFormatsDefined_GeneratesWmsDriverException()
         {
             var drv = MakeWmsDriver(addCapsFormat: false);
-            var testedValidationRule = drv.HandleRequestValidationRules["getcaps_format_specified"];
+            var testedValidationRule = drv.HandleRequestValidationRules["getcaps_formats_specified"];
 
             var response = drv.HandleRequest("http://some.url/");
 
@@ -44,7 +51,7 @@ namespace WmsDriver.Tests
         public void HandleRequest_WhenGetCapabilitiesFormatsDefinedPartially_GeneratesWmsDriverException()
         {
             var drv = MakeWmsDriver(addCapsFormat: false, addCapsFormatWrong: true);
-            var testedValidationRule = drv.HandleRequestValidationRules["getcaps_format_specified"];
+            var testedValidationRule = drv.HandleRequestValidationRules["getcaps_formats_specified"];
 
             var response = drv.HandleRequest("http://some.url/");
 
@@ -53,13 +60,24 @@ namespace WmsDriver.Tests
             response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
         }
 
-        //need to have at least one get map format
-        //need to have at least one get capabilities format
+        [Test]
+        public void HandleRequest_WhenDefaultGetCapabilitiesFormatNotSpecifiedOrNotSupported_GeneratesDriverException()
+        {
+            var drv = MakeWmsDriver(addDefaultCapsFormat: false);
+            var testedValidationRule = drv.HandleRequestValidationRules["default_getcaps_format_specified_and_supported"];
+
+            var response = drv.HandleRequest("http://some.url/");
+
+            response.WmsDriverException.Should().NotBeNull();
+            response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
+            response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
+        }
+
         [Test]
         public void HandleRequest_WhenNoGetMapFormatsDefined_GeneratesWmsDriverException()
         {
             var drv = MakeWmsDriver(addMapFormat: false);
-            var testedValidationRule = drv.HandleRequestValidationRules["getmap_format_specified"];
+            var testedValidationRule = drv.HandleRequestValidationRules["getmap_formats_specified"];
 
             var response = drv.HandleRequest("http://some.url/");
 
@@ -72,7 +90,7 @@ namespace WmsDriver.Tests
         public void HandleRequest_WhenGetMapFormatsDefinedPartially_GeneratesWmsDriverException()
         {
             var drv = MakeWmsDriver(addMapFormat: false, addMapFormatWrong: true);
-            var testedValidationRule = drv.HandleRequestValidationRules["getmap_format_specified"];
+            var testedValidationRule = drv.HandleRequestValidationRules["getmap_formats_specified"];
 
             var response = drv.HandleRequest("http://some.url/");
 
@@ -80,6 +98,46 @@ namespace WmsDriver.Tests
             response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
             response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
         }
+
+        [Test]
+        public void HandleRequest_WhenNoExceptionFormatsDefined_GeneratesWmsDriverException()
+        {
+            var drv = MakeWmsDriver(addExceptionFormat: false);
+            var testedValidationRule = drv.HandleRequestValidationRules["exception_formats_specified"];
+
+            var response = drv.HandleRequest("http://some.url/");
+
+            response.WmsDriverException.Should().NotBeNull();
+            response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
+            response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
+        }
+
+        [Test]
+        public void HandleRequest_WhenExceptionFormatsDefinedPartially_GeneratesWmsDriverException()
+        {
+            var drv = MakeWmsDriver(addExceptionFormat: false, addExceptionFormatWrong: true);
+            var testedValidationRule = drv.HandleRequestValidationRules["exception_formats_specified"];
+
+            var response = drv.HandleRequest("http://some.url/");
+
+            response.WmsDriverException.Should().NotBeNull();
+            response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
+            response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
+        }
+
+        [Test]
+        public void HandleRequest_WhenDefaultExceptionFormatNotSpecifiedOrNotSupported_GeneratesDriverException()
+        {
+            var drv = MakeWmsDriver(addDefaultExceptionFormat: false);
+            var testedValidationRule = drv.HandleRequestValidationRules["default_exception_format_specified_and_supported"];
+
+            var response = drv.HandleRequest("http://some.url/");
+
+            response.WmsDriverException.Should().NotBeNull();
+            response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
+            response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
+        }
+
 
         [Test]
         public void HandleRequest_WhenRequestParamNotFound_GeneratesWmsDriverException()
@@ -104,7 +162,7 @@ namespace WmsDriver.Tests
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
-            response.WmsDriverException.Message.Should().Be(string.Format(testedValidationRule.Message, string.Concat(", ", drv.SupportedVersions)));
+            response.WmsDriverException.Message.Should().Be(string.Format(testedValidationRule.Message, string.Join(", ", drv.SupportedVersions)));
         }
 
 
@@ -211,10 +269,9 @@ namespace WmsDriver.Tests
 
             drv.HandleCustomVendorOpCalled.Should().BeTrue();
         }
-
         
 
-        private FakeWmsDriver MakeWmsDriver(bool addVersion = true, bool addCapsFormat = true, bool addCapsFormatWrong = false, bool addMapFormat = true, bool addMapFormatWrong = false)
+        private FakeWmsDriver MakeWmsDriver(bool addVersion = true, bool addCapsFormat = true, bool addCapsFormatWrong = false,bool addDefaultCapsFormat = true, bool addMapFormat = true, bool addMapFormatWrong = false, bool addExceptionFormat = true, bool addExceptionFormatWrong = false, bool addDefaultExceptionFormat = true)
         {
             var drv = new FakeWmsDriver();
 
@@ -225,13 +282,25 @@ namespace WmsDriver.Tests
                 drv.SupportedGetCapabilitiesFormats.Add("1.3.0", new List<string>(){"XML"});
 
             if(addCapsFormatWrong)
-                drv.SupportedGetCapabilitiesFormats.Add("1.3.0", new List<string>() { });
+                drv.SupportedGetCapabilitiesFormats.Add("1.3.0", new List<string>());
+
+            if(addDefaultCapsFormat)
+                drv.DefaultGetCapabilitiesFormats.Add("1.3.0", "XML");
 
             if(addMapFormat)
                 drv.SupportedGetMapFormats.Add("1.3.0", new List<string>(){"image/png"});
 
             if (addMapFormatWrong)
-                drv.SupportedGetMapFormats.Add("1.3.0", new List<string>() { });
+                drv.SupportedGetMapFormats.Add("1.3.0", new List<string>());
+
+            if (addExceptionFormat)
+                drv.SupportedExceptionFormats.Add("1.3.0", new List<string>() {"XML"});
+
+            if (addExceptionFormatWrong)
+                drv.SupportedExceptionFormats.Add("1.3.0", new List<string>());
+
+            if (addDefaultExceptionFormat)
+                drv.DefaultExceptionFormats.Add("1.3.0", "XML");
 
             return drv;
         }

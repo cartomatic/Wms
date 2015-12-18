@@ -25,6 +25,8 @@ namespace Cartomatic.Wms
         {
             IWmsDriverResponse output = null;
 
+
+            Request = request; 
             ExtractRequestParams(request);
 
             try
@@ -92,12 +94,6 @@ namespace Cartomatic.Wms
                         output = HandleUnsupported(operation); 
                         break;
                 }
-
-                //before defaulting to unsupported operation, try to find a handler by reflection
-                //so can easily hook in the extra vendor ops if required
-
-                //temporary output - will be removed, when request is handled based on requested operation
-                output = new WmsDriverResponse();
             }
             catch (WmsDriverException drve)
             {
