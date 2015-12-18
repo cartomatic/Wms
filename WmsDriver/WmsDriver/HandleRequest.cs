@@ -35,11 +35,69 @@ namespace Cartomatic.Wms
                 Validate(HandleRequestValidationRules);
 
                 //when ready delegate request handling based on the required operation
+                string operation = GetParam("request");
+                bool ignoreCase = GetIgnoreCase();
 
+                switch (operation.ToLower())
+                {
+                    case "getcapabilities" :
+                        //make sure the casing is respected
+                        if (string.Compare("GetCapabilities", operation, ignoreCase) == 0)
+                        {
+                            output = HandleGetCapabilities();
+                        }
+                        else
+                        {
+                            output = HandleUnsupported(operation);
+                        }
+                        break;
+
+                    case "getmap":
+                        //make sure the casing is respected
+                        if (string.Compare("GetMap", operation, ignoreCase) == 0)
+                        {
+                            output = HandleGetMap();
+                        }
+                        else
+                        {
+                            output = HandleUnsupported(operation);
+                        }
+                        break;
+
+                    case "getfeatureinfo":
+                        //make sure the casing is respected
+                        if (string.Compare("GetFeatureInfo", operation, ignoreCase) == 0)
+                        {
+                            output = HandleGetFeatureInfo();
+                        }
+                        else
+                        {
+                            output = HandleUnsupported(operation);
+                        }
+                        break;
+
+                    case "getlegendgraphic":
+                        //make sure the casing is respected
+                        if (string.Compare("GetLegendGraphic", operation, ignoreCase) == 0)
+                        {
+                            output = HandleGetLegendGraphic();
+                        }
+                        else
+                        {
+                            output = HandleUnsupported(operation);
+                        }
+                        break;
+
+                    default:
+                        output = HandleUnsupported(operation); 
+                        break;
+                }
 
                 //before defaulting to unsupported operation, try to find a handler by reflection
                 //so can easily hook in the extra vendor ops if required
 
+                //temporary output - will be removed, when request is handled based on requested operation
+                output = new WmsDriverResponse();
             }
             catch (WmsDriverException drve)
             {

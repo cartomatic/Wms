@@ -38,5 +38,18 @@ namespace Cartomatic.Wms
                 pValue = RequestParams[pName];
             return pValue;
         }
+
+        /// <summary>
+        /// Whether or not the param value casing should be respcted    
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool GetIgnoreCase()
+        {
+            //Note:
+            //1.3.0 is case sensitive; many clients though have problems with it so we make it case insensitive
+            //and ignore case for the time being
+            //TODO - when other versions are supported, ignore case will have to depend on the version
+            return true;
+        }
     }
 }
