@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cartomatic.OgcSchemas.Wms.Wms_1302;
+using Cartomatic.Utils.Web;
 using Cartomatic.Wms;
 using FluentAssertions;
 using NUnit.Framework;
@@ -15,46 +16,71 @@ namespace WmsDriver.Tests
     {
         //need to have at least one supported version
         [Test]
-        public void HandleGetCapabilities_WhenNoServiceParamProvided_GeneratesWmsDriverException()
+        public void HandleGetCapabilities_WhenNoServiceParamProvided_ValidationRuleThrows()
         {
             var drv = MakeWmsDriver();
             var testedValidationRule = drv.HandleGetCapabilitiesValidationRules["service_param_presence"];
+            var request = "http://some.url/?request=GetCapabilities".CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
 
-            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities");
+            Action action = () => testedValidationRule(drv);
 
-            response.WmsDriverException.Should().NotBeNull();
-            response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
-            response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
+            action.ShouldThrow<WmsDriverException>();
         }
-
+        
         //service must be WMS
         [Test]
-        public void HandleGetCapabilities_WhenServiceOtherThanWms_GeneratesWmsDriverException()
+        public void HandleGetCapabilities_WhenServiceOtherThanWms_ValidationRuleThrows()
         {
             var drv = MakeWmsDriver();
             var testedValidationRule = drv.HandleGetCapabilitiesValidationRules["service_must_be_wms"];
+            var request = "http://some.url/?request=GetCapabilities&service=NotWMS".CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
 
-            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=NotWMS");
+            Action action = () => testedValidationRule(drv);
 
-            response.WmsDriverException.Should().NotBeNull();
-            response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
-            response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
+            action.ShouldThrow<WmsDriverException>();
         }
-        
+
+        [Test]
+        public void HandleGetCapabilities_WhenServiceParamIsWMS_ValidationRuleShouldNotThrow()
+        {
+            var drv = MakeWmsDriver();
+            var testedValidationRule = drv.HandleGetCapabilitiesValidationRules["service_param_presence"];
+            var request = "http://some.url/?request=GetCapabilities&service=WMS".CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
+
+            Action action = () => testedValidationRule(drv);
+
+            action.ShouldNotThrow();
+        }
+
         //format if provided must match get capabilties format!
         [Test]
-        public void HandleGetCapabilities_WhenFormatProvidedDoesNotMatchSupported_GeneratesWmsDriverException()
+        public void HandleGetCapabilities_WhenFormatProvidedDoesNotMatchSupported_ValidationRuleThrows()
         {
             var drv = MakeWmsDriver();
             var testedValidationRule = drv.HandleGetCapabilitiesValidationRules["format_must_be_valid"];
+            var request = "http://some.url/?request=GetCapabilities&service=WMS&format=NotValid".CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
 
-            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS&format=NotValid");
+            Action action = () => testedValidationRule(drv);
 
-            response.WmsDriverException.Should().NotBeNull();
-            response.WmsDriverException.WmsExceptionCode.Should().Be(testedValidationRule.WmsEcExceptionCode);
-            response.WmsDriverException.Message.Should().Be(testedValidationRule.Message);
+            action.ShouldThrow<WmsDriverException>();
         }
 
+        [Test]
+        public void HandleGetCapabilities_WhenFormatProvidedASupported_ValidationShouldNotThrow()
+        {
+            var drv = MakeWmsDriver();
+            var testedValidationRule = drv.HandleGetCapabilitiesValidationRules["format_must_be_valid"];
+            var request = "http://some.url/?request=GetCapabilities&service=WMS&format=XML".CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
+
+            Action action = () => testedValidationRule(drv);
+
+            action.ShouldNotThrow();
+        }
 
         [Test]
         public void HandleGetCapabilities_WhenParamsOk_CallsTheSubsequentMethodsStack()
@@ -99,8 +125,10 @@ namespace WmsDriver.Tests
         {
             var drv = MakeWmsDriver();
             var requestUrl = "http://request.url:8888/using/a/nested/path";
+            var request = requestUrl.CreateHttpWebRequest();
 
-            drv.HandleRequest(requestUrl);
+            drv.ServiceDescription = new WmsServiceDescription();
+            drv.ExtractRequestParams(request);
 
             drv.GetPublicAccessURL().Should().Be(requestUrl);
         }

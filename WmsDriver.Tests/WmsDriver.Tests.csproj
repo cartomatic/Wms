@@ -55,8 +55,12 @@
     <Compile Include="WmsBoundingBoxTests.cs" />
     <Compile Include="WmsDriverExceptionTests.cs" />
     <Compile Include="WmsDriverResponseExtensionTests.cs" />
+    <Compile Include="WmsDriver_DriverSetupValidationRulesTests.cs" />
     <Compile Include="WmsDriver_ExceptionsTests.cs" />
     <Compile Include="WmsDriver_BasicTests.cs" />
+    <Compile Include="WmsDriver_GetMaxSupportedVersionTests.cs" />
+    <Compile Include="WmsDriver_HandleCapabilitiesTests.cs" />
+    <Compile Include="WmsDriver_HandleRequestInitialCheckupTests.cs" />
     <Compile Include="WmsServiceDescriptionExtensionsTests.cs" />
     <Compile Include="WmsServiceDescriptionTests.cs" />
   </ItemGroup>
@@ -64,9 +68,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OgcSchemas\OgcSchemas.Wms\OgcSchemas.Wms.csproj">
+      <Project>{b8398792-4bb8-4ad0-b55d-3e638e008d83}</Project>
+      <Name>OgcSchemas.Wms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
       <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
       <Name>Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Web\Web.csproj">
+      <Project>{45666acc-c047-4608-8213-f109504ee551}</Project>
+      <Name>Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\WmsDriver\WmsDriver.csproj">
       <Project>{e623c471-93af-4d10-a656-d05ea17c7f51}</Project>

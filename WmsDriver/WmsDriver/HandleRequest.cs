@@ -20,18 +20,18 @@ namespace Cartomatic.Wms
             return HandleRequest(url.CreateHttpWebRequest());
         }
 
-
         public IWmsDriverResponse HandleRequest(HttpWebRequest request)
         {
             IWmsDriverResponse output = null;
 
-
-            Request = request; 
             ExtractRequestParams(request);
 
             try
             {
                 PrepareDriver();
+
+                //run the driver setup checkup
+                Validate(DriverSetupValidationRules);
 
                 //run all the initial request checkups
                 Validate(HandleRequestValidationRules);

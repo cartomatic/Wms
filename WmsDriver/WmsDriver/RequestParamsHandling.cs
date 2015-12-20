@@ -20,8 +20,10 @@ namespace Cartomatic.Wms
         /// Extracts request params off the request object
         /// </summary>
         /// <param name="request"></param>
-        protected void ExtractRequestParams(HttpWebRequest request)
+        protected internal void ExtractRequestParams(HttpWebRequest request)
         {
+            Request = request;
+
             if(request != null)
                 RequestParams = System.Web.HttpUtility.ParseQueryString(request.Address.Query);
         }

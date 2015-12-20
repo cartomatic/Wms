@@ -19,7 +19,7 @@ namespace WmsDriver.Tests
         {
             var drv = MakeWmsDriver() ;
 
-            drv.HandleRequest(string.Empty);
+            drv.HandleRequest("http://some.url/");
 
             (drv as FakeWmsDriver).PrepareCalled.Should().BeTrue();
         }
@@ -31,7 +31,7 @@ namespace WmsDriver.Tests
 
             drv.ServiceDescription.Should().BeNull();
 
-            drv.HandleRequest(string.Empty);
+            drv.HandleRequest("http://some.url/");
             
             drv.ServiceDescription.Should().NotBeNull();
         }

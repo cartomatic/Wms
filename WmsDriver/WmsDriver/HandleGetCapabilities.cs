@@ -163,7 +163,7 @@ namespace Cartomatic.Wms
             r.GetMap = getmap;
 
 
-            //ignore info for the time being
+            //get feature info
             //----------
             var getinfo = new OperationType();
             if (SupportedGetFeatureInfoFormats.ContainsKey("1.3.0") && SupportedGetFeatureInfoFormats["1.3.0"].Count > 0)
@@ -178,6 +178,8 @@ namespace Cartomatic.Wms
                 r.GetFeatureInfo = getinfo;
             }
 
+            //_ExtendedOperation
+            //r._ExtendedOperation
 
             //exception formats
             //----------

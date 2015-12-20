@@ -20,7 +20,7 @@ namespace WmsDriver.Tests
         {
             var drv = MakeWmsDriver() as FakeWmsDriverFailsWithWmsDriverException;
 
-            var response = drv.HandleRequest(string.Empty);
+            var response = drv.HandleRequest("http://some.url/");
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(drv.WmsExceptionCode);
@@ -38,7 +38,7 @@ namespace WmsDriver.Tests
         {
             var drv = MakeWmsDriver(stdEx: true) as FakeWmsDriverFailsWithException;
 
-            var response = drv.HandleRequest(string.Empty);
+            var response = drv.HandleRequest("http://some.url/");
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
