@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace WmsDriver.Tests
 {
     [TestFixture]
-    public class WmsDriver_HandleCapabilitiesTests
+    public class WmsDriver_HandleGetCapabilitiesTests
     {
         //need to have at least one supported version
         [Test]

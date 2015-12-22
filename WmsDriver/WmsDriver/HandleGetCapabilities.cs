@@ -200,7 +200,7 @@ namespace Cartomatic.Wms
         /// <returns></returns>
         protected virtual WMS_Capabilities GenerateCapsLayersSection130(WMS_Capabilities capsDoc)
         {
-            throw new WmsDriverException("IMPLEMENTATION ERROR: GetCapabilities is a mandatory operation for WMS 1.3.0.");
+            throw new WmsDriverException(string.Format("IMPLEMENTATION ERROR: GetCapabilities is a mandatory operation for WMS {0}.", GetDeclaredOrMaxSupportedVersion()));
         }
 
         /// <summary>

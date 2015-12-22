@@ -10,7 +10,14 @@ namespace Cartomatic.Wms
     {
         protected virtual IWmsDriverResponse HandleGetMap()
         {
-            return new WmsDriverResponse();
+            Validate(HandleGetMapValidationRules);
+
+            return HandleGetMapDriverSpecific();
+        }
+
+        protected virtual IWmsDriverResponse HandleGetMapDriverSpecific()
+        {
+            throw new WmsDriverException(string.Format("IMPLEMENTATION ERROR: GetMap is a mandatory operation for WMS {0}.", GetParam("version")));
         }
     }
 }

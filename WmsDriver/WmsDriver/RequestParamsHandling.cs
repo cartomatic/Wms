@@ -35,7 +35,7 @@ namespace Cartomatic.Wms
         /// <returns></returns>
         protected string GetParam(string pName )
         {
-            string pValue = string.Empty;
+            string pValue = null;
             if(RequestParams != null)
                 pValue = RequestParams[pName];
             return pValue;
