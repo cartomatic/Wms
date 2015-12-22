@@ -179,7 +179,34 @@ namespace Cartomatic.Wms
             }
 
             //_ExtendedOperation
-            //r._ExtendedOperation
+            if (SupportedVendorOperations.ContainsKey("1.3.0") && SupportedVendorOperations["1.3.0"].Count > 0)
+            {
+                var vendorOps = new List<OperationType>();
+                foreach (var vop in SupportedVendorOperations["1.3.0"])
+                {
+                    //check if formats for the vendor op have been defined
+                    if (SupportedVendorOperationFormats.ContainsKey(vop) &&
+                        SupportedVendorOperationFormats[vop].ContainsKey("1.3.0") && SupportedVendorOperationFormats[vop]["1.3.0"].Count > 0)
+                    {
+                        var extendedOp = new OperationType();
+
+                        extendedOp.Format = SupportedVendorOperationFormats[vop]["1.3.0"].ToArray();
+
+                        List<DCPType> extendedOp_dcptypes = new List<DCPType>();
+                        extendedOp_dcptypes.Add(GenerateDCPType130(GetPublicAccessURL(), null));
+                        extendedOp.DCPType = extendedOp_dcptypes.ToArray();
+
+                        vendorOps.Add(extendedOp);
+                    }
+                }
+
+                if (vendorOps.Count > 0)
+                {
+                    r._ExtendedOperation = vendorOps.ToArray();
+                }
+            }
+            
+            
 
             //exception formats
             //----------

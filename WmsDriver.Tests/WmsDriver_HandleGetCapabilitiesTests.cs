@@ -149,7 +149,41 @@ namespace WmsDriver.Tests
             response.ResponseText.Should().Contain("<WMS_Capabilities");
         }
 
-        
+        [Test]
+        public void HandleGetCapabilities_WhenParamsOkAndGetFeatureInfoSupported_GeneratesGetFeatureInfoOpSection()
+        {
+
+            var drv = MakeWmsDriver();
+            //avoid calling base, as it throws on purpose in the default abstract class implementation
+            drv.CallBaseInGenerateCapsLayersSection130 = false;
+
+            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+
+            response.ResponseContentType.Should().Be("text/xml");
+            response.ResponseText.Should().NotBeNullOrWhiteSpace();
+
+            response.ResponseText.Should().Contain("GetFeatureInfo");
+            response.ResponseText.Should().Contain("HTML");
+            response.ResponseText.Should().Contain("GML");
+            response.ResponseText.Should().Contain("SomeOtherGetFeatureInfoFormat");
+        }
+
+        [Test]
+        public void HandleGetCapabilities_WhenParamsOkAndVendorOpsDefined_GeneratesExtendedOpsCapabilitiesSection()
+        {
+            var drv = MakeWmsDriver();
+
+            //avoid calling base, as it throws on purpose in the default abstract class implementation
+            drv.CallBaseInGenerateCapsLayersSection130 = false;
+
+            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+
+            response.ResponseContentType.Should().Be("text/xml");
+            response.ResponseText.Should().NotBeNullOrWhiteSpace();
+            response.ResponseText.Should().Contain("SomeCustomExtendedOp");
+            response.ResponseText.Should().Contain("SomeCustomExtendedOpFormat1");
+            response.ResponseText.Should().Contain("SomeCustomExtendedOpFormat2");
+        }
 
         private FakeWmsDriver MakeWmsDriver()
         {
@@ -165,6 +199,13 @@ namespace WmsDriver.Tests
             drv.SupportedExceptionFormats.Add("1.3.0", new List<string>(){ "XML"});
             drv.DefaultExceptionFormats.Add("1.3.0", "XML");
 
+            drv.SupportedGetFeatureInfoFormats.Add("1.3.0", new List<string>() { "HTML", "GML", "SomeOtherGetFeatureInfoFormat" });
+
+            //vendor ops
+            drv.SupportedVendorOperations.Add("1.3.0", new List<string>() { "SomeCustomExtendedOp" });
+            drv.SupportedVendorOperationFormats.Add(
+                "SomeCustomExtendedOp", new Dictionary<string, List<string>>() { { "1.3.0", new List<string>() { "SomeCustomExtendedOpFormat1", "SomeCustomExtendedOpFormat2" } } }
+            );
 
             return drv;
         }

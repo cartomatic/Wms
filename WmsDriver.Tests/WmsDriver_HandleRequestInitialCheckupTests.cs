@@ -239,7 +239,7 @@ namespace WmsDriver.Tests
                 return new WmsDriverResponse();
             }
 
-            protected IWmsDriverResponse HandleGetLegendGraphic()
+            protected override IWmsDriverResponse HandleGetLegendGraphic()
             {
                 HandleGetLegendGraphicCalled = true;
                 return new WmsDriverResponse();
