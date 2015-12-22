@@ -18,6 +18,8 @@ namespace Cartomatic.Wms
             SupportedExceptionFormats = new Dictionary<string, List<string>>();
             DefaultExceptionFormats = new Dictionary<string, string>();
             SupportedVersions = new List<string>();
+            SupportedVendorOperations = new Dictionary<string, List<string>>();
+            SupportedVendorOperationFormats = new Dictionary<string, Dictionary<string, List<string>>>();
         }
     }
 }

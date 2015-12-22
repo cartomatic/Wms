@@ -26,7 +26,9 @@ namespace Cartomatic.Wms
                         drv.SupportedGetFeatureInfoFormats,
                         drv.SupportedExceptionFormats,
                         drv.DefaultExceptionFormats,
-                        drv.SupportedVersions
+                        drv.SupportedVersions,
+                        drv.SupportedVendorOperations,
+                        drv.SupportedVendorOperationFormats
                     };
 
                     if (containers.Any(c => c == null))

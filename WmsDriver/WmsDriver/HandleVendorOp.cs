@@ -19,6 +19,11 @@ namespace Cartomatic.Wms
         {
             //TODO - make sure vendor op is actually supported by the driver prior to trying to call it
 
+            //verify if the op is supported!
+            var version = GetParam("version");
+
+            if(!SupportedVendorOperations.ContainsKey(version) || SupportedVendorOperations[version] == null ||  !SupportedVendorOperations[version].Exists(vop => string.Compare(vop, op, GetIgnoreCase()) == 0))
+                return HandleUnsupported(op, false);
 
             var t = this.GetType();
             var m = t.GetMethod(
@@ -32,8 +37,7 @@ namespace Cartomatic.Wms
             }
             else
             {
-                //no custom vendor handler found so just fallback for the unsupported but make it not search for vendor op again
-                return HandleUnsupported(op, false);
+                throw new WmsDriverException(string.Format("IMPLEMENTATION ERROR: Operation '{0}' is marked as supported but it is not implemented.", op));
             }
         }
     }

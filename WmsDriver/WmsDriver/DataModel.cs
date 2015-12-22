@@ -48,8 +48,18 @@ namespace Cartomatic.Wms
         /// Default exception formats for each supported version
         /// </summary>
         public Dictionary<string, string> DefaultExceptionFormats { get; protected set; }
-        
-        
+
+
+        /// <summary>
+        /// List of supported vendor ops per service version
+        /// </summary>
+        public Dictionary<string, List<string>> SupportedVendorOperations { get; protected set; }
+
+        /// <summary>
+        /// List of supported formats for vendor ops per service version; vendor op -> versions -> ops
+        /// </summary>
+        public Dictionary<string, Dictionary<string, List<string>>> SupportedVendorOperationFormats { get; protected set; }
+
         /// <summary>
         /// Whether or not the png outpout should be size optimised; Note that this may be heavish operation...
         /// </summary>

@@ -77,20 +77,7 @@ namespace Cartomatic.Wms
                             output = HandleUnsupported(operation);
                         }
                         break;
-
-                    //TODO - get legend graphics is a vendor op. So need to move handling of it to the HandleVendorOp (through handle unsuported)
-                    case "getlegendgraphic":
-                        //make sure the casing is respected
-                        if (string.Compare("GetLegendGraphic", operation, ignoreCase) == 0)
-                        {
-                            output = HandleGetLegendGraphic();
-                        }
-                        else
-                        {
-                            output = HandleUnsupported(operation);
-                        }
-                        break;
-
+                        
                     default:
                         output = HandleUnsupported(operation); 
                         break;

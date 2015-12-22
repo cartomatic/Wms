@@ -122,40 +122,17 @@ namespace WmsDriver.Tests
             drv.HandleGetFeatureInfoCalled.Should().BeTrue();
         }
 
-        //properly delegates get legend graphics handling
-        [Test]
-        public void HandleRequest_WhenRequestIsGetLegendGraphics_CallsHandleGetLegendGraphics()
-        {
-            var drv = MakeWmsDriver();
-
-            drv.HandleRequest("http://some.url/?version=1.3.0&request=GetLegendGraphic");
-
-            drv.HandleGetLegendGraphicCalled.Should().BeTrue();
-        }
-
-        //propery fails on a nont supported operation
+        
         [Test]
         public void HandleRequest_WhenRequestIsUnsupported_CallsHandleUnsupported()
         {
             var drv = MakeWmsDriver();
+            var op = "MyUnsupportedOp";
 
-            drv.HandleRequest("http://some.url/?version=1.3.0&request=MyUnsupportedOp");
+            drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", op));
 
             drv.HandleUnsupportedCalled.Should().BeTrue();
-            drv.UnsupportedOp.Should().Be("MyUnsupportedOp");
-        }
-
-        [Test]
-        public void HandleRequest_WhenRequestIsNotSupportedAndNoCustomVendorHandlerIsDefined_GenratesWmsDriverException()
-        {
-            var drv = MakeWmsDriver();
-            var request = "ThisOpDoesNotHaveAHandler"; 
-
-            var response = drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", request));
-
-            response.WmsDriverException.Should().NotBeNull();
-            response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
-            response.WmsDriverException.Message.Should().Be(string.Format("Operation '{0}' is not supported.", request));
+            drv.UnsupportedOp.Should().Be(op);
         }
 
         [Test]
@@ -168,17 +145,44 @@ namespace WmsDriver.Tests
             drv.HandleVendorOpCalled.Should().BeTrue();
         }
 
-        //properly delegates vendor ops handling
+        
         [Test]
-        public void HandleRequest_WhenRequestIsVendorOp_CallsAppropriateHandleVendorOp()
+        public void HandleRequest_WhenRequestIsVendorOpButOpIsNotSupported_GenratesWmsDriverException()
         {
             var drv = MakeWmsDriver();
+            var request = "ThisOpIsNotSupported"; //note: see supported vendor op in drv constructor below.
 
-            drv.HandleRequest("http://some.url/?version=1.3.0&request=SomeVendorOp");
+            var response = drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", request));
+
+            response.WmsDriverException.Should().NotBeNull();
+            response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
+            response.WmsDriverException.Message.Should().Be(string.Format("Operation '{0}' is not supported.", request));
+        }
+
+        [Test]
+        public void HandleRequest_WhenRequestIsVendorOpAndIsSupportedButDoesNotHaveHandler_GenratesWmsDriverException()
+        {
+            var drv = MakeWmsDriver();
+            var request = "ThisOpIsSupportedButDoesNotHaveHandler"; //note: see supported vendor op in drv constructor below.
+
+            var response = drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", request));
+
+            response.WmsDriverException.Should().NotBeNull();
+            response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
+            response.WmsDriverException.Message.Should().Be(string.Format("IMPLEMENTATION ERROR: Operation '{0}' is marked as supported but it is not implemented.", request));
+        }
+
+        //properly delegates vendor ops handling
+        [Test]
+        public void HandleRequest_WhenRequestIsVendorOpAndOpIsSupportedAndAHandlerIsDefined_CallsAppropriateHandleVendorOp()
+        {
+            var drv = MakeWmsDriver();
+            var op = "SomeVendorOp"; //note: see supported vendor op in drv constructor below.
+
+            drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", op));
 
             drv.HandleCustomVendorOpCalled.Should().BeTrue();
         }
-        
 
         private FakeWmsDriver MakeWmsDriver()
         {
@@ -192,6 +196,8 @@ namespace WmsDriver.Tests
 
             drv.SupportedExceptionFormats.Add("1.3.0", new List<string>() { "XML" });
             drv.DefaultExceptionFormats.Add("1.3.0", "XML");
+
+            drv.SupportedVendorOperations.Add("1.3.0", new List<string>() { "SomeVendorOp", "ThisOpIsSupportedButDoesNotHaveHandler" });
 
             return drv;
         }
@@ -233,7 +239,7 @@ namespace WmsDriver.Tests
                 return new WmsDriverResponse();
             }
 
-            protected override IWmsDriverResponse HandleGetLegendGraphic()
+            protected IWmsDriverResponse HandleGetLegendGraphic()
             {
                 HandleGetLegendGraphicCalled = true;
                 return new WmsDriverResponse();
