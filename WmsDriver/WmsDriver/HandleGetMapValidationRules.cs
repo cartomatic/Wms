@@ -60,7 +60,7 @@ namespace Cartomatic.Wms
                 "bbox_param_presence", (drv) =>
                 {
                     var msg = "Required parameter BBOX not specified.";
-                    var ec = WmsExceptionCode.InvalidDimensionValue;
+                    var ec = WmsExceptionCode.MissingDimensionValue;
             
                     if(string.IsNullOrEmpty(drv.GetParam("bbox")))
                         throw new WmsDriverException(msg, ec);
@@ -72,7 +72,7 @@ namespace Cartomatic.Wms
                 "width_param_presence", (drv) =>
                 {
                     var msg = "Required parameter WIDTH not specified.";
-                    var ec = WmsExceptionCode.InvalidDimensionValue;
+                    var ec = WmsExceptionCode.MissingDimensionValue;
             
                     if(string.IsNullOrEmpty(drv.GetParam("width")))
                         throw new WmsDriverException(msg, ec);
@@ -84,7 +84,7 @@ namespace Cartomatic.Wms
                 "height_param_presence", (drv) =>
                 {
                     var msg = "Required parameter HEIGHT not specified.";
-                    var ec = WmsExceptionCode.InvalidDimensionValue;
+                    var ec = WmsExceptionCode.MissingDimensionValue;
             
                     if(string.IsNullOrEmpty(drv.GetParam("height")))
                         throw new WmsDriverException(msg, ec);

@@ -8,9 +8,6 @@ namespace Cartomatic.Wms
 {
     public abstract partial class WmsDriver
     {
-        protected virtual IWmsDriverResponse HandleGetFeatureInfo()
-        {
-            return HandleUnsupported("GetFeatureInfo", false);
-        }
+        
     }
 }
