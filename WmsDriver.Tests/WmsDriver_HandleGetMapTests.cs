@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cartomatic.OgcSchemas.Wms.Wms_1302;
 using Cartomatic.Utils.Web;
 using Cartomatic.Wms;
 using FluentAssertions;
