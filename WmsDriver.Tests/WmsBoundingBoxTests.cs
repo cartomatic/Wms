@@ -1,5 +1,5 @@
 ﻿using System;
-using Cartomatic.WmsDriver;
+using Cartomatic.Wms;
 using FluentAssertions;
 using NUnit.Framework;
 
