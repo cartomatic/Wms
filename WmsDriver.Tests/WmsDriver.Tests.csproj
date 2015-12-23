@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,11 +56,15 @@
     <Compile Include="WmsBoundingBoxTests.cs" />
     <Compile Include="WmsDriverExceptionTests.cs" />
     <Compile Include="WmsDriverResponseExtensionTests.cs" />
+    <Compile Include="WmsDriver_BoundingBoxTests.cs" />
     <Compile Include="WmsDriver_DriverSetupValidationRulesTests.cs" />
     <Compile Include="WmsDriver_ExceptionsTests.cs" />
     <Compile Include="WmsDriver_BasicTests.cs" />
+    <Compile Include="WmsDriver_FormatAndImageEncoderTests.cs" />
     <Compile Include="WmsDriver_GetMaxSupportedVersionTests.cs" />
-    <Compile Include="WmsDriver_HandleCapabilitiesTests.cs" />
+    <Compile Include="WmsDriver_HandleGetLegendGraphicTests.cs" />
+    <Compile Include="WmsDriver_HandleGetMapTests.cs" />
+    <Compile Include="WmsDriver_HandleGetCapabilitiesTests.cs" />
     <Compile Include="WmsDriver_HandleRequestInitialCheckupTests.cs" />
     <Compile Include="WmsServiceDescriptionExtensionsTests.cs" />
     <Compile Include="WmsServiceDescriptionTests.cs" />

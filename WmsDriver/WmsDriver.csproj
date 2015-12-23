@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,6 +54,7 @@
     <Compile Include="WmsDriverExtensions\WmsDriverResponseExtensions.cs" />
     <Compile Include="WmsDriverResponse.cs" />
     <Compile Include="WmsDriver\DriverSetupValidationRules.cs" />
+    <Compile Include="WmsDriver\HandleGetLegendGraphiValidationRules.cs" />
     <Compile Include="WmsDriver\PrepareDriver.cs" />
     <Compile Include="WmsDriver\HandleDriverException.cs" />
     <Compile Include="WmsDriver\HandleRequestValidationRules.cs" />
@@ -68,6 +70,9 @@
     <Compile Include="WmsDriver\HandleGetCapabilitiesValidationRules.cs" />
     <Compile Include="WmsDriver\GetCapabilitiesFormat.cs" />
     <Compile Include="WmsDriver\PublicAccessUrl.cs" />
+    <Compile Include="WmsDriver\HandleGetMapValidationRules.cs" />
+    <Compile Include="WmsDriver\BoundingBox.cs" />
+    <Compile Include="WmsDriver\Format.cs" />
     <Compile Include="WmsDriver\_Blank.cs" />
     <Compile Include="WmsDriver\HandleRequest.cs" />
     <Compile Include="WmsDriver\Constructor.cs" />
