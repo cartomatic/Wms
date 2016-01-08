@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Tests", "..\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "..\Utils\Web.Tests\Web.Tests.csproj", "{3540D1E4-2CB4-490A-A714-6760EE069A4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManifoldWmsDriver", "ManifoldWmsDriver\ManifoldWmsDriver.csproj", "{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManifoldWmsDriver.Tests", "ManifoldWmsDriver.Tests\ManifoldWmsDriver.Tests.csproj", "{953AEAA5-CB06-4358-9014-2419E4D83B7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,14 @@ Global
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
