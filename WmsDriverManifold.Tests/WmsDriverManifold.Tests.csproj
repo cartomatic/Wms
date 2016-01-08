@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HandleRequestTests.cs" />
+    <Compile Include="CreateMapServerTests.cs" />
+    <Compile Include="ExtractDriverSettingsTests.cs" />
+    <Compile Include="GetMapFilePath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -63,18 +63,19 @@ namespace WmsDriverManifold.Tests
         [Test]
         public void MergeWmsServiceDescription_IfNoServiceDescriptionProvidedInTheMapSettings_NothingHappens()
         {
-            var drv = MakeWmsDriver();
+            var drv1 = MakeWmsDriver();
+            drv1.ServiceDescription = null;
+            var drv2 = MakeWmsDriver();
+            drv2.ServiceDescription = new WmsServiceDescription();
+            
+            drv1.MergeWmsServiceDescription(null);
+            drv2.MergeWmsServiceDescription(null);
 
-            drv.ServiceDescription = null;
-            drv.MergeWmsServiceDescription(null);
-
-            drv.ServiceDescription.Should().BeNull();
-
-            drv.ServiceDescription = new WmsServiceDescription();
-            drv.MergeWmsServiceDescription(null);
-
-            drv.ServiceDescription.Should().NotBeNull();
+            drv1.ServiceDescription.Should().BeNull();
+            drv2.ServiceDescription.Should().NotBeNull();
         }
+
+
 
         private WmsDriver MakeWmsDriver()
         {

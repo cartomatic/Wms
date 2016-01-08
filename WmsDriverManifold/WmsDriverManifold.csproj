@@ -60,6 +60,10 @@
       <Project>{eaa4225a-2d5b-4afb-b861-3fec188e7ce7}</Project>
       <Name>Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
+      <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
+      <Name>Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WmsDriver\WmsDriver.csproj">
       <Project>{e623c471-93af-4d10-a656-d05ea17c7f51}</Project>
       <Name>WmsDriver</Name>

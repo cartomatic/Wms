@@ -8,7 +8,7 @@ using Cartomatic.Manifold;
 
 namespace WmsDriverManifold.Tests
 {
-    public class Utils
+    public static class Utils
     {
         /// <summary>
         /// Gets a path to a map file off the ncrunch workspace - ncrunch copies all the stuff there
