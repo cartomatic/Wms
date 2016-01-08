@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WmsDriver.Tests</RootNamespace>
-    <AssemblyName>WmsDriver.Tests</AssemblyName>
+    <AssemblyName>Cartomatic.Wms.WmsDriver.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

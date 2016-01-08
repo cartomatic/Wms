@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManifoldWmsDriver
+namespace Cartomatic.Manifold
 {
-    public class Class1
+    public partial class WmsDriver
     {
     }
 }
