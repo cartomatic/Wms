@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Cartomatic.Wms;
 
 namespace Cartomatic.Manifold
 {
     public partial class WmsDriver
     {
         /// <summary>
-        /// Performs driver specific setup
+        /// Whether or not wms request is for a transparent image
         /// </summary>
-        protected override void PrepareDriver()
+        /// <returns></returns>
+        protected bool GetTransparent()
         {
-            CreateMapServer();
-
-            ExtractWmsDriverSettings();
-
-            base.PrepareDriver();
+            return string.Compare(GetParam("transparent"), "true", true) == 0;
         }
-
     }
 }

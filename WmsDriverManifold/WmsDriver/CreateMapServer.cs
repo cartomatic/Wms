@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cartomatic.Wms;
+using M = Manifold.Interop;
 
 namespace Cartomatic.Manifold
 {
@@ -13,8 +14,30 @@ namespace Cartomatic.Manifold
         {
             if (string.IsNullOrEmpty(MapFile) || !System.IO.File.Exists(MapFile))
             {
-                throw new WmsDriverException("SETUP ERROR: Specified map file must exist.");
+                throw new WmsDriverException("CONFIGURATION ERROR: Specified map file must exist.");
             }
+
+
+            try
+            {
+                MapServer = new M.MapServer();
+
+                //Note:
+                //Manifold 8 cannot render transparent back. so if a request if for a transparent back,
+                //antialiasing is turned off, so it is easier to remove it
+                MapServer.CreateWithOpts(GetMapServerOpts(!GetTransparent()), String.Empty, null, false);
+
+                if (MapServer.Component.Type != M.ComponentType.ComponentMap)
+                {
+                    throw new WmsDriverException("CONFIGURATION ERROR: Specified map component is not of ComponentType.ComponentMap type.");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new WmsDriverException("CONFIGURATION ERROR: " + e.Message);
+            }
+
+            
         }
 
         protected string GetMapServerOpts(bool antialias = true)
