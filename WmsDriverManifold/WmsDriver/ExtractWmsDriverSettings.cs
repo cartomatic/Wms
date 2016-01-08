@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cartomatic.Utils.Serialization;
 using Cartomatic.Wms;
+using Cartomatic.Wms.WmsDriverExtensions;
 using M = Manifold.Interop;
 
 namespace Cartomatic.Manifold
@@ -54,8 +55,17 @@ namespace Cartomatic.Manifold
         protected internal void MergeWmsServiceDescription(IWmsServiceDescription wmsServiceDescription)
         {
 
-            //TODO - if driver settings contain wms service description for a map it should get merged into the wms driver description
-            //if wms service description provided. otherwise it should replace the wms service description
+            if (wmsServiceDescription != null)
+            {
+                if (ServiceDescription != null)
+                {
+                    ServiceDescription.Merge(wmsServiceDescription);
+                }
+                else
+                {
+                    ServiceDescription = wmsServiceDescription;
+                }
+            }
         }
     }
 }

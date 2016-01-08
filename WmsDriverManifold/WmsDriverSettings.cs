@@ -81,6 +81,6 @@ namespace Cartomatic.Manifold
         /// <summary>
         /// The base WmsDriverSettings object; when used it overrides the one passed through a WmsDriver constructor
         /// </summary>
-        public IWmsServiceDescription WmsServiceDescription { get; set; }
+        public WmsServiceDescription WmsServiceDescription { get; set; }
     }
 }

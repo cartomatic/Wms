@@ -15,6 +15,7 @@ namespace WmsDriverManifold.Tests
     public class CreateMapServerTests
     {
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void CreateMapServer_WhenMapFileNotSpecified_ShouldThrow()
         {
             var drv = new WmsDriver(null);
@@ -25,6 +26,7 @@ namespace WmsDriverManifold.Tests
         }
 
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void HandleRequest_WhenSpecifiedMapComponentIsNotMap_ShouldThrow()
         {
             var mapFile = Utils.GetMapFilePath();
@@ -36,6 +38,7 @@ namespace WmsDriverManifold.Tests
         }
 
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void HandleRequest_WhenSpecifiedMapComponentIsNotAllowedByMapServer_ShouldThrow()
         {
             var mapFile = Utils.GetMapFilePath();
@@ -47,6 +50,7 @@ namespace WmsDriverManifold.Tests
         }
 
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void HandleRequest_WhenSpecifiedMapComponentDoesNotExist_ShouldThrow()
         {
             var mapFile = Utils.GetMapFilePath();

@@ -14,10 +14,12 @@ namespace WmsDriverManifold.Tests
     public class ExtractDriverSettingsTests
     {
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void ExtractDriverSettings_WhenSettingsCmpNotPresent_ShouldThrow()
         {
             var drv = MakeWmsDriver();
             drv.WmsSettingsComp = "NotPresent"; //override the settings cmp so it is not present
+            drv.CreateMapServer();
 
             Action a = () => { drv.ExtractWmsDriverSettings(); };
 
@@ -25,6 +27,7 @@ namespace WmsDriverManifold.Tests
         }
 
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void ExtractDriverSettings_WhenSettingsCmpNotOfCommentsType_ShouldThrow()
         {
             var drv = MakeWmsDriver();
@@ -37,6 +40,7 @@ namespace WmsDriverManifold.Tests
         }
 
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void ExtractDriverSettings_WhenSettingsCmpOk_ShouldDeserialiseTheObjectProperly()
         {
             var drv = MakeWmsDriver();
@@ -49,6 +53,7 @@ namespace WmsDriverManifold.Tests
 
 
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void ExtractDriverSettings_WhenSettingsCmpOkButNoSettingsForServedMap_ShouldThrow()
         {
             var drv = MakeWmsDriver();
@@ -61,6 +66,7 @@ namespace WmsDriverManifold.Tests
         }
 
         [Test]
+        [Category("ManifoldMapFileDependant")]
         public void MergeWmsServiceDescription_IfNoServiceDescriptionProvidedInTheMapSettings_NothingHappens()
         {
             var drv1 = MakeWmsDriver();
@@ -76,11 +82,42 @@ namespace WmsDriverManifold.Tests
         }
 
 
+        [Test]
+        [Category("ManifoldMapFileDependant")]
+        public void MergeWmsServiceDescription_IfExternalServiceDescriptionIsProvidedAndMapSettingsServiceDescriptionIsProvided_ShouldMergeMapFileSercideDesriptionIntoTheExternalOne()
+        {
+            var drv = MakeWmsDriver();
+            drv.ServiceDescription = new WmsServiceDescription();
+            drv.ServiceDescription.Title = "Title before merge";
+            drv.ServiceDescription.Abstract = "Abstract before merge";
+            var keyWordsCount = drv.ServiceDescription.Keywords.Count;
+
+            drv.CreateMapServer();
+            drv.ExtractWmsDriverSettings();
+
+            drv.ServiceDescription.Title.Should().Be("Natural Earth 50m");
+            drv.ServiceDescription.Abstract.Should().Be("Natural Earth 50m");
+            drv.ServiceDescription.Keywords.Count.Should().Be(keyWordsCount + 1);
+        }
+
+        
+        [Test]
+        [Category("ManifoldMapFileDependant")]
+        public void MergeWmsServiceDescription_IfExternalServiceDescriptionIsNotProvidedAndMapSettingsServiceDescriptionIsProvided_ShouldMakeTheMapFileServiceDescriptionTheMainOne()
+        {
+            var drv = MakeWmsDriver();
+
+            drv.CreateMapServer();
+            drv.ExtractWmsDriverSettings();
+
+            drv.ServiceDescription.Title.Should().Be("Natural Earth 50m");
+            drv.ServiceDescription.Abstract.Should().Be("Natural Earth 50m");
+            drv.ServiceDescription.Keywords.Count.Should().Be(1);
+        }
 
         private WmsDriver MakeWmsDriver()
         {
             return new WmsDriver(Utils.GetMapFilePath());
         }
-
     }
 }
