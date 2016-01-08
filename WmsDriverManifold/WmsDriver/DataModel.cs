@@ -13,7 +13,7 @@ namespace Cartomatic.Manifold
         /// <summary>
         /// Name of the comments component containing the wms settings
         /// </summary>
-        protected readonly string WmsSettingsComp = "wms.settings";
+        protected internal string WmsSettingsComp = "wms.settings";
 
         /// <summary>
         /// Map file path
@@ -44,6 +44,6 @@ namespace Cartomatic.Manifold
         /// <summary>
         /// Manifold WmsDriver specific settings
         /// </summary>
-        WmsDriverSettings MSettings { get; set; }
+        protected internal WmsDriverSettings MSettings { get; set; }
     }
 }

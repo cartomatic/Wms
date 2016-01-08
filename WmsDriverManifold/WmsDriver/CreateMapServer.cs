@@ -40,6 +40,11 @@ namespace Cartomatic.Manifold
             
         }
 
+        /// <summary>
+        /// Creates a mapserver configuration string, so it can be instantiated with a proper map file path and map component
+        /// </summary>
+        /// <param name="antialias"></param>
+        /// <returns></returns>
         protected string GetMapServerOpts(bool antialias = true)
         {
             string config;
