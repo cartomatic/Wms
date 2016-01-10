@@ -73,39 +73,6 @@ namespace Cartomatic.Wms
                 throw new WmsDriverException(ex.Message, WmsExceptionCode.InvalidDimensionValue);
             }
         }
-
-        /// <summary>
-        /// Whether or not srid specified flips bbox coords
-        /// </summary>
-        /// <param name="version"></param>
-        /// <param name="srid"></param>
-        /// <returns></returns>
-        protected internal virtual bool GetCoordFlip(string version, int? srid)
-        {
-            bool flip = false;
-
-            if (version == "1.3.0")
-            {
-
-                //list of srids that flip coords
-                //Note:
-                //Need something smarter than manual srid list
-                //DotSpatial????
-                //Or an extract from the epsg db in a form of an embeded sqllite or an object
-                //
-                int[] srids = {
-                    4326,
-                    2180
-                };
-
-                if (Array.Exists(srids, element => element == srid))
-                {
-                    flip = true;
-                }
-
-            }
-
-            return flip;
-        }
+        
     }
 }
