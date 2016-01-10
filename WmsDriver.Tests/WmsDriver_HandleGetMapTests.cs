@@ -380,10 +380,65 @@ namespace WmsDriver.Tests
         }
 
         [Test]
+        public void HandleGetMap_BgParamIfPresentAndInvalid_ValidationRuleShouldThrow()
+        {
+            var drv = MakeWmsDriver();
+            var testedValidationRule = drv.HandleGetMapValidationRules["bgcolor_valid"];
+            var request = "http://some.url/?bgcolor=invalid".CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
+
+            Action action = () => testedValidationRule(drv);
+
+            action.ShouldThrow<WmsDriverException>();
+        }
+
+        [TestCase("blue")]
+        [TestCase("#FFF")]
+        public void HandleGetMap_BgParamIfPresentAndValid_ValidationRuleShouldNotThrow(string bgColor)
+        {
+            var drv = MakeWmsDriver();
+            var testedValidationRule = drv.HandleGetMapValidationRules["bgcolor_valid"];
+            var request = string.Format("http://some.url/?bgcolor={0}", bgColor).CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
+
+            Action action = () => testedValidationRule(drv);
+
+            action.ShouldNotThrow();
+        }
+
+
+        [TestCase("")]
+        [TestCase("3,5,1,4")]
+        public void HandleGetMap_WhenBboxInvalid_ValidationRuleThrows(string bbox)
+        {
+            var drv = MakeWmsDriver();
+            var testedValidationRule = drv.HandleGetMapValidationRules["bbox_valid"];
+            var request = string.Format("http://some.url/?version=1.3.0&crs=EPSG:2180&bbox={0}", bbox).CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
+
+            Action action = () => testedValidationRule(drv);
+
+            action.ShouldThrow<WmsDriverException>();
+        }
+
+        [Test]
+        public void HandleGetMap_BboxOk_ValidationRuleShouldNotThrow()
+        {
+            var drv = MakeWmsDriver();
+            var testedValidationRule = drv.HandleGetMapValidationRules["bbox_valid"];
+            var request = "http://some.url/?version=1.3.0&crs=EPSG:4326&bbox=1,2,3,4".CreateHttpWebRequest();
+            drv.ExtractRequestParams(request);
+
+            Action action = () => testedValidationRule(drv);
+
+            action.ShouldNotThrow();
+        }
+
+        [Test]
         public void HandleGetMap_WhenPassesValidation_CallsHandleGetMapDriverSpecific()
         {
             var drv = MakeWmsDriver();
-            var request = "http://some.url/?request=GetMap&service=WMS&version=1.3.0&layers=someLayers&styles=&crs=someCrs&bbox=someBbox&width=256&height=256&format=image/png".CreateHttpWebRequest();
+            var request = "http://some.url/?request=GetMap&service=WMS&version=1.3.0&layers=someLayers&styles=&crs=someCrs&bbox=1,2,3,4&width=256&height=256&format=image/png".CreateHttpWebRequest();
 
             drv.HandleRequest(request);
 
@@ -397,7 +452,7 @@ namespace WmsDriver.Tests
             drv.CallBaseHandleGetMapDriverSpecific = true;
             var expectedMsg = "IMPLEMENTATION ERROR: GetMap is a mandatory operation for WMS 1.3.0.";
 
-            var response = drv.HandleRequest("http://some.url/?request=GetMap&service=WMS&version=1.3.0&layers=someLayers&styles=&crs=someCrs&bbox=someBbox&width=256&height=256&format=image/png");
+            var response = drv.HandleRequest("http://some.url/?request=GetMap&service=WMS&version=1.3.0&layers=someLayers&styles=&crs=someCrs&bbox=1,2,3,4&width=256&height=256&format=image/png");
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);

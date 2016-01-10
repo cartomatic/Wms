@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +49,7 @@
     <Compile Include="WmsDriverSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WmsDriver\DataModel.cs" />
+    <Compile Include="WmsDriver\HandleGetMapValidationRules.cs" />
     <Compile Include="WmsDriver\ServiceCapabilities.cs" />
     <Compile Include="WmsDriver\Constructor.cs" />
     <Compile Include="WmsDriver\PrepareDriver.cs" />
@@ -55,9 +57,16 @@
     <Compile Include="WmsDriver\ExtractWmsDriverSettings.cs" />
     <Compile Include="WmsDriver\Transparent.cs" />
     <Compile Include="WmsDriver\HandleGetCapabilities.cs" />
+    <Compile Include="WmsDriver\BoundingBox.cs" />
+    <Compile Include="WmsDriver\Queryable.cs" />
+    <Compile Include="WmsDriver\HandleGetMap.cs" />
     <Compile Include="WmsDriver\_Blank.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OgcSchemas\OgcSchemas.Wms\OgcSchemas.Wms.csproj">
+      <Project>{b8398792-4bb8-4ad0-b55d-3e638e008d83}</Project>
+      <Name>OgcSchemas.Wms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utils\Data\Data.csproj">
       <Project>{eaa4225a-2d5b-4afb-b861-3fec188e7ce7}</Project>
       <Name>Data</Name>

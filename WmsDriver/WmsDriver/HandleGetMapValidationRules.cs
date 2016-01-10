@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Cartomatic.Wms
 {
@@ -147,6 +149,45 @@ namespace Cartomatic.Wms
                         );
                 }
             },
+            {
+                "bgcolor_valid", (drv) =>
+                {
+                    var msg = "Invalid parameter BGCOLOR.";
+                    var ec = WmsExceptionCode.NotApplicable;
+
+                    try
+                    {
+                        ColorTranslator.FromHtml(drv.GetParam("BGCOLOR"));
+                    }
+                    catch
+                    {
+                        throw new WmsDriverException(msg, ec);
+                    }
+                }
+            },
+
+            {
+                "bbox_valid", (drv) =>
+                {
+                    //Note: parse bbox throws proper wms driver exceptions
+
+                    //version param presence and support should have been already tested!
+                    var versionStr = drv.GetParam("version");
+                    int version = int.Parse(drv.GetParam<string>("version").Replace(".", ""));
+
+                    string cs;
+                    if (version >= 130)
+                    {
+                        cs = drv.GetParam("crs");
+                    }
+                    else
+                    {
+                        cs = drv.GetParam("srs");
+                    }
+
+                    drv.ParseBBOX(drv.GetParam("bbox"), versionStr, cs);
+                }
+            }
         };
     }
 }

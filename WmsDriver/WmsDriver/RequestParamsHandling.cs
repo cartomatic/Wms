@@ -67,7 +67,7 @@ namespace Cartomatic.Wms
                     }
 
                     pValue = (T)Convert.ChangeType(GetParam(pName), destinationType);
-                    ExtractedRequestParams.Add(pName, pValue);
+                    ExtractedRequestParams.Add(pName.ToLower(), pValue);
                 }
                 catch
                 {
