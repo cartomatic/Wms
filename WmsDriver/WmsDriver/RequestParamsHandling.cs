@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net;
 
 namespace Cartomatic.Wms
@@ -11,6 +13,12 @@ namespace Cartomatic.Wms
         /// </summary>
         protected NameValueCollection RequestParams { get; set; }
 
+
+        /// <summary>
+        /// Extracted request params collection for further eeasy access
+        /// </summary>
+        protected internal Dictionary<string, object> ExtractedRequestParams { get; set; }
+
         /// <summary>
         /// Extracts request params off the request object
         /// </summary>
@@ -21,6 +29,52 @@ namespace Cartomatic.Wms
 
             if(request != null)
                 RequestParams = System.Web.HttpUtility.ParseQueryString(request.Address.Query);
+
+            ExtractedRequestParams = new Dictionary<string, object>();
+        }
+
+        /// <summary>
+        /// Gets request param converted to a specified return type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pName"></param>
+        /// <returns></returns>
+        protected internal virtual T GetParam<T>(string pName)
+        {
+            T pValue = default(T);
+
+            if (ExtractedRequestParams == null)
+            {
+                ExtractedRequestParams = new Dictionary<string, object>();
+            }
+
+            //first check the cache
+            if (ExtractedRequestParams.ContainsKey(pName))
+            {
+                pValue = (T) ExtractedRequestParams[pName];
+            }
+            else
+                try
+                {
+                    //convert and cache
+                    var destinationType = typeof (T);
+
+                    //for nullable types, make sure to extract the underlying type for conversion!
+                    var nulableUnderlyingType = Nullable.GetUnderlyingType(destinationType);
+                    if (nulableUnderlyingType != null)
+                    {
+                        destinationType = nulableUnderlyingType;
+                    }
+
+                    pValue = (T)Convert.ChangeType(GetParam(pName), destinationType);
+                    ExtractedRequestParams.Add(pName, pValue);
+                }
+                catch
+                {
+                  //ignored
+                } //silently fail
+
+            return pValue;
         }
 
         /// <summary>

@@ -32,7 +32,7 @@ namespace Cartomatic.Wms
         /// <returns></returns>
         protected internal string GetDeclaredOrMaxSupportedVersion()
         {
-            var version = GetParam("version");
+            var version = GetParam<string>("version");
             if (string.IsNullOrEmpty(version))
             {
                 version = GetMaxSupportedVersion();

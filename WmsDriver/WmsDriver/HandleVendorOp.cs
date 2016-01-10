@@ -21,7 +21,7 @@ namespace Cartomatic.Wms
             //TODO - make sure vendor op is actually supported by the driver prior to trying to call it
 
             //verify if the op is supported!
-            var version = GetParam("version");
+            var version = GetParam<string>("version");
 
             if(!SupportedVendorOperations.ContainsKey(version) || SupportedVendorOperations[version] == null ||  !SupportedVendorOperations[version].Exists(vop => string.Compare(vop, op, GetIgnoreCase()) == 0))
                 return HandleUnsupported(op, false);

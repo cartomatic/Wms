@@ -37,7 +37,7 @@ namespace Cartomatic.Wms
                 Validate(HandleRequestValidationRules);
 
                 //when ready delegate request handling based on the required operation
-                string operation = GetParam("request");
+                var operation = GetParam<string>("request");
                 bool ignoreCase = GetIgnoreCase();
 
                 switch (operation.ToLower())

@@ -25,8 +25,8 @@ namespace Cartomatic.Wms
                 {
                     var msg = "Required parameter LAYER not specified.";
                     var ec = WmsExceptionCode.NotApplicable;
-            
-                    if(string.IsNullOrEmpty(drv.GetParam("layer")))
+
+                    if (string.IsNullOrEmpty(drv.GetParam<string>("layer")))
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -62,7 +62,7 @@ namespace Cartomatic.Wms
                     var msg = "Required parameter FORMAT not specified.";
                     var ec = WmsExceptionCode.InvalidFormat;
             
-                    if(string.IsNullOrEmpty(drv.GetParam("format")))
+                    if(string.IsNullOrEmpty(drv.GetParam<string>("format")))
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -71,8 +71,8 @@ namespace Cartomatic.Wms
             {
                 "width_param_valid", (drv) =>
                 {
-                    int width;
-                    if (!int.TryParse(drv.GetParam("width"), out width))
+                    var width = drv.GetParam<int?>("width");
+                    if (!width.HasValue)
                         throw new WmsDriverException("Invalid parameter WIDTH.", WmsExceptionCode.InvalidDimensionValue);
 
                     if (width <= 0)
@@ -87,8 +87,8 @@ namespace Cartomatic.Wms
             {
                 "height_param_valid", (drv) =>
                 {
-                    int height;
-                    if (!int.TryParse(drv.GetParam("height"), out height))
+                    var height = drv.GetParam<int?>("height");
+                    if (!height.HasValue)
                         throw new WmsDriverException("Invalid parameter HEIGHT.", WmsExceptionCode.InvalidDimensionValue);
 
                     if (height <= 0)
@@ -103,8 +103,8 @@ namespace Cartomatic.Wms
                 "format_param_valid", (drv) =>
                 {
                     var op = "GetLegendGraphic";
-                    var version = drv.GetParam("version");
-                    var format = drv.GetParam("format");
+                    var version = drv.GetParam<string>("version");
+                    var format = drv.GetParam<string>("format");
 
 
 

@@ -14,7 +14,7 @@ namespace Cartomatic.Manifold
         /// <returns></returns>
         protected bool GetTransparent()
         {
-            return string.Compare(GetParam("transparent"), "true", true) == 0;
+            return GetParam<bool>("transparent");
         }
     }
 }
