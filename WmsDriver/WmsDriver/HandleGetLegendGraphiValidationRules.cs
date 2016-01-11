@@ -113,7 +113,7 @@ namespace Cartomatic.Wms
                             string.Format("Invalid FORMAT parameter. Supported {0} formats for version {1} of the service are: {2}.", op, version, string.Join(", ", drv.SupportedVendorOperationFormats[op][version])), WmsExceptionCode.InvalidFormat
                         );
                 }
-            },
+            }
         };
     }
 }

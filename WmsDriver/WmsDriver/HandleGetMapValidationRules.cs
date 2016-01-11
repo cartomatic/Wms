@@ -150,6 +150,22 @@ namespace Cartomatic.Wms
                 }
             },
             {
+                "layers_count_valid", (drv) =>
+                {
+                    var msg = "Too many layers requested.";
+                    var ec = WmsExceptionCode.OperationNotSupported;
+
+                    //Extract layers
+                    string[] inLayers = drv.GetParam("LAYERS").Split(',');
+
+                    if (drv.ServiceDescription.LayerLimit.HasValue &&
+                        inLayers.Length > drv.ServiceDescription.LayerLimit.Value)
+                    {
+                        throw new WmsDriverException(msg, ec);
+                    }
+                }    
+            },
+            {
                 "bgcolor_valid", (drv) =>
                 {
                     var msg = "Invalid parameter BGCOLOR.";

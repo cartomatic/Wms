@@ -17,7 +17,7 @@ namespace Cartomatic.Manifold
             Validate(HandleGetMapValidationRulesDriverSpecific);
 
             //refreshing data means the internal project file dataset changes between requests. hence a need for locking
-            //as mapserver can be accessed by multiple threads
+            //as mapserver can be accessed by multiple threads and it is more than likely things get messed up the stuff otherwise
             if (MSettings.AutoAoi)
             {
                 lock (_aoiRefreshLocker)
@@ -85,6 +85,7 @@ namespace Cartomatic.Manifold
                 AutoAOI(bbox, width, height);
             }
 
+            //finally render the raster
             output.ResponseContentType = imageEncoder.MimeType;
             output.ResponseBinary = Render(bbox, width, height, imageEncoder, backColor);
 

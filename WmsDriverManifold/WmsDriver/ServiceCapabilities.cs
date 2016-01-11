@@ -20,7 +20,10 @@ namespace Cartomatic.Manifold
             SupportedExceptionFormats.Add("1.3.0", new List<string>() { "XML" });
             DefaultExceptionFormats.Add("1.3.0", "XML");
 
-            //TODO: get legend
+            SupportedVendorOperations.Add("1.3.0", new List<string>() { "GetLegendGraphic" });
+            SupportedVendorOperationFormats.Add(
+                "GetLegendGraphic", new Dictionary<string, List<string>>() { { "1.3.0", new List<string>() { "image/png", "image/jpeg", "image/gif" } } }
+            );
         }
     }
 }

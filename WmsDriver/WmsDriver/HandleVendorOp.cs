@@ -18,8 +18,6 @@ namespace Cartomatic.Wms
         /// <returns></returns>
         protected virtual IWmsDriverResponse HandleVendorOp(string op)
         {
-            //TODO - make sure vendor op is actually supported by the driver prior to trying to call it
-
             //verify if the op is supported!
             var version = GetParam<string>("version");
 

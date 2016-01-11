@@ -14,7 +14,6 @@ namespace Cartomatic.Manifold
         protected internal Dictionary<string, Action<WmsDriver>> HandleGetMapValidationRulesDriverSpecific = new Dictionary
             <string, Action<WmsDriver>>()
         {
-            //layers param is mandatory
             {
                 "crs_supported", (drv) =>
                 {
