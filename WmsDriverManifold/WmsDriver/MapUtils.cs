@@ -36,7 +36,7 @@ namespace Cartomatic.Manifold
         }
 
         /// <summary>
-        /// Manages map layers visibility according to the value of the layers param
+        /// Manages requested map layers visibility based on the requested map resolution
         /// </summary>
         private void ManageMapLayersVisibility(double mapResolution)
         {
@@ -75,7 +75,6 @@ namespace Cartomatic.Manifold
         /// <returns></returns>
         private bool LayerVisible(string compName, double? scale = null)
         {
-
             bool visible = false;
 
             //component zoom
@@ -147,17 +146,11 @@ namespace Cartomatic.Manifold
                     {
                         visible = true;
                     }
-                    else
-                    {
-                        visible = false;
-                    }
                 }
             }
 
             return visible;
         }
-
-
 
 
 

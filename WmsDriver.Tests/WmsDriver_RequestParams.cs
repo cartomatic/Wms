@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -64,9 +65,10 @@ namespace WmsDriver.Tests
         {
             var drv = MakeWmsDriver();
             var date = (DateTime) Convert.ChangeType("2009/12/12", typeof (DateTime));
-            drv.ExtractedRequestParams = new Dictionary<string, object>();
-
-            drv.ExtractedRequestParams.Add("param", date);
+            
+            drv.ExtractedRequestParams = new Dictionary<string, Dictionary<Type, object>>();
+            drv.ExtractedRequestParams["param"] = new Dictionary<Type, object>();
+            drv.ExtractedRequestParams["param"].Add(date.GetType(), date);
 
             var param = drv.GetParam<DateTime>("param");
 

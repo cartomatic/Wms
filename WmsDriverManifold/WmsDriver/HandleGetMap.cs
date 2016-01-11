@@ -39,8 +39,8 @@ namespace Cartomatic.Manifold
         {
             IWmsDriverResponse output = new WmsDriverResponse();
 
-            var width = GetParam<int?>("width");
-            var height = GetParam<int?>("height");
+            var width = GetParam<int>("width");
+            var height = GetParam<int>("height");
 
             var backColor = Color.White;
             if (GetTransparent())
@@ -73,7 +73,7 @@ namespace Cartomatic.Manifold
 
 
             //now turn on the requested layers
-            ManageMapLayersVisibility(bbox.Width / width.Value);
+            ManageMapLayersVisibility(bbox.Width / width);
 
 
             //TODO Layer reorder according to query; likely to require locking as will modify the served component

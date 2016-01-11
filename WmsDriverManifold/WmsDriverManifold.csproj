@@ -35,6 +35,10 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>C:\Program Files\Manifold System\Manifold.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="nQuant.Core, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nQuant.1.0.3\Lib\net40\nQuant.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -61,6 +65,8 @@
     <Compile Include="WmsDriver\Queryable.cs" />
     <Compile Include="WmsDriver\HandleGetMap.cs" />
     <Compile Include="WmsDriver\MapUtils.cs" />
+    <Compile Include="WmsDriver\AutoAoi.cs" />
+    <Compile Include="WmsDriver\Render.cs" />
     <Compile Include="WmsDriver\_Blank.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +78,10 @@
       <Project>{eaa4225a-2d5b-4afb-b861-3fec188e7ce7}</Project>
       <Name>Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Drawing\Drawing.csproj">
+      <Project>{ad9b722f-07bd-45a5-9e1b-cad777c7629f}</Project>
+      <Name>Drawing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
       <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
       <Name>Serialization</Name>
@@ -82,6 +92,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="TestData\NE2_50M_SR_W.ecw" />
     <None Include="TestData\TestData.map" />
   </ItemGroup>

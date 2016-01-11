@@ -17,7 +17,7 @@ namespace Cartomatic.Wms
         /// <summary>
         /// Extracted request params collection for further eeasy access
         /// </summary>
-        protected internal Dictionary<string, object> ExtractedRequestParams { get; set; }
+        protected internal Dictionary<string, Dictionary<Type, object>> ExtractedRequestParams { get; set; }
 
         /// <summary>
         /// Extracts request params off the request object
@@ -30,7 +30,7 @@ namespace Cartomatic.Wms
             if(request != null)
                 RequestParams = System.Web.HttpUtility.ParseQueryString(request.Address.Query);
 
-            ExtractedRequestParams = new Dictionary<string, object>();
+            ExtractedRequestParams = new Dictionary<string, Dictionary<Type, object>>();
         }
 
         /// <summary>
@@ -45,13 +45,13 @@ namespace Cartomatic.Wms
 
             if (ExtractedRequestParams == null)
             {
-                ExtractedRequestParams = new Dictionary<string, object>();
+                ExtractedRequestParams = new Dictionary<string, Dictionary<Type, object>>();
             }
 
             //first check the cache
-            if (ExtractedRequestParams.ContainsKey(pName))
+            if (ExtractedRequestParams.ContainsKey(pName) && ExtractedRequestParams[pName].ContainsKey(typeof(T)))
             {
-                pValue = (T) ExtractedRequestParams[pName];
+                pValue = (T) ExtractedRequestParams[pName][typeof(T)];
             }
             else
                 try
@@ -67,7 +67,13 @@ namespace Cartomatic.Wms
                     }
 
                     pValue = (T)Convert.ChangeType(GetParam(pName), destinationType);
-                    ExtractedRequestParams.Add(pName.ToLower(), pValue);
+
+
+                    if (!ExtractedRequestParams.ContainsKey(pName.ToLower()))
+                    {
+                        ExtractedRequestParams.Add(pName.ToLower(), new Dictionary<Type, object>());
+                    }
+                    ExtractedRequestParams[pName].Add(typeof(T), pValue);
                 }
                 catch
                 {
