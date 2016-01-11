@@ -27,7 +27,7 @@ namespace Cartomatic.Manifold
         //TODO - SRID could be a list of available SRIDs for given component; component names could then be compnameSRID1, compnameSRID2, and so on...
 
         /// <summary>
-        /// Whether or not all the layers should be combined and served as one layer
+        /// Whether or not all the layers should be combined and served as one layer; In such case map component becomes the only layer
         /// </summary>
         public bool CombineLayers { get; set; }
 

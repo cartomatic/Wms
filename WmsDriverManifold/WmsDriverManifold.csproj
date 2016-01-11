@@ -60,6 +60,7 @@
     <Compile Include="WmsDriver\BoundingBox.cs" />
     <Compile Include="WmsDriver\Queryable.cs" />
     <Compile Include="WmsDriver\HandleGetMap.cs" />
+    <Compile Include="WmsDriver\MapUtils.cs" />
     <Compile Include="WmsDriver\_Blank.cs" />
   </ItemGroup>
   <ItemGroup>

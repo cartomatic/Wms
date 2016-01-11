@@ -54,12 +54,18 @@
     <Compile Include="CreateMapServerTests.cs" />
     <Compile Include="ExtractDriverSettingsTests.cs" />
     <Compile Include="GetMapFilePath.cs" />
+    <Compile Include="HandleGetCapabilitiesTests.cs" />
+    <Compile Include="HandleGetMapTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Utils\Web\Web.csproj">
+      <Project>{45666acc-c047-4608-8213-f109504ee551}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WmsDriverManifold\WmsDriverManifold.csproj">
       <Project>{01ce8aa3-a0d1-40fb-8983-ae92a31f9ecd}</Project>
       <Name>WmsDriverManifold</Name>

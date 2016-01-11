@@ -41,17 +41,44 @@ namespace Cartomatic.Manifold
                             throw new WmsDriverException(msg + pValue, ec);
                     }
                 }
-            }
+            },
+            {
+                "layers_defined", (drv) =>
+                {
+                    var msg = "Layer '{0}' is not defined.";
+                    var ec = WmsExceptionCode.LayerNotDefined;
 
-            
-            
-            //{
-            //    "rule", (drv) =>
-            //    {
-                    //var msg = "";
-                    //var ec = WmsExceptionCode.NotApplicable;
-            //    }
-            //}
+                    //Extract layers
+                    string[] inLayers = drv.GetParam("LAYERS").Split(',');
+
+
+                    //first extract all the current map layer names
+                    List<string> mapLayers = drv.ExtractMapLayers();
+
+                    //also add the root layer name to the layers list
+                    //as the map (root layer) can also be requested
+                    mapLayers.Add(drv.ServiceDescription.Title);
+
+                    //Note:
+                    //This is actually against the specs... The proper way of requesting all layers
+                    //is to use the top level layer in the layers param.
+                    //To do so though one needs to know the particular layer names.
+                    //
+                    //So in order to enable rquesting * layers without knowing their names and the name
+                    //of the map / root layer add *
+                    //
+                    //And DO REMEMBER this is not the WMS allowed way and on some occassions may make dependant apps fail
+                    mapLayers.Add("*");
+
+
+                    //verify if the layers are valid
+                    foreach (var layer in inLayers)
+                    {
+                        if(!mapLayers.Contains(layer))
+                            throw new WmsDriverException(string.Format(msg, layer), ec);
+                    }
+                }
+            }
 
         };
 
