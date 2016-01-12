@@ -47,6 +47,10 @@ namespace Cartomatic.Manifold
         /// </summary>
         public bool RespectLayerOpacity { get; set; }
 
+        /// <summary>
+        /// render quality of the mapserver; if not provided a default render quality of 100 is used; applicability of this params varies between formats
+        /// </summary>
+        public int? RenderQuality { get; set; }
 
         /// <summary>
         /// Whether or not map component configured with this option ON should make its layers refresh the data for given bounding box or not.
@@ -65,16 +69,16 @@ namespace Cartomatic.Manifold
         /// </summary>
         public int? AoiCollar { get; set; }
 
-        /// <summary>
-        /// render quality of the mapserver; if not provided a default render quality of 100 is used; applicability of this params varies between formats
-        /// </summary>
-        public int? RenderQuality { get; set; }
 
         //TODO:
         //AOI could be controlled per layer.
         //this is to be investigated further, as an empty layer is likely to not report proper bounding box when outputting capabilities
         //less likely scenario is that manifold will pull all the data, and then just kill the performance.
         //Note: since M9 is on the way it can wait a bit longer I guess
+        
+        /// <summary>
+        /// Per component aoi settings; applicable only for the non-linked (fake linked) drawing components
+        /// </summary>
         public List<WmsDriverAoiSettings> AoiSettings { get; set; }
 
 

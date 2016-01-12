@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 namespace Cartomatic.Manifold
 {
 
+    /// <summary>
+    /// AOI settings used when refreshing 'fake' linked components
+    /// </summary>
     public class WmsDriverAoiSettings
     {
         public WmsDriverAoiSettings() { }
-
-        /// <summary>
-        /// Whether or not this is a fake component and a customised logic should be used
-        /// </summary>
-        public bool IsFake { get; set; }
-
-        /// <summary>
-        /// Whether or not the geometry is transferred as binary
-        /// </summary>
-        public bool UseBinaryGeom { get; set; }
 
         /// <summary>
         /// Name of the component being fake linked
@@ -30,6 +23,11 @@ namespace Cartomatic.Manifold
         /// db credentials
         /// </summary>
         public Cartomatic.Utils.Data.DataSourceCredentials DataSourceCredentials { get; set; }
+
+        /// <summary>
+        /// Whether or not the geometry is transferred as binary
+        /// </summary>
+        public bool UseBinaryGeom { get; set; }
 
         /// <summary>
         /// A query used to retrieve the data with appropriate (per data source type) replacement strings used to customise the AOI

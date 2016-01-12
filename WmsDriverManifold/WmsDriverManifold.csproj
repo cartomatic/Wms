@@ -98,6 +98,10 @@
     <None Include="TestData\NE2_50M_SR_W.ecw" />
     <None Include="TestData\TestData.map" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Docs\ReadMe.txt" />
+    <Content Include="Docs\WmsDriverSettingsExample.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
