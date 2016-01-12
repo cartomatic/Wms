@@ -6,7 +6,7 @@
     <script src="http://dev.openlayers.org/releases/OpenLayers-2.13.1/OpenLayers.js"></script>
 </head>
 <body>
-    <div id="map" style="position: absolute; width: 60%; height: 60%; top: 20%; left: 20%; border: solid 1px black;"></div>
+    <div id="map" style="position: absolute; width: 99%; height: 99%; top: 0%; left: 0%; border: solid 1px black;"></div>
     <script>
 
         //apply the projection defaults so the axis order is ok
@@ -17,7 +17,7 @@
         //create map
         var map = new OpenLayers.Map('map', {
             projection: new OpenLayers.Projection('EPSG:4326'),
-            numZoomLevels:6
+            numZoomLevels:10
         });
 
         //add wig 100k wms layer
