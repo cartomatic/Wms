@@ -12,7 +12,7 @@ namespace Cartomatic.Manifold
 {
     public partial class WmsDriver
     {
-        protected override IWmsDriverResponse HandleGetLegendGraphic()
+        protected override IWmsDriverResponse HandleGetLegendGraphicDriverSpecific()
         {
             Validate(HandleGetLegendGraphicValidationRulesDriverSpecific);
 
@@ -63,6 +63,10 @@ namespace Cartomatic.Manifold
 
             ImageCodecInfo imageEncoder = GetEncoderInfo(GetParam("FORMAT"));
             MapServer.RenderFormat = GetMapServerRenderFormat(imageEncoder.MimeType);
+
+            //Note:
+            //map server just renders a legend, so although the GetLegendGraphic does require width and height they are ignored at this stage
+            //not perfect, but it can wait a bit.
 
             var legendBinary = MapServer.RenderLegend() as byte[];
 

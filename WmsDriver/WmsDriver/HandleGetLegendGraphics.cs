@@ -23,7 +23,7 @@ namespace Cartomatic.Wms
         /// Driver specific GetLegendGraphic implementation
         /// </summary>
         /// <returns></returns>
-        protected virtual IWmsDriverResponse HandleGetLegendGraphicDriverSpecific()
+        protected internal virtual IWmsDriverResponse HandleGetLegendGraphicDriverSpecific()
         {
             throw new WmsDriverException("IMPLEMENTATION ERROR: Operation 'GetLegendGraphic' is marked as supported but it is not implemented.");
         }
