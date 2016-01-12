@@ -14,7 +14,7 @@ namespace Cartomatic.Manifold
     public partial class WmsDriver
     {
         /// <summary>
-        /// Extracts names of the layers currently available in the served map
+        /// Extracts names of the layers currently available in the served map; adds the root layer off the service description, and also adds a non wms compliant * layer to enable requesting all the layers off the service without knowing their names
         /// </summary>
         /// <returns></returns>
         private List<string> ExtractMapLayers()
@@ -32,6 +32,21 @@ namespace Cartomatic.Manifold
                 mapLayers.AddRange(from M.Layer l in map.LayerSet select l.Component.Name);
             }
 
+            //also add the root layer name to the layers list
+            //as the map (root layer) can also be requested
+            mapLayers.Add(ServiceDescription.Title);
+
+            //Note:
+            //This is actually against the specs... The proper way of requesting all layers
+            //is to use the top level layer in the layers param.
+            //To do so though one needs to know the particular layer names.
+            //
+            //So in order to enable rquesting * layers without knowing their names and the name
+            //of the map / root layer add *
+            //
+            //And DO REMEMBER this is not the WMS allowed way and on some occassions may make dependant apps fail
+            mapLayers.Add("*");
+
             return mapLayers;
         }
 
@@ -47,22 +62,25 @@ namespace Cartomatic.Manifold
             //get the map scale
             double scale = CheckScale(mapResolution); //bbox.Width / width is just the current pixel size 
 
-            foreach (var l in inLayers)
+
+            //handle layers visibility
+            if (inLayers.Contains("*") || inLayers.Contains(map.Name) || inLayers.Contains(ServiceDescription.Title))
             {
-                //if all layers were requested (*), this is a map (combine layers) or a root layer
-                if (l == "*" || l == map.Name || l == ServiceDescription.Title)
+                //this is a request to turn all the layers on
+                //all layers were requested (*), this is a map (combine layers) or a root layer
+                foreach (M.Layer l in map.LayerSet)
                 {
-                    //this is a map / root layer
-                    //so ojust need to turn on all the layers
-                    foreach (M.Layer ll in map.LayerSet)
-                    {
-                        MapServer.TurnLayer(ll.Component.Name, LayerVisible(ll.Component.Name, scale));
-                    }
-                    break; //all the layers are now on anyways
+                    MapServer.TurnLayer(l.Component.Name, true);
                 }
-                else //normal layer
+            }
+            else
+            {
+                //not a request to turn all the layers on, so need to review them one by one
+                //if layer requested and in scale then turn it on otherwise turn it off
+                foreach (M.Layer l in map.LayerSet)
                 {
-                    MapServer.TurnLayer(l, LayerVisible(l, scale));
+                    MapServer.TurnLayer(l.Component.Name,
+                        inLayers.Contains(l.Component.Name) && LayerVisible(l.Component.Name, scale));
                 }
             }
         }

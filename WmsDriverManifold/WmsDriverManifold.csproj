@@ -67,6 +67,8 @@
     <Compile Include="WmsDriver\MapUtils.cs" />
     <Compile Include="WmsDriver\AutoAoi.cs" />
     <Compile Include="WmsDriver\Render.cs" />
+    <Compile Include="WmsDriver\HandleGetLegendGraphic.cs" />
+    <Compile Include="WmsDriver\HandleGetLegendGraphicValidationRules.cs" />
     <Compile Include="WmsDriver\_Blank.cs" />
   </ItemGroup>
   <ItemGroup>
