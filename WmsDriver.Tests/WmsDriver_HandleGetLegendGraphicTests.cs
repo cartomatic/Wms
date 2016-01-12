@@ -330,8 +330,8 @@ namespace WmsDriver.Tests
             public bool HandleGetLegendGraphicDriverSpecificCalled { get; set; }
 
             public bool CallBaseHandleGetLegendGraphicDriverSpecific { get; set; }
-        
-            protected override IWmsDriverResponse HandleGetLegendGraphicDriverSpecific()
+
+            protected internal override IWmsDriverResponse HandleGetLegendGraphicDriverSpecific()
             {
                 HandleGetLegendGraphicDriverSpecificCalled = true;
 
