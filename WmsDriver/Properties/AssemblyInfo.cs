@@ -36,4 +36,4 @@ using Cartomatic.Wms;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: InternalsVisibleTo("WmsDriver.Tests")]
+[assembly: InternalsVisibleTo("Cartomatic.Wms.WmsDriver.Tests")]

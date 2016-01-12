@@ -15,7 +15,7 @@ namespace Cartomatic.Wms
         /// <returns></returns>
         protected virtual string GetDeclaredOrDefaultGetCapabilitiesFormatForVersion(string version)
         {
-            var format = GetParam("format");
+            var format = GetParam<string>("format");
             if (string.IsNullOrEmpty(format))
             {
                 format = DefaultGetCapabilitiesFormats[version];

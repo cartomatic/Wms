@@ -12,14 +12,14 @@ namespace Cartomatic.Wms
         /// Executes a set of specified validation rules
         /// </summary>
         /// <param name="rules"></param>
-        protected void Validate(Dictionary<string, Action<WmsDriver>> rules)
+        protected void Validate<T>(Dictionary<string, Action<T>> rules) where T : WmsDriver
         {
             foreach (var rule in rules)
             {
                 var vr = rule.Value;
                 if (vr != null)
                 {
-                    vr(this);
+                    vr((T)this);
                 }
             }
         }

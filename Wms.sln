@@ -21,6 +21,45 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Tests", "..\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "..\Utils\Web.Tests\Web.Tests.csproj", "{3540D1E4-2CB4-490A-A714-6760EE069A4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmsDriverManifold", "WmsDriverManifold\WmsDriverManifold.csproj", "{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmsDriverManifold.Tests", "WmsDriverManifold.Tests\WmsDriverManifold.Tests.csproj", "{953AEAA5-CB06-4358-9014-2419E4D83B7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "..\Utils\Data\Data.csproj", "{EAA4225A-2D5B-4AFB-B861-3FEC188E7CE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Tests", "..\Utils\Data.Tests\Data.Tests.csproj", "{5243781F-5EB6-4B1B-9868-5B3526DE76A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawing", "..\Utils\Drawing\Drawing.csproj", "{AD9B722F-07BD-45A5-9E1B-CAD777C7629F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Number", "..\Utils\Number\Number.csproj", "{398545D8-33CC-4B60-A7B5-91C77EAD25B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Number.Tests", "..\Utils\Number.Tests\Number.Tests.csproj", "{AD01DA91-4E2E-4431-8DA8-A65A5D90578C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawing.Tests", "..\Utils\Drawing.Tests\Drawing.Tests.csproj", "{4A56184A-E13A-453F-90D3-8B089C7C2E10}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WmsDriverManifold.Web", "http://localhost:9665", "{D7F33931-5F7D-49C1-9244-561D52213433}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{01ce8aa3-a0d1-40fb-8983-ae92a31f9ecd}|Cartomatic.Manifold.WmsDriver.dll;{B8398792-4BB8-4AD0-B55D-3E638E008D83}|Cartomatic.OgcSchemas.Wms.dll;{EAA4225A-2D5B-4AFB-B861-3FEC188E7CE7}|Cartomatic.Utils.Data.dll;{31F8205F-B091-46D8-B6DB-5EF738EB8A26}|Cartomatic.Utils.Serialization.dll;{E623C471-93AF-4D10-A656-D05EA17C7F51}|Cartomatic.Wms.WmsDriver.dll;{45666ACC-C047-4608-8213-F109504EE551}|Cartomatic.Utils.Web.dll;{AD9B722F-07BD-45A5-9E1B-CAD777C7629F}|Drawing.dll;{398545D8-33CC-4B60-A7B5-91C77EAD25B1}|Cartomatic.Utils.Number.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_9665"
+		Debug.AspNetCompiler.PhysicalPath = "WmsDriverManifold.Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_9665\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_9665"
+		Release.AspNetCompiler.PhysicalPath = "WmsDriverManifold.Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_9665\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "WmsDriverManifold.Web\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +94,42 @@ Global
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAA4225A-2D5B-4AFB-B861-3FEC188E7CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAA4225A-2D5B-4AFB-B861-3FEC188E7CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAA4225A-2D5B-4AFB-B861-3FEC188E7CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAA4225A-2D5B-4AFB-B861-3FEC188E7CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5243781F-5EB6-4B1B-9868-5B3526DE76A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5243781F-5EB6-4B1B-9868-5B3526DE76A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5243781F-5EB6-4B1B-9868-5B3526DE76A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5243781F-5EB6-4B1B-9868-5B3526DE76A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD9B722F-07BD-45A5-9E1B-CAD777C7629F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD9B722F-07BD-45A5-9E1B-CAD777C7629F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD9B722F-07BD-45A5-9E1B-CAD777C7629F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD9B722F-07BD-45A5-9E1B-CAD777C7629F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{398545D8-33CC-4B60-A7B5-91C77EAD25B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{398545D8-33CC-4B60-A7B5-91C77EAD25B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{398545D8-33CC-4B60-A7B5-91C77EAD25B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{398545D8-33CC-4B60-A7B5-91C77EAD25B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD01DA91-4E2E-4431-8DA8-A65A5D90578C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD01DA91-4E2E-4431-8DA8-A65A5D90578C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD01DA91-4E2E-4431-8DA8-A65A5D90578C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD01DA91-4E2E-4431-8DA8-A65A5D90578C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A56184A-E13A-453F-90D3-8B089C7C2E10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A56184A-E13A-453F-90D3-8B089C7C2E10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A56184A-E13A-453F-90D3-8B089C7C2E10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A56184A-E13A-453F-90D3-8B089C7C2E10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7F33931-5F7D-49C1-9244-561D52213433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7F33931-5F7D-49C1-9244-561D52213433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7F33931-5F7D-49C1-9244-561D52213433}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7F33931-5F7D-49C1-9244-561D52213433}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,5 +140,11 @@ Global
 		{45666ACC-C047-4608-8213-F109504EE551} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
 		{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{EAA4225A-2D5B-4AFB-B861-3FEC188E7CE7} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{5243781F-5EB6-4B1B-9868-5B3526DE76A6} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{AD9B722F-07BD-45A5-9E1B-CAD777C7629F} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{398545D8-33CC-4B60-A7B5-91C77EAD25B1} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{AD01DA91-4E2E-4431-8DA8-A65A5D90578C} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{4A56184A-E13A-453F-90D3-8B089C7C2E10} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
 	EndGlobalSection
 EndGlobal

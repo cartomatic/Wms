@@ -221,7 +221,7 @@ namespace Cartomatic.Wms
         }
 
         /// <summary>
-        /// Generates a layers section of the capabilities document for version 1.3.0 of the service
+        /// Generates a layers section of the capabilities document for version 1.3.0 of the service; this method should be overriden when subclassing
         /// </summary>
         /// <param name="capsDoc"></param>
         /// <returns></returns>

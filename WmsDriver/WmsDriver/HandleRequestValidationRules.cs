@@ -19,7 +19,7 @@ namespace Cartomatic.Wms
                     var msg = "Required parameter REQUEST not specified.";
                     var ec = WmsExceptionCode.NotApplicable;
             
-                    if(string.IsNullOrEmpty(drv.GetParam("request")))
+                    if(string.IsNullOrEmpty(drv.GetParam<string>("request")))
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -31,7 +31,7 @@ namespace Cartomatic.Wms
                     var msg = "VERSION paramater not specified.";
                     var ec = WmsExceptionCode.NotApplicable;
             
-                    if(string.IsNullOrEmpty(drv.GetParam("version")) && string.Compare(drv.GetParam("request"), "GetCapabilities", drv.GetIgnoreCase()) != 0)
+                    if(string.IsNullOrEmpty(drv.GetParam<string>("version")) && string.Compare(drv.GetParam<string>("request"), "GetCapabilities", drv.GetIgnoreCase()) != 0)
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -43,7 +43,7 @@ namespace Cartomatic.Wms
                     var msg = "This service supports only the following version(s): {0}.";
                     var ec = WmsExceptionCode.NotApplicable;
             
-                    var p = drv.GetParam("version");
+                    var p = drv.GetParam<string>("version");
                     if(!string.IsNullOrEmpty(p) && !drv.SupportedVersions.Exists(sv => sv == p))
                         throw new WmsDriverException(string.Format(msg, string.Join(", ", drv.SupportedVersions)), ec);
                 }

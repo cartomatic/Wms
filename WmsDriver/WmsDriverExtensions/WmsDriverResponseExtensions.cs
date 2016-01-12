@@ -1,4 +1,6 @@
-﻿namespace Cartomatic.Wms.WmsDriverExtensions
+﻿using System.Web;
+
+namespace Cartomatic.Wms.WmsDriverExtensions
 {
     public static class WmsDriverResponseExtensions
     {
@@ -7,8 +9,22 @@
             return wmsDriverResponse.ResponseBinary != null;
         }
 
-        //TODO
-        //could also have some logic to feed the data into web response
-        //or something along these lines so the web handlers are simpler.
+        /// <summary>
+        /// Transfers IWmsDriverResponse data to System.Web.HttpResponse
+        /// </summary>
+        /// <param name="wmsDriverResponse"></param>
+        /// <param name="response"></param>
+        public static void TransferToResponse(this IWmsDriverResponse wmsDriverResponse, HttpResponse response)
+        {
+            response.ContentType = wmsDriverResponse.ResponseContentType;
+            if (wmsDriverResponse.HasData())
+            {
+                response.BinaryWrite(wmsDriverResponse.ResponseBinary);
+            }
+            else
+            {
+                response.Write(wmsDriverResponse.ResponseText);
+            }
+        }
     }
 }

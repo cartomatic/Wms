@@ -8,7 +8,7 @@ namespace Cartomatic.Wms
     public class WmsServiceDescription : IWmsServiceDescription
     {
         /// <summary>
-        /// Public url to access the service in case service is hosted behind firewall or service requires params, etc.
+        /// Public url to access the service in case service is hosted behind a firewall or service requires params, etc.
         /// </summary>
         public string PublicAccessURL { get; set; }
 

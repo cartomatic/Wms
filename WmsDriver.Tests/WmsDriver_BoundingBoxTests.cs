@@ -34,6 +34,20 @@ namespace WmsDriver.Tests
         }
 
         [Test]
+        public void AddCoordFlippingSrid_WhenCoordSysAdded_AdjustsGetCoordFlipOutput()
+        {
+            var drv = MakeWmsDriver();
+            var srid = 666;
+
+            var flipBeforeAdd = drv.GetCoordFlip("1.3.0", srid);
+            drv.AddCoordFlippingSrid(666);
+            var flipAfterAdd = drv.GetCoordFlip("1.3.0", srid);
+
+            flipBeforeAdd.Should().Be(false);
+            flipAfterAdd.Should().Be(true);
+        }
+
+        [Test]
         public void ParsBbox_ForVersionLessThan130_ParsesBboxProperly()
         {
             var drv = MakeWmsDriver();

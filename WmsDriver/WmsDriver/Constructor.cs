@@ -20,6 +20,8 @@ namespace Cartomatic.Wms
             SupportedVersions = new List<string>();
             SupportedVendorOperations = new Dictionary<string, List<string>>();
             SupportedVendorOperationFormats = new Dictionary<string, Dictionary<string, List<string>>>();
+
+            PopulateCoordFlippingSridsDict();
         }
     }
 }

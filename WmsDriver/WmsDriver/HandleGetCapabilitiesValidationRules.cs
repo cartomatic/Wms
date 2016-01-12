@@ -16,7 +16,7 @@ namespace Cartomatic.Wms
                     var msg = "Required parameter SERVICE not specified.";
                     var ec = WmsExceptionCode.NotApplicable;
             
-                    if(string.IsNullOrEmpty(drv.GetParam("service")))
+                    if(string.IsNullOrEmpty(drv.GetParam<string>("service")))
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -26,8 +26,8 @@ namespace Cartomatic.Wms
                 {
                     var msg = "Invalid service for GetCapabilities Request. Service parameter must be 'WMS'.";
                     var ec = WmsExceptionCode.NotApplicable;
-            
-                    if(string.Compare(drv.GetParam("service"), "WMS", drv.GetIgnoreCase()) != 0)
+
+                    if (string.Compare(drv.GetParam<string>("service"), "WMS", drv.GetIgnoreCase()) != 0)
                         throw new WmsDriverException(msg, ec);
                 }
             },

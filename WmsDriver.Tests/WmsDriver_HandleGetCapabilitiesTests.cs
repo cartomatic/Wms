@@ -74,7 +74,7 @@ namespace WmsDriver.Tests
         {
             var drv = MakeWmsDriver();
             var testedValidationRule = drv.HandleGetCapabilitiesValidationRules["format_must_be_valid"];
-            var request = "http://some.url/?request=GetCapabilities&service=WMS&format=XML".CreateHttpWebRequest();
+            var request = "http://some.url/?request=GetCapabilities&service=WMS&format=text/xml".CreateHttpWebRequest();
             drv.ExtractRequestParams(request);
 
             Action action = () => testedValidationRule(drv);
@@ -191,8 +191,8 @@ namespace WmsDriver.Tests
 
             drv.SupportedVersions.Add("1.3.0");
 
-            drv.SupportedGetCapabilitiesFormats.Add("1.3.0", new List<string>(){"XML"});
-            drv.DefaultGetCapabilitiesFormats.Add("1.3.0", "XML");
+            drv.SupportedGetCapabilitiesFormats.Add("1.3.0", new List<string>() { "text/xml" });
+            drv.DefaultGetCapabilitiesFormats.Add("1.3.0", "text/xml");
 
             drv.SupportedGetMapFormats.Add("1.3.0", new List<string>(){"image/png"});
 

@@ -73,6 +73,7 @@
     <Compile Include="WmsDriver\HandleGetMapValidationRules.cs" />
     <Compile Include="WmsDriver\BoundingBox.cs" />
     <Compile Include="WmsDriver\Format.cs" />
+    <Compile Include="WmsDriver\CoordFlip.cs" />
     <Compile Include="WmsDriver\_Blank.cs" />
     <Compile Include="WmsDriver\HandleRequest.cs" />
     <Compile Include="WmsDriver\Constructor.cs" />

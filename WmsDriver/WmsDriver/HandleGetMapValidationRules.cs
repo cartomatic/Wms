@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Cartomatic.Wms
 {
@@ -18,7 +20,7 @@ namespace Cartomatic.Wms
                     var msg = "Required parameter LAYERS not specified.";
                     var ec = WmsExceptionCode.NotApplicable;
             
-                    if(string.IsNullOrEmpty(drv.GetParam("layers")))
+                    if(string.IsNullOrEmpty(drv.GetParam<string>("layers")))
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -30,7 +32,7 @@ namespace Cartomatic.Wms
                     var msg = "Required parameter STYLES not specified.";
                     var ec = WmsExceptionCode.NotApplicable;
             
-                    if(drv.GetParam("styles") == null)
+                    if(drv.GetParam<string>("styles") == null)
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -40,16 +42,16 @@ namespace Cartomatic.Wms
                 "crssrs_param_presence", (drv) =>
                 {
                     //version should have been tested in the initial request validation procedure
-                    int version = int.Parse(drv.GetParam("version").Replace(".", ""));
+                    int version = int.Parse(drv.GetParam<string>("version").Replace(".", ""));
 
                     if (version >= 130)
                     {
-                        if (string.IsNullOrEmpty(drv.GetParam("crs")))
+                        if (string.IsNullOrEmpty(drv.GetParam<string>("crs")))
                             throw new WmsDriverException("Required parameter CRS not specified.", WmsExceptionCode.NotApplicable);
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(drv.GetParam("srs")))
+                        if (string.IsNullOrEmpty(drv.GetParam<string>("srs")))
                             throw new WmsDriverException("Required parameter SRS not specified.", WmsExceptionCode.NotApplicable);
                     }
                 }
@@ -62,7 +64,7 @@ namespace Cartomatic.Wms
                     var msg = "Required parameter BBOX not specified.";
                     var ec = WmsExceptionCode.MissingDimensionValue;
             
-                    if(string.IsNullOrEmpty(drv.GetParam("bbox")))
+                    if(string.IsNullOrEmpty(drv.GetParam<string>("bbox")))
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -98,7 +100,7 @@ namespace Cartomatic.Wms
                     var msg = "Required parameter FORMAT not specified.";
                     var ec = WmsExceptionCode.InvalidFormat;
             
-                    if(string.IsNullOrEmpty(drv.GetParam("format")))
+                    if(string.IsNullOrEmpty(drv.GetParam<string>("format")))
                         throw new WmsDriverException(msg, ec);
                 }
             },
@@ -107,8 +109,8 @@ namespace Cartomatic.Wms
             {
                 "width_param_valid", (drv) =>
                 {
-                    int width;
-                    if (!int.TryParse(drv.GetParam("width"), out width))
+                    int? width = drv.GetParam<int?>("width");
+                    if (!width.HasValue)
                         throw new WmsDriverException("Invalid parameter WIDTH.", WmsExceptionCode.InvalidDimensionValue);
 
                     if (width <= 0)
@@ -123,8 +125,8 @@ namespace Cartomatic.Wms
             {
                 "height_param_valid", (drv) =>
                 {
-                    int height;
-                    if (!int.TryParse(drv.GetParam("height"), out height))
+                    int? height = drv.GetParam<int?>("height");
+                    if (!height.HasValue)
                         throw new WmsDriverException("Invalid parameter HEIGHT.", WmsExceptionCode.InvalidDimensionValue);
 
                     if (height <= 0)
@@ -138,8 +140,8 @@ namespace Cartomatic.Wms
             {
                 "format_param_valid", (drv) =>
                 {
-                    var version = drv.GetParam("version");
-                    var format = drv.GetParam("format");
+                    var version = drv.GetParam<string>("version");
+                    var format = drv.GetParam<string>("format");
 
                     if(!drv.SupportedGetMapFormats[version].Exists(f =>f == format))
                         throw new WmsDriverException(
@@ -147,6 +149,61 @@ namespace Cartomatic.Wms
                         );
                 }
             },
+            {
+                "layers_count_valid", (drv) =>
+                {
+                    var msg = "Too many layers requested.";
+                    var ec = WmsExceptionCode.OperationNotSupported;
+
+                    //Extract layers
+                    string[] inLayers = drv.GetParam("LAYERS").Split(',');
+
+                    if (drv.ServiceDescription.LayerLimit.HasValue &&
+                        inLayers.Length > drv.ServiceDescription.LayerLimit.Value)
+                    {
+                        throw new WmsDriverException(msg, ec);
+                    }
+                }    
+            },
+            {
+                "bgcolor_valid", (drv) =>
+                {
+                    var msg = "Invalid parameter BGCOLOR.";
+                    var ec = WmsExceptionCode.NotApplicable;
+
+                    try
+                    {
+                        ColorTranslator.FromHtml(drv.GetParam("BGCOLOR"));
+                    }
+                    catch
+                    {
+                        throw new WmsDriverException(msg, ec);
+                    }
+                }
+            },
+
+            {
+                "bbox_valid", (drv) =>
+                {
+                    //Note: parse bbox throws proper wms driver exceptions
+
+                    //version param presence and support should have been already tested!
+                    var versionStr = drv.GetParam("version");
+                    int version = int.Parse(drv.GetParam<string>("version").Replace(".", ""));
+
+                    string cs;
+                    if (version >= 130)
+                    {
+                        cs = drv.GetParam("crs");
+                    }
+                    else
+                    {
+                        cs = drv.GetParam("srs");
+                    }
+
+                    drv.ParseBBOX(drv.GetParam("bbox"), versionStr, cs);
+                }
+            }
         };
     }
 }

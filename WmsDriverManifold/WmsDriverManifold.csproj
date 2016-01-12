@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{01CE8AA3-A0D1-40FB-8983-AE92A31F9ECD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cartomatic.Manifold</RootNamespace>
+    <AssemblyName>Cartomatic.Manifold.WmsDriver</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Manifold.Interop, Version=4.0.0.0, Culture=neutral, PublicKeyToken=058e4cb7a1c54ee9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Program Files\Manifold System\Manifold.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="nQuant.Core, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nQuant.1.0.3\Lib\net40\nQuant.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="WmsDriverAoiSettings.cs" />
+    <Compile Include="WmsDriverSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WmsDriver\DataModel.cs" />
+    <Compile Include="WmsDriver\HandleGetMapValidationRules.cs" />
+    <Compile Include="WmsDriver\ServiceCapabilities.cs" />
+    <Compile Include="WmsDriver\Constructor.cs" />
+    <Compile Include="WmsDriver\PrepareDriver.cs" />
+    <Compile Include="WmsDriver\CreateMapServer.cs" />
+    <Compile Include="WmsDriver\ExtractWmsDriverSettings.cs" />
+    <Compile Include="WmsDriver\Transparent.cs" />
+    <Compile Include="WmsDriver\HandleGetCapabilities.cs" />
+    <Compile Include="WmsDriver\BoundingBox.cs" />
+    <Compile Include="WmsDriver\Queryable.cs" />
+    <Compile Include="WmsDriver\HandleGetMap.cs" />
+    <Compile Include="WmsDriver\MapUtils.cs" />
+    <Compile Include="WmsDriver\AutoAoi.cs" />
+    <Compile Include="WmsDriver\Render.cs" />
+    <Compile Include="WmsDriver\HandleGetLegendGraphic.cs" />
+    <Compile Include="WmsDriver\HandleGetLegendGraphicValidationRules.cs" />
+    <Compile Include="WmsDriver\_Blank.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OgcSchemas\OgcSchemas.Wms\OgcSchemas.Wms.csproj">
+      <Project>{b8398792-4bb8-4ad0-b55d-3e638e008d83}</Project>
+      <Name>OgcSchemas.Wms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Data\Data.csproj">
+      <Project>{eaa4225a-2d5b-4afb-b861-3fec188e7ce7}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Drawing\Drawing.csproj">
+      <Project>{ad9b722f-07bd-45a5-9e1b-cad777c7629f}</Project>
+      <Name>Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
+      <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
+      <Name>Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WmsDriver\WmsDriver.csproj">
+      <Project>{e623c471-93af-4d10-a656-d05ea17c7f51}</Project>
+      <Name>WmsDriver</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="TestData\NE2_50M_SR_W.ecw" />
+    <None Include="TestData\TestData.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Docs\ReadMe.txt" />
+    <Content Include="Docs\WmsDriverSettingsExample.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
