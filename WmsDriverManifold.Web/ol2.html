@@ -1,0 +1,45 @@
+<html>
+<head>
+    <title>WmsDriverManifold ol 2.13 test</title>
+    <link rel="stylesheet" href="http://dev.openlayers.org/releases/OpenLayers-2.13.1/theme/default/style.css" />
+    <script src="http://svn.osgeo.org/metacrs/proj4js/trunk/lib/proj4js-compressed.js"></script>
+    <script src="http://dev.openlayers.org/releases/OpenLayers-2.13.1/OpenLayers.js"></script>
+</head>
+<body>
+    <div id="map" style="position: absolute; width: 60%; height: 60%; top: 20%; left: 20%; border: solid 1px black;"></div>
+    <script>
+
+        //apply the projection defaults so the axis order is ok
+        if(!OpenLayers.Projection.defaults['EPSG:4326']){
+            OpenLayers.Projection.defaults['EPSG:4326'] = {yx: true};
+        }
+
+        //create map
+        var map = new OpenLayers.Map('map', {
+            projection: new OpenLayers.Projection('EPSG:4326'),
+            numZoomLevels:6
+        });
+
+        //add wig 100k wms layer
+        map.addLayer(
+            new OpenLayers.Layer.WMS(
+                'test',
+                'wms.ashx',
+                {
+                    VERSION: '1.3.0',
+                    FORMAT: 'image/jpeg',
+                    layers: 'Natural Earth 50m'
+
+                },{
+                    isBaseLayer: true,
+                    attribution: "WmsDriverManifold"
+                }
+            )
+        );
+
+        //and zoom the map to extent
+        map.zoomToMaxExtent();
+
+    </script>
+</body>
+</html>
