@@ -1,0 +1,113 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "..\Utils\Web\Web.csproj", "{45666ACC-C047-4608-8213-F109504EE551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "..\Utils\Web.Tests\Web.Tests.csproj", "{3540D1E4-2CB4-490A-A714-6760EE069A4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wms130CoordFlipProxy", "Wms130CoordFlipProxy\Wms130CoordFlipProxy.csproj", "{F837F0B2-5E18-4780-AED7-4DB92C6A6EEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wms130CoordFlipProxy.Tests", "Wms130CoordFlipProxy.Tests\Wms130CoordFlipProxy.Tests.csproj", "{40D78996-C2C4-4F79-9CE7-015693862CBB}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Wms130CoordFlipProxy.Web", "Wms130CoordFlipProxy.Web\", "{46C2ECFE-E049-4062-9B81-FC09394945FE}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		ProjectReferences = "{f837f0b2-5e18-4780-aed7-4db92c6a6eef}|Cartomatic.Wms.WmsProxy.dll;{B8398792-4BB8-4AD0-B55D-3E638E008D83}|Cartomatic.OgcSchemas.Wms.dll;{31F8205F-B091-46D8-B6DB-5EF738EB8A26}|Cartomatic.Utils.Serialization.dll;{45666ACC-C047-4608-8213-F109504EE551}|Cartomatic.Utils.Web.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_23098"
+		Debug.AspNetCompiler.PhysicalPath = "Wms130CoordFlipProxy.Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_23098\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_23098"
+		Release.AspNetCompiler.PhysicalPath = "Wms130CoordFlipProxy.Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_23098\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "23098"
+		SlnRelativePath = "Wms130CoordFlipProxy.Web\"
+	EndProjectSection
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		ProjectReferences = "{f837f0b2-5e18-4780-aed7-4db92c6a6eef}|Cartomatic.Wms.WmsProxy.dll;{45666ACC-C047-4608-8213-F109504EE551}|Cartomatic.Utils.Web.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_12334"
+		Debug.AspNetCompiler.PhysicalPath = "WmsProxy.Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_12334\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_12334"
+		Release.AspNetCompiler.PhysicalPath = "WmsProxy.Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_12334\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "12334"
+		SlnRelativePath = "WmsProxy.Web\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OgcSchemas.Wms", "..\OgcSchemas\OgcSchemas.Wms\OgcSchemas.Wms.csproj", "{B8398792-4BB8-4AD0-B55D-3E638E008D83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "..\Utils\Serialization\Serialization.csproj", "{31F8205F-B091-46D8-B6DB-5EF738EB8A26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Tests", "..\Utils\Serialization.Tests\Serialization.Tests.csproj", "{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45666ACC-C047-4608-8213-F109504EE551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45666ACC-C047-4608-8213-F109504EE551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45666ACC-C047-4608-8213-F109504EE551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45666ACC-C047-4608-8213-F109504EE551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3540D1E4-2CB4-490A-A714-6760EE069A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F837F0B2-5E18-4780-AED7-4DB92C6A6EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F837F0B2-5E18-4780-AED7-4DB92C6A6EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F837F0B2-5E18-4780-AED7-4DB92C6A6EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F837F0B2-5E18-4780-AED7-4DB92C6A6EEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D78996-C2C4-4F79-9CE7-015693862CBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D78996-C2C4-4F79-9CE7-015693862CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D78996-C2C4-4F79-9CE7-015693862CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D78996-C2C4-4F79-9CE7-015693862CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C2ECFE-E049-4062-9B81-FC09394945FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C2ECFE-E049-4062-9B81-FC09394945FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C2ECFE-E049-4062-9B81-FC09394945FE}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C2ECFE-E049-4062-9B81-FC09394945FE}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{B8398792-4BB8-4AD0-B55D-3E638E008D83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8398792-4BB8-4AD0-B55D-3E638E008D83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8398792-4BB8-4AD0-B55D-3E638E008D83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8398792-4BB8-4AD0-B55D-3E638E008D83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F8205F-B091-46D8-B6DB-5EF738EB8A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F8205F-B091-46D8-B6DB-5EF738EB8A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F8205F-B091-46D8-B6DB-5EF738EB8A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F8205F-B091-46D8-B6DB-5EF738EB8A26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{45666ACC-C047-4608-8213-F109504EE551} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{3540D1E4-2CB4-490A-A714-6760EE069A4E} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{31F8205F-B091-46D8-B6DB-5EF738EB8A26} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+	EndGlobalSection
+EndGlobal
