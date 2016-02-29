@@ -18,7 +18,7 @@ public class Wms : IHttpHandler
         var drv = GetWmsDriver();
 
         //Use proxy utils to get the url that should be called
-        var proxiedUrl = context.Request.Url.AbsoluteUri.ExtractProxiedUrl();
+        var proxiedUrl = context.Request.Url.AbsoluteUri.ExtractProxiedUrl("wmtscapsurl");
 
         var drvResponse = drv.HandleRequest(proxiedUrl);
 

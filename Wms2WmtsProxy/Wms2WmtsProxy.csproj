@@ -42,14 +42,28 @@
   <ItemGroup>
     <Compile Include="PrepareDriver.cs" />
     <Compile Include="DataModel.cs" />
+    <Compile Include="PullWmtsCaps.cs" />
+    <Compile Include="ConfigureWmsDriver.cs" />
     <Compile Include="_Blank.cs" />
     <Compile Include="Constructor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OgcSchemas\OgcSchemas.Wms\OgcSchemas.Wms.csproj">
+      <Project>{b8398792-4bb8-4ad0-b55d-3e638e008d83}</Project>
+      <Name>OgcSchemas.Wms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OgcSchemas\OgcSchemas.Wmts\OgcSchemas.Wmts.csproj">
       <Project>{783a8cdd-f702-4498-b3cf-0373c2465c6c}</Project>
       <Name>OgcSchemas.Wmts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Serialization\Serialization.csproj">
+      <Project>{31f8205f-b091-46d8-b6db-5ef738eb8a26}</Project>
+      <Name>Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Web\Web.csproj">
+      <Project>{45666acc-c047-4608-8213-f109504ee551}</Project>
+      <Name>Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\WmsDriver\WmsDriver.csproj">
       <Project>{e623c471-93af-4d10-a656-d05ea17c7f51}</Project>

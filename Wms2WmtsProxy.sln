@@ -17,6 +17,36 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Tests", "..\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OgcSchemas.Wmts", "..\OgcSchemas\OgcSchemas.Wmts\OgcSchemas.Wmts.csproj", "{783A8CDD-F702-4498-B3CF-0373C2465C6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmsDriver", "WmsDriver\WmsDriver.csproj", "{E623C471-93AF-4D10-A656-D05EA17C7F51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wms2WmtsProxy", "Wms2WmtsProxy\Wms2WmtsProxy.csproj", "{87DBA3E2-CDDD-462E-99B1-807471FE650E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wms2WmtsProxy.Tests", "Wms2WmtsProxy.Tests\Wms2WmtsProxy.Tests.csproj", "{02809D50-E9C0-4BFB-86D1-6A1E4BF22451}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{CF28C94E-9C6E-4B86-AC8B-40D963CC0AAE}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Wms2WmtsProxy.Web", "Wms2WmtsProxy.Web\", "{CFFE521A-C1C3-44B7-90CA-922B6128726C}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{87dba3e2-cddd-462e-99b1-807471fe650e}|Cartomatic.Wms.Wms2WmtsProxy.dll;{45666acc-c047-4608-8213-f109504ee551}|Cartomatic.Utils.Web.dll;{e623c471-93af-4d10-a656-d05ea17c7f51}|Cartomatic.Wms.WmsDriver.dll;{B8398792-4BB8-4AD0-B55D-3E638E008D83}|Cartomatic.OgcSchemas.Wms.dll;{31F8205F-B091-46D8-B6DB-5EF738EB8A26}|Cartomatic.Utils.Serialization.dll;{783A8CDD-F702-4498-B3CF-0373C2465C6C}|Cartomatic.OgcSchemas.Wtms.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_37088"
+		Debug.AspNetCompiler.PhysicalPath = "Wms2WmtsProxy.Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_37088\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_37088"
+		Release.AspNetCompiler.PhysicalPath = "Wms2WmtsProxy.Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_37088\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "37088"
+		SlnRelativePath = "Wms2WmtsProxy.Web\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +77,22 @@ Global
 		{783A8CDD-F702-4498-B3CF-0373C2465C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{783A8CDD-F702-4498-B3CF-0373C2465C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{783A8CDD-F702-4498-B3CF-0373C2465C6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E623C471-93AF-4D10-A656-D05EA17C7F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E623C471-93AF-4D10-A656-D05EA17C7F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E623C471-93AF-4D10-A656-D05EA17C7F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E623C471-93AF-4D10-A656-D05EA17C7F51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87DBA3E2-CDDD-462E-99B1-807471FE650E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87DBA3E2-CDDD-462E-99B1-807471FE650E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87DBA3E2-CDDD-462E-99B1-807471FE650E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87DBA3E2-CDDD-462E-99B1-807471FE650E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02809D50-E9C0-4BFB-86D1-6A1E4BF22451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02809D50-E9C0-4BFB-86D1-6A1E4BF22451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02809D50-E9C0-4BFB-86D1-6A1E4BF22451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02809D50-E9C0-4BFB-86D1-6A1E4BF22451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFFE521A-C1C3-44B7-90CA-922B6128726C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFFE521A-C1C3-44B7-90CA-922B6128726C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFFE521A-C1C3-44B7-90CA-922B6128726C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFFE521A-C1C3-44B7-90CA-922B6128726C}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,7 +100,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{45666ACC-C047-4608-8213-F109504EE551} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
 		{3540D1E4-2CB4-490A-A714-6760EE069A4E} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{B8398792-4BB8-4AD0-B55D-3E638E008D83} = {CF28C94E-9C6E-4B86-AC8B-40D963CC0AAE}
 		{31F8205F-B091-46D8-B6DB-5EF738EB8A26} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
 		{1F835DE8-FA2F-4BF6-B65F-47CDDA7A27FE} = {C54A85CE-6BC8-4692-A9A6-5C4BD7E30400}
+		{783A8CDD-F702-4498-B3CF-0373C2465C6C} = {CF28C94E-9C6E-4B86-AC8B-40D963CC0AAE}
 	EndGlobalSection
 EndGlobal
