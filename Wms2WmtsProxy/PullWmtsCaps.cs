@@ -17,6 +17,11 @@ namespace Cartomatic.Wms
         /// </summary>
         protected internal void PullWmtsCaps()
         {
+            if (Request == null)
+            {
+                throw new WmsDriverException("Unknown WMTS Service URL.");
+            }
+
             //work out the get caps request url
             var baseUrl = Request.RequestUri.AbsoluteUri;
             if (baseUrl.IndexOf("?") > -1)
