@@ -11,11 +11,9 @@ using Cartomatic.Wms.WmsDriverExtensions;
 public class Wms : IHttpHandler
 {
 
-    IWmsDriver _drv = null;
-    
     public void ProcessRequest (HttpContext context)
     {
-        var drv = GetWmsDriver();
+        var drv = new Wms2WmtsProxy();
 
         //Use proxy utils to get the url that should be called
         var proxiedUrl = context.Request.Url.AbsoluteUri.ExtractProxiedUrl("wmtscapsurl");
@@ -28,20 +26,5 @@ public class Wms : IHttpHandler
         context.ApplicationInstance.CompleteRequest();
     }
 
-    private IWmsDriver GetWmsDriver()
-    {
-        if (_drv == null)
-        {
-            _drv = new Wms2WmtsProxy();
-        }
-
-        return _drv;
-    }
-
-    public bool IsReusable {
-        get {
-            return true;
-        }
-    }
-
+    public bool IsReusable => false;
 }
