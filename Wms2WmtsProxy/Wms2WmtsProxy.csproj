@@ -44,6 +44,7 @@
     <Compile Include="PrepareDriver.cs" />
     <Compile Include="DataModel.cs" />
     <Compile Include="GetBaseUrl.cs" />
+    <Compile Include="HandleGetCapabilities.cs" />
     <Compile Include="_Blank.cs" />
     <Compile Include="Constructor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

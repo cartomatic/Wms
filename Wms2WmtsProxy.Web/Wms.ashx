@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Web;
-using Cartomatic.Utils.Web;
 using Cartomatic.Wms;
 using Cartomatic.Wms.WmsDriverExtensions;
 
@@ -15,10 +14,7 @@ public class Wms : IHttpHandler
     {
         var drv = new Wms2WmtsProxy();
 
-        //Use proxy utils to get the url that should be called
-        var proxiedUrl = context.Request.Url.AbsoluteUri.ExtractProxiedUrl("wmtscapsurl");
-
-        var drvResponse = drv.HandleRequest(proxiedUrl);
+        var drvResponse = drv.HandleRequest(context.Request.Url.AbsoluteUri);
 
         drvResponse.TransferToResponse(context.Response);
 

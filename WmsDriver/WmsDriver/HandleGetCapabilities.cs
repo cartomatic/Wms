@@ -65,7 +65,7 @@ namespace Cartomatic.Wms
 
 
             //keywords
-            string[] keywordsStr = ServiceDescription.Keywords.ToArray();
+            string[] keywordsStr = ServiceDescription.Keywords?.ToArray() ?? new string[0];
             List<Keyword> keywords = new List<Keyword>();
             foreach (string str in keywordsStr)
             {

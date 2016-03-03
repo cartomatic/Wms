@@ -23,7 +23,7 @@ namespace Cartomatic.Wms
         /// Extracts request params off the request object
         /// </summary>
         /// <param name="request"></param>
-        protected internal void ExtractRequestParams(HttpWebRequest request)
+        protected internal virtual void ExtractRequestParams(HttpWebRequest request)
         {
             Request = request;
 
