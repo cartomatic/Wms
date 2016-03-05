@@ -37,7 +37,10 @@ namespace Cartomatic.Wms
         /// <param name="request"></param>
         protected override void ExtractRequestParams(HttpWebRequest request)
         {
-            ProxyUrl = request.Address.AbsoluteUri.Substring(0, request.Address.AbsoluteUri.IndexOf('?') - 1);
+            if (request.Address.AbsoluteUri.IndexOf('?') > -1)
+            {
+                ProxyUrl = request.Address.AbsoluteUri.Substring(0, request.Address.AbsoluteUri.IndexOf('?') - 1);
+            }
 
             //Use proxy utils to get the url that should be called
             var proxiedUrl = request.Address.AbsoluteUri.ExtractProxiedUrl(ProxyUrlParam);
