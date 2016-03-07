@@ -104,14 +104,8 @@ namespace Cartomatic.Wms
                     return agg;
                 });
 
-            //Note:
-            //For the time being outputing all the bboxes. Could potentially match them on srs and extend as required
-            //in order to include single bbox per epsg.
-            //Will change that when it is needed. 
-
-
+            //list of supported CRSs
             var rootCrs = new List<string>();
-            
             rootCrs.AddRange(
                 wmtsBboxes.Select(bb => "EPSG:" + bb.crs.Split(':').Last()).Distinct()
             );
@@ -128,9 +122,30 @@ namespace Cartomatic.Wms
             rootL.EX_GeographicBoundingBox = PrepareEx_GeographicBoundingBox(wmtsWgs84Bboxes);
 
 
-
             //and finally do the layers
+            var layers = new List<Wms_1302.Layer>();
+            foreach (var wmtsL in wmtsCaps.Contents.LayerSet)
+            {
+                var l = new Wms_1302.Layer();
 
+                //for the time being make the layers non-queryable - need to review the wmts specs and the way layers are marked as queryable
+                //as well as implement the GetFeatureInfo op
+                l.queryable = false;
+
+                //Note it should really be aggregated, or be passesd lang specific. the wms specs though does not seem to bother with different langs,
+                //so for now, just using the first one
+                l.Name = wmtsL.Title.FirstOrDefault()?.Value;
+                l.Title = wmtsL.Title.FirstOrDefault()?.Value;
+                l.Abstract = wmtsL.Abstract.FirstOrDefault()?.Value;
+
+                l.BoundingBox = PrepareWmsBoundingBoxes(wmtsL.Items).ToArray();
+
+                l.EX_GeographicBoundingBox = PrepareEx_GeographicBoundingBox(wmtsL.WGS84BoundingBox);
+
+                layers.Add(l);
+            }
+
+            rootL.Layer1 = layers.ToArray();
 
             //and pass it back to the caps doc
             capsDoc.Capability.Layer = rootL;
@@ -170,6 +185,11 @@ namespace Cartomatic.Wms
             return outBb;
         }
 
+        /// <summary>
+        /// Processes a list of wmts bboxxes into wms bboxes
+        /// </summary>
+        /// <param name="wmtsBboxes"></param>
+        /// <returns></returns>
         protected internal List<Wms_1302.BoundingBox> PrepareWmsBoundingBoxes(IEnumerable<Wmts_101.BoundingBoxType> wmtsBboxes)
         {
             var output = new List<Wms_1302.BoundingBox>();
