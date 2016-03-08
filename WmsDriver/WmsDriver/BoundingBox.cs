@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,16 +47,16 @@ namespace Cartomatic.Wms
 
             double minx, miny, maxx, maxy;
 
-            if (!double.TryParse(strVals[0], System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo, out minx))
+            if (!double.TryParse(strVals[0].Replace(" ", ""), System.Globalization.NumberStyles.Float | NumberStyles.AllowExponent, System.Globalization.NumberFormatInfo.InvariantInfo, out minx))
                 throw wmsex;
 
-            if (!double.TryParse(strVals[2], System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo, out maxx))
+            if (!double.TryParse(strVals[2].Replace(" ", ""), System.Globalization.NumberStyles.Float | NumberStyles.AllowExponent, System.Globalization.NumberFormatInfo.InvariantInfo, out maxx))
                 throw wmsex;
 
-            if (!double.TryParse(strVals[1], System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo, out miny))
+            if (!double.TryParse(strVals[1].Replace(" ", ""), System.Globalization.NumberStyles.Float | NumberStyles.AllowExponent, System.Globalization.NumberFormatInfo.InvariantInfo, out miny))
                 throw wmsex;
 
-            if (!double.TryParse(strVals[3], System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo, out maxy))
+            if (!double.TryParse(strVals[3].Replace(" ", ""), System.Globalization.NumberStyles.Float | NumberStyles.AllowExponent, System.Globalization.NumberFormatInfo.InvariantInfo, out maxy))
                 throw wmsex;
 
 
