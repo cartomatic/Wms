@@ -23,6 +23,11 @@ namespace Cartomatic.Wms
             //this could be potentially taken off the initial request, but is simply reassembled here
             var urlWithProxy = $"{ProxyUrl}?{ProxyUrlParam}={GetBaseUrl()}";
 
+            if (FlipBbox)
+            {
+                urlWithProxy += $"&{FlipBboxParam}=true";
+            }
+
             capsDoc.Service.OnlineResource.href = urlWithProxy;
 
             //Note:
@@ -56,19 +61,12 @@ namespace Cartomatic.Wms
                 dcpType.HTTP.Post.OnlineResource.href = url;
             }
         }
-
-        //get map url - this is important as need to route the wms requests through this very proxy
-        //bounding boxes and alike
-        //allowed epsg
-
-        //GetMap formats - where resource url resource type == tile
-        //same place also gives a request url - per format of course; url has some replacement tokens;  - this can be perhaps extracted by some utils - get by format- some nice extension methods!
-
-        //need to extract available formats of get map
-        //ignore get feature info for the time being
-
-        //tile matrix set - this can be perhaps extracted by some utils - get by epsg - some nice extension methods!
-
+        
+        /// <summary>
+        /// Generates a layers section of the Wms Capabilities document
+        /// </summary>
+        /// <param name="capsDoc"></param>
+        /// <returns></returns>
         protected override Wms_1302.WMS_Capabilities GenerateCapsLayersSection130(Wms_1302.WMS_Capabilities capsDoc)
         {
             var baseUrl = GetBaseUrl();
@@ -197,7 +195,11 @@ namespace Cartomatic.Wms
             foreach (var wmtsBbox in wmtsBboxes)
             {
                 //check if a list already contains a bbox for given crs
-                var crs = "EPSG:" + wmtsBbox.crs.Split(':').Last();
+                var srid = int.Parse(wmtsBbox.crs.Substring(wmtsBbox.crs.LastIndexOf(':') + 1));
+                var crs = $"EPSG:{srid}";
+
+                //check if the srid flips coords before putting together a bbox!
+                var flips = GetCoordFlip(srid);
 
                 var bbox = output.Where(bb => bb.CRS == crs).FirstOrDefault();
                 if (bbox == null)
@@ -217,10 +219,10 @@ namespace Cartomatic.Wms
                 var bottomLeft = wmtsBbox.LowerCorner.Split(' ');
                 var topRight = wmtsBbox.UpperCorner.Split(' ');
 
-                bbox.miny = Math.Min(bbox.miny, double.Parse(bottomLeft[1], CultureInfo.InvariantCulture));
-                bbox.minx = Math.Min(bbox.minx, double.Parse(bottomLeft[0], CultureInfo.InvariantCulture));
-                bbox.maxy = Math.Max(bbox.maxy, double.Parse(topRight[1], CultureInfo.InvariantCulture));
-                bbox.maxx = Math.Max(bbox.maxx, double.Parse(topRight[0], CultureInfo.InvariantCulture));
+                bbox.minx = Math.Min(bbox.minx, double.Parse(flips ? bottomLeft[1] : bottomLeft[0] , CultureInfo.InvariantCulture));
+                bbox.miny = Math.Min(bbox.miny, double.Parse(flips ? bottomLeft[0] : bottomLeft[1], CultureInfo.InvariantCulture));
+                bbox.maxx = Math.Max(bbox.maxx, double.Parse(flips ? topRight[1] : topRight[0], CultureInfo.InvariantCulture));
+                bbox.maxy = Math.Max(bbox.maxy, double.Parse(flips ? topRight[0] : topRight[1], CultureInfo.InvariantCulture));
             }
 
             return output;

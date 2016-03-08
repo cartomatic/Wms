@@ -26,7 +26,8 @@ namespace Cartomatic.Wms
             CoordsFlippingSrids = new Dictionary<int, bool>()
             {
                 {4326, true},
-                {2180, true}
+                {2180, true},
+                {2193, true}
             };
         }
 
@@ -43,24 +44,24 @@ namespace Cartomatic.Wms
         }
 
         /// <summary>
-        /// Whether or not srid specified flips bbox coords
+        /// Whether or not srid specified flips axis for given wms version
         /// </summary>
         /// <param name="version"></param>
         /// <param name="srid"></param>
         /// <returns></returns>
         protected internal virtual bool GetCoordFlip(string version, int? srid)
         {
-            bool flip = false;
+            return version == "1.3.0" && GetCoordFlip(srid);
+        }
 
-            if (version == "1.3.0")
-            {
-                if (srid.HasValue && CoordsFlippingSrids.ContainsKey(srid.Value))
-                {
-                    flip = true;
-                }
-            }
-
-            return flip;
+        /// <summary>
+        /// Whether or not srid specified flips axis
+        /// </summary>
+        /// <param name="srid"></param>
+        /// <returns></returns>
+        protected internal virtual bool GetCoordFlip(int? srid)
+        {
+            return srid.HasValue && CoordsFlippingSrids.ContainsKey(srid.Value);
         }
     }
 }

@@ -32,6 +32,17 @@ namespace Cartomatic.Wms
         protected string ProxyUrlParam => "wmtscapsurl";
 
         /// <summary>
+        /// param describing whether or not bbox coords should be flipped or not before parsing it;
+        /// used to allow clients shuch as manifold 8 to use the service even though they send invalid bbox for wms 130
+        /// </summary>
+        protected string FlipBboxParam => "flipbboxcoords";
+
+        /// <summary>
+        /// Whether or not requested bbox coords should be flipped or not
+        /// </summary>
+        protected bool FlipBbox { get; set; }
+
+        /// <summary>
         /// Make sure the incoming full url as passed to the proxy is actually disassembled here!
         /// </summary>
         /// <param name="request"></param>
@@ -39,7 +50,18 @@ namespace Cartomatic.Wms
         {
             if (request.Address.AbsoluteUri.IndexOf('?') > -1)
             {
-                ProxyUrl = request.Address.AbsoluteUri.Substring(0, request.Address.AbsoluteUri.IndexOf('?') - 1);
+                ProxyUrl = request.Address.AbsoluteUri.Substring(0, request.Address.AbsoluteUri.IndexOf('?'));
+            }
+
+            var flipParam = request.Address.Query.Replace("?", "").Split('&')
+                .FirstOrDefault(p => p.StartsWith(FlipBboxParam))?
+                .Replace($"{FlipBboxParam}=", "");
+
+            if (!string.IsNullOrEmpty(flipParam))
+            {
+                bool flipBbox;
+                bool.TryParse(flipParam, out flipBbox);
+                FlipBbox = flipBbox;
             }
 
             //Use proxy utils to get the url that should be called
