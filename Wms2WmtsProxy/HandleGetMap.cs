@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Cartomatic.OgcSchemas.Wmts.Wmts_101;
@@ -195,54 +196,94 @@ namespace Cartomatic.Wms
             int tempXPixShift = 0;
             int tempYPixShift = 0;
 
-            using (var g = Graphics.FromImage(tempBmp))
+            var tasks = new List<Task<dynamic>>();
+
+            //prepare calls for the tiles
+            for (int x = 0; x < localTilesetWidth; x++)
             {
-                for (int x = 0; x < localTilesetWidth; x++)
+                var colIdx = leftTempTileIdx + x;
+                if (colIdx < 0 || colIdx > tmMatrixWidth) continue;
+
+                tempXPixShift = x * tmTileWidth;
+                var localTempXPixShift = tempXPixShift; //local copy so works in closure
+                for (int y = 0; y < localTilesetHeight; y++)
                 {
-                    var colIdx = leftTempTileIdx + x;
-                    if (colIdx < 0 || colIdx > tmMatrixWidth) continue;
+                    var rowIdx = topTempTileIdx + y;
+                    if (rowIdx < 0 || rowIdx > tmMatrixHeight) continue;
 
-                    tempXPixShift = x*tmTileWidth;
-                    for (int y = 0; y < localTilesetHeight; y++)
+                    tempYPixShift = y * tmTileHeight;
+
+                    var localTempYPixShift = tempYPixShift; //local copy so works in closure
+
+                    //work out the tile url
+                    //If present in the ResourceURL - its a restful 
+                    //template="https://tiles-a.data-cdn.linz.govt.nz/services;key=3d56d9b5bb5a46fd9cef81ce077f3173/tiles/v4/set=2,{style}/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png"/>
+                    var tileUtl =
+                        resourceUrl.Replace("{style}", style)
+                            .Replace("{TileMatrixSet}", tileMatrixSetLink)
+                            .Replace("{TileMatrix}", tm.Identifier.Value)
+                            .Replace("{TileCol}", colIdx.ToString())
+                            .Replace("{TileRow}", rowIdx.ToString());
+
+                    //KVP requests
+                    //https://data.linz.govt.nz/services;key=3d56d9b5bb5a46fd9cef81ce077f3173/wmts/?service=WMTS&version=1.0.0&request=GetFeatureInfo&style=auto&format=image/png&layer=set-2&tilematrixset=EPSG:2193&tilematrix=0&tilecol=1&tilerow=3&infoformat=application/json&i=1&j=1
+                    //https://data.linz.govt.nz/services;key=3d56d9b5bb5a46fd9cef81ce077f3173/wmts/?service=WMTS&version=1.0.0&request=GetTile&style=auto&format=image/png&layer=set-2&tilematrixset=EPSG:2193&tilematrix=0&tilecol=1&tilerow=3&infoformat=application/json&i=1&j=1
+
+                    Task<dynamic> f = Task<dynamic>.Factory.StartNew(() =>
                     {
-                        var rowIdx = topTempTileIdx + y;
-                        if (rowIdx < 0 || rowIdx > tmMatrixHeight) continue;
-
-                        tempYPixShift = y*tmTileHeight;
-
-                        //work out the tile url
-                        //template="https://tiles-a.data-cdn.linz.govt.nz/services;key=3d56d9b5bb5a46fd9cef81ce077f3173/tiles/v4/set=2,{style}/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png"/>
-                        var tileUtl =
-                            resourceUrl.Replace("{style}", style)
-                                .Replace("{TileMatrixSet}", tileMatrixSetLink)
-                                .Replace("{TileMatrix}", tm.Identifier.Value)
-                                .Replace("{TileCol}", colIdx.ToString())
-                                .Replace("{TileRow}", rowIdx.ToString());
-
                         //pull the image
                         var request = tileUtl.CreateHttpWebRequest();
                         var response = request.ExecuteRequest();
 
                         //TODO - potentially could do some caching too... so no need to call the wmts service so many times... need to test how this will work without caching first; also in memmory caching could be painful, on the other hand though it's easier to wipe such cache ;)
-                        
+
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
                             //read the output and make an image out of it
-                            var tile = new Bitmap(response.GetResponseStream());
-                            g.DrawImage(
-                                tile,
-                                new Rectangle(tempXPixShift, tempYPixShift, tmTileWidth, tmTileHeight),
-                                new Rectangle(0,0, tile.Width, tile.Height),
-                                GraphicsUnit.Pixel     
-                            );
+                            return new
+                            {
+                                tile = new Bitmap(response.GetResponseStream()),
+                                tempXPixShift = localTempXPixShift,
+                                tempYPixShift = localTempYPixShift
+                            };
                         }
                         //ignore failed tiles
-                    }
+
+                        return null;
+                    });
+
+                    tasks.Add(f);
                 }
             }
 
-            //at this stage the whole temp tile should be present so need to extract the needed part and paint it onto an output tile.
+            //all the tasks have been already fired up so need to await the
             
+
+            //and await all
+            Task.WaitAll(tasks.ToArray());
+
+            
+            using (var g = Graphics.FromImage(tempBmp))
+            {
+                foreach (var task in tasks)
+                {
+                    if (task.Result == null) continue;
+
+                    var tile = task.Result.tile as Bitmap;
+
+                    g.DrawImage(
+                        tile,
+                        new Rectangle(task.Result.tempXPixShift, task.Result.tempYPixShift, tmTileWidth, tmTileHeight),
+                        new Rectangle(0, 0, tile.Width, tile.Height),
+                        GraphicsUnit.Pixel
+                    );
+                }
+            }
+
+            
+
+            //at this stage the whole temp tile should be present so need to extract the needed part and paint it onto an output tile.
+
             //basically temp tileset / temp image should be larger than the requested bbox - always as it is made sure all the corners fit in
 
             //work out the top left of the temp tileset in map units
