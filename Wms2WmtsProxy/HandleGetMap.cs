@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -189,10 +190,10 @@ namespace Cartomatic.Wms
 
 
             //create a bitmap that will be used to stitch the wmts tiles
-            var tempBmp = new Bitmap(localTilesetWidth * tmTileWidth, localTilesetHeight * tmTileHeight);
+            var tempBmp = new Bitmap(localTilesetWidth * tmTileWidth, localTilesetHeight * tmTileHeight, PixelFormat.Format32bppArgb);
 
-            int xPixShift = 0;
-            int yPixShift = 0;
+            int tempXPixShift = 0;
+            int tempYPixShift = 0;
 
             using (var g = Graphics.FromImage(tempBmp))
             {
@@ -201,13 +202,13 @@ namespace Cartomatic.Wms
                     var colIdx = leftTempTileIdx + x;
                     if (colIdx < 0 || colIdx > tmMatrixWidth) continue;
 
-                    xPixShift = x*tmTileWidth;
+                    tempXPixShift = x*tmTileWidth;
                     for (int y = 0; y < localTilesetHeight; y++)
                     {
                         var rowIdx = topTempTileIdx + y;
                         if (rowIdx < 0 || rowIdx > tmMatrixHeight) continue;
 
-                        yPixShift = y*tmTileHeight;
+                        tempYPixShift = y*tmTileHeight;
 
                         //work out the tile url
                         //template="https://tiles-a.data-cdn.linz.govt.nz/services;key=3d56d9b5bb5a46fd9cef81ce077f3173/tiles/v4/set=2,{style}/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png"/>
@@ -230,7 +231,7 @@ namespace Cartomatic.Wms
                             var tile = new Bitmap(response.GetResponseStream());
                             g.DrawImage(
                                 tile,
-                                new Rectangle(xPixShift, yPixShift, tmTileWidth, tmTileHeight),
+                                new Rectangle(tempXPixShift, tempYPixShift, tmTileWidth, tmTileHeight),
                                 new Rectangle(0,0, tile.Width, tile.Height),
                                 GraphicsUnit.Pixel     
                             );
@@ -240,25 +241,54 @@ namespace Cartomatic.Wms
                 }
             }
 
-            //at this stage the whole temp tile should be present so need to map the temptile bbox to requested bbox and extract such portion of the tile
-            //in order to paint it on the output tile
+            //at this stage the whole temp tile should be present so need to extract the needed part and paint it onto an output tile.
+            
+            //basically temp tileset / temp image should be larger than the requested bbox - always as it is made sure all the corners fit in
+
+            //work out the top left of the temp tileset in map units
+            var tempTilesetMinX = tmLeft + (leftTempTileIdx)*tmTileWidth*tmPixelResolution;
+            var tempTilesetMaxY = tmTop - (topTempTileIdx)*tmTileHeight*tmPixelResolution;
+
+            //work out the shift from left and top
+            var xPixShift = (bbox.MinX - tempTilesetMinX)/tmPixelResolution;
+            var yPixShift = (tempTilesetMaxY - bbox.MaxY)/tmPixelResolution;
+
+            //and the rect width and height
+            var pixWidth = bbox.Width/tmPixelResolution;
+            var pixHeight = bbox.Height/tmPixelResolution;
+
+            //finally create an output bitmap and paint the cut part of the temp tileset
+            var outBmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            using (var g = Graphics.FromImage(outBmp))
+            {
+                //if back color different than transparent paint it
+                if (backColor != Color.Transparent)
+                {
+                    g.FillRectangle(
+                        new SolidBrush(backColor),
+                        new Rectangle(0, 0, outBmp.Width, outBmp.Height)
+                        );
+                }
+
+                g.DrawImage(
+                    tempBmp,
+                    new Rectangle(0, 0, outBmp.Width, outBmp.Height),
+                    new RectangleF((float) xPixShift, (float) yPixShift, (float) pixWidth, (float) pixHeight),
+                    GraphicsUnit.Pixel
+                    );
+            }
 
             //Get the image format requested
             //Note: this should have been checked in the base driver against formats supported
             ImageCodecInfo imageEncoder = GetEncoderInfo(GetParam("FORMAT"));
 
-            
-
-
-
-            
-            
-            throw new WmsDriverException("Work in progress!");
-            
-     
-            //finally render the raster
-            //output.ResponseContentType = imageEncoder.MimeType;
-            //output.ResponseBinary = Render(bbox, width, height, imageEncoder, backColor);
+            //and finally write the bmp to mem str so can get bytes
+            using (var ms = new MemoryStream())
+            {
+                outBmp.Save(ms, imageEncoder, null);
+                output.ResponseContentType = imageEncoder.MimeType;
+                output.ResponseBinary = ms.ToArray();
+            }
 
             return output;
         }

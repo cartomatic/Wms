@@ -93,7 +93,7 @@ namespace Cartomatic.Wms
                     {
                         PullWmtsCaps(baseUrl);
 
-                        PrepareBasicDriverConfiguration(baseUrl);
+                        PrepareBasicDriverConfiguration(baseUrl); 
                     }
                 }
             }
@@ -234,6 +234,7 @@ namespace Cartomatic.Wms
                 wmsCfg["WmsServiceDescription"] = wmsDesc;
 
 
+                
                 //extract and cache image formats the wmts get tile lists for all layers
                 wmsCfg["SupportedGetMapFormats"] = wmtsCaps.Contents.LayerSet.Aggregate(new List<string>(), (agg, ls) =>
                 {
