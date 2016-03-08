@@ -234,13 +234,23 @@ namespace Cartomatic.Wms
                 wmsCfg["WmsServiceDescription"] = wmsDesc;
 
 
-                
                 //extract and cache image formats the wmts get tile lists for all layers
                 wmsCfg["SupportedGetMapFormats"] = wmtsCaps.Contents.LayerSet.Aggregate(new List<string>(), (agg, ls) =>
                 {
-                    agg.AddRange(
+                    //formats can be specified in the ResourceURL arr
+                    if (ls.ResourceURL != null)
+                    {
+                        agg.AddRange(
                         ls.ResourceURL.Where(resurl => resurl.resourceType == Wmts_101.URLTemplateTypeResourceType.tile)
                             .Select(resurl => resurl.format));
+                    }
+
+                    //or in the Format arr
+                    if (ls.Format != null)
+                    {
+                        agg.AddRange(ls.Format);
+                    }
+
                     return agg;
                 }).Distinct().ToList();
 

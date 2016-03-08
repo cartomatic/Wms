@@ -83,41 +83,63 @@ namespace Cartomatic.Wms
             //so in order to make the service be flexible usable with manifold, users can specify the crs they want to use
             var enforcedCrs = GetParam<string>("enforcecrs");
 
+            //Note:
+            //looks like neither Items (bounding boxes), nor WGS84BoundingBox are actually required...
+            //In such case need to work out the bboxes based on the tilematrixset lvl 0, its topleft corner, scale and tileset tile size...
+            //TODO - eh... wtf the standards are so messed up, huh?
+
 
             //extract bboxes as defined int wmts
             var wmtsBboxes =
                 wmtsCaps.Contents.LayerSet.Aggregate(new List<Wmts_101.BoundingBoxType>(),
                     (agg, ls) =>
                     {
-                        agg.AddRange(ls.Items);
+                        if (ls.Items != null)
+                        {
+                            agg.AddRange(ls.Items);
+                        }
                         return agg;
                     })
                     .Where(bb => string.IsNullOrEmpty(enforcedCrs) || "EPSG:" + bb.crs.Split(':').Last() == enforcedCrs);
+
 
             
             var wmtsWgs84Bboxes = wmtsCaps.Contents.LayerSet.Aggregate(new List<Wmts_101.WGS84BoundingBoxType>(),
                 (agg, ls) =>
                 {
-                    agg.AddRange(ls.WGS84BoundingBox);
+                    if (ls.WGS84BoundingBox != null)
+                    {
+                        agg.AddRange(ls.WGS84BoundingBox);
+                    }
                     return agg;
                 });
 
             //list of supported CRSs
             var rootCrs = new List<string>();
-            rootCrs.AddRange(
-                wmtsBboxes.Select(bb => "EPSG:" + bb.crs.Split(':').Last()).Distinct()
-            );
+            if (wmtsBboxes.Any())
+            {
+                rootCrs.AddRange(
+                    wmtsBboxes.Select(bb => "EPSG:" + bb.crs.Split(':').Last()).Distinct()
+                    );
+            }
+
             rootL.CRS = rootCrs.ToArray();
 
 
             //crs bboxes
-            rootL.BoundingBox = PrepareWmsBoundingBoxes(wmtsBboxes).ToArray();
+            if (wmtsBboxes.Any())
+            {
+                rootL.BoundingBox = PrepareWmsBoundingBoxes(wmtsBboxes).ToArray();
+            }
 
 
             //geographic bbox
             //Note: wmts can specify an array of wgs84 bboxes. guess this is when each layer define a different extent
             //So basically need to make one bbox out of an arr
-            rootL.EX_GeographicBoundingBox = PrepareEx_GeographicBoundingBox(wmtsWgs84Bboxes);
+            if (wmtsWgs84Bboxes.Any())
+            {
+                rootL.EX_GeographicBoundingBox = PrepareEx_GeographicBoundingBox(wmtsWgs84Bboxes);
+            }
 
 
             //and finally do the layers
@@ -136,9 +158,22 @@ namespace Cartomatic.Wms
                 l.Title = wmtsL.Title.FirstOrDefault()?.Value;
                 l.Abstract = wmtsL.Abstract.FirstOrDefault()?.Value;
 
-                l.BoundingBox = PrepareWmsBoundingBoxes(wmtsL.Items).ToArray();
+                //Looks like Items arr is not obligatory; in such case need to extract bboxes of the TileMatrixSet.
+                if (wmtsL.Items != null)
+                {
+                    l.BoundingBox = PrepareWmsBoundingBoxes(wmtsL.Items).ToArray();
+                }
+                else
+                {
+                    //TODO - extract bboxes of the TileMatrixSet.
+                }
 
-                l.EX_GeographicBoundingBox = PrepareEx_GeographicBoundingBox(wmtsL.WGS84BoundingBox);
+
+                //geographic bbox also seem to not be obligatory
+                if (wmtsL.WGS84BoundingBox != null)
+                {
+                    l.EX_GeographicBoundingBox = PrepareEx_GeographicBoundingBox(wmtsL.WGS84BoundingBox);
+                }
 
                 layers.Add(l);
             }
