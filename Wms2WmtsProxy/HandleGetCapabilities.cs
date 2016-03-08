@@ -161,7 +161,7 @@ namespace Cartomatic.Wms
                 //Looks like Items arr is not obligatory; in such case need to extract bboxes of the TileMatrixSet.
                 if (wmtsL.Items != null)
                 {
-                    l.BoundingBox = PrepareWmsBoundingBoxes(wmtsL.Items).ToArray();
+                    l.BoundingBox = PrepareWmsBoundingBoxes(wmtsL.Items.Where(bb => string.IsNullOrEmpty(enforcedCrs) || "EPSG:" + bb.crs.Split(':').Last() == enforcedCrs)).ToArray();
                 }
                 else
                 {

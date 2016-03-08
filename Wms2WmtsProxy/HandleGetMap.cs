@@ -21,7 +21,6 @@ namespace Cartomatic.Wms
             Validate(HandleGetMapValidationRulesDriverSpecific);
 
             return RenderTile();
-            //TODO - pull 'n' stitch
         }
 
         /// <summary>
