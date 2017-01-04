@@ -247,6 +247,22 @@ namespace Cartomatic.Wms
                             };
                         }
                         //ignore failed tiles
+                        else
+                        {
+                            //retry...
+                            request = tileUtl.CreateHttpWebRequest();
+                            response = request.ExecuteRequest();
+                            if (response.StatusCode == HttpStatusCode.OK)
+                            {
+                                //read the output and make an image out of it
+                                return new
+                                {
+                                    tile = new Bitmap(response.GetResponseStream()),
+                                    tempXPixShift = localTempXPixShift,
+                                    tempYPixShift = localTempYPixShift
+                                };
+                            }
+                        }
 
                         return null;
                     });
