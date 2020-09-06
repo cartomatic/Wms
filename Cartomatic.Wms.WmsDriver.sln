@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.WmsDriverTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.ManifoldWmsDriverTests", "ManifoldWmsDriverTests\Cartomatic.Wms.ManifoldWmsDriverTests.csproj", "{953AEAA5-CB06-4358-9014-2419E4D83B7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.ManifoldWmsDriverWebTests", "ManifoldWmsDriverWebTests\Cartomatic.Wms.ManifoldWmsDriverWebTests.csproj", "{DAA4EB99-1447-4ABF-8726-1E62916B5E43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAA4EB99-1447-4ABF-8726-1E62916B5E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAA4EB99-1447-4ABF-8726-1E62916B5E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAA4EB99-1447-4ABF-8726-1E62916B5E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAA4EB99-1447-4ABF-8726-1E62916B5E43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
