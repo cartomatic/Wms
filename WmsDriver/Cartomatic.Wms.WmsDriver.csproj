@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\OgcSchemas\Cartomatic.OgcSchemas.Wms\Cartomatic.OgcSchemas.Wms.csproj" />
+    <ProjectReference Include="..\..\Utils\Cartomatic.Utils\Cartomatic.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

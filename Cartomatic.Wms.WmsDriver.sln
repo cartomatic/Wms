@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cartomatic", "Cartomatic", "{285209B0-A634-4B9D-B826-140CF5AEFF15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cartomatic.OgcSchemas.Wms", "..\OgcSchemas\Cartomatic.OgcSchemas.Wms\Cartomatic.OgcSchemas.Wms.csproj", "{36D27005-01C5-452A-856D-4A68FF0150B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cartomatic.Utils", "..\Utils\Cartomatic.Utils\Cartomatic.Utils.csproj", "{66F46897-F481-4259-95D2-28219D162C93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cartomatic.Wms.WmsDriver", "WmsDriver\Cartomatic.Wms.WmsDriver.csproj", "{41264806-EA47-42DD-8943-08B340AF43AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.ManifoldWmsDriver", "ManifoldWmsDriver\Cartomatic.Wms.ManifoldWmsDriver.csproj", "{B04CB06E-4A82-4638-83C6-79C6C5B0078A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.WmsDriverTests", "WmsDriverTests\Cartomatic.Wms.WmsDriverTests.csproj", "{AFBD8FCD-F2DC-4588-B676-2F2D97904E27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.ManifoldWmsDriverTests", "ManifoldWmsDriverTests\Cartomatic.Wms.ManifoldWmsDriverTests.csproj", "{953AEAA5-CB06-4358-9014-2419E4D83B7F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36D27005-01C5-452A-856D-4A68FF0150B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36D27005-01C5-452A-856D-4A68FF0150B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36D27005-01C5-452A-856D-4A68FF0150B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36D27005-01C5-452A-856D-4A68FF0150B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66F46897-F481-4259-95D2-28219D162C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F46897-F481-4259-95D2-28219D162C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F46897-F481-4259-95D2-28219D162C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F46897-F481-4259-95D2-28219D162C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41264806-EA47-42DD-8943-08B340AF43AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41264806-EA47-42DD-8943-08B340AF43AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41264806-EA47-42DD-8943-08B340AF43AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41264806-EA47-42DD-8943-08B340AF43AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B04CB06E-4A82-4638-83C6-79C6C5B0078A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B04CB06E-4A82-4638-83C6-79C6C5B0078A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B04CB06E-4A82-4638-83C6-79C6C5B0078A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B04CB06E-4A82-4638-83C6-79C6C5B0078A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFBD8FCD-F2DC-4588-B676-2F2D97904E27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFBD8FCD-F2DC-4588-B676-2F2D97904E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFBD8FCD-F2DC-4588-B676-2F2D97904E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFBD8FCD-F2DC-4588-B676-2F2D97904E27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953AEAA5-CB06-4358-9014-2419E4D83B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{36D27005-01C5-452A-856D-4A68FF0150B8} = {285209B0-A634-4B9D-B826-140CF5AEFF15}
+		{66F46897-F481-4259-95D2-28219D162C93} = {285209B0-A634-4B9D-B826-140CF5AEFF15}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5F2D684-217B-4BD7-94E5-A02710CF063B}
+	EndGlobalSection
+EndGlobal
