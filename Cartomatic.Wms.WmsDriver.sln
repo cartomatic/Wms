@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.ManifoldWmsD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.ManifoldWmsDriverWebTests", "ManifoldWmsDriverWebTests\Cartomatic.Wms.ManifoldWmsDriverWebTests.csproj", "{DAA4EB99-1447-4ABF-8726-1E62916B5E43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartomatic.Wms.TileCache", "TileCache\Cartomatic.Wms.TileCache.csproj", "{F06382AF-2AD0-4009-A77D-C0B232271535}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{DAA4EB99-1447-4ABF-8726-1E62916B5E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAA4EB99-1447-4ABF-8726-1E62916B5E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAA4EB99-1447-4ABF-8726-1E62916B5E43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F06382AF-2AD0-4009-A77D-C0B232271535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F06382AF-2AD0-4009-A77D-C0B232271535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F06382AF-2AD0-4009-A77D-C0B232271535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F06382AF-2AD0-4009-A77D-C0B232271535}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
