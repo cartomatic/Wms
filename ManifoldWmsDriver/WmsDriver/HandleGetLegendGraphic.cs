@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cartomatic.Utils.Drawing;
 using Cartomatic.Wms;
 
 using M = Manifold.Interop;
@@ -61,7 +62,7 @@ namespace Cartomatic.Wms
                 }
             }
 
-            ImageCodecInfo imageEncoder = GetEncoderInfo(GetParam("FORMAT"));
+            ImageCodecInfo imageEncoder = GetParam("FORMAT").GetEncoderInfo();
             MapServer.RenderFormat = GetMapServerRenderFormat(imageEncoder.MimeType);
 
             //Note:

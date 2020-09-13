@@ -1,8 +1,4 @@
-﻿using System;
-using Cartomatic.Utils.Dto;
-using Cartomatic.Utils.Serialization;
-
-namespace Cartomatic.Wms.TileCache
+﻿namespace Cartomatic.Wms.TileCache
 {
 
     public partial class TileScheme
@@ -40,7 +36,7 @@ namespace Cartomatic.Wms.TileCache
         public int TileSetBaseHeight { get; set; }
 
         /// <summary>
-        /// Tileset bounds
+        /// Tile set bounds
         /// </summary>
         public Bounds TileSetBounds { get; set; }
 
@@ -51,14 +47,14 @@ namespace Cartomatic.Wms.TileCache
         public bool ReverseY { get; set; }
 
         /// <summary>
-        /// An array of tileset's resolutions
+        /// An array of tile set's resolutions
         /// </summary>
         public decimal[] Resolutions { get; set; }
 
         /// <summary>
-        /// flagged when tilescheme has been prepared for calculations
+        /// flagged when tile scheme has been prepared for calculations
         /// </summary>
         public bool Ready { get; private set; }
-       
+
     }
 }

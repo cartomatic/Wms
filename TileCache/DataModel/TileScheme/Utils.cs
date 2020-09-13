@@ -20,12 +20,12 @@ namespace Cartomatic.Wms.TileCache
             return output;
         }
 
-        public int GetTIlesetWidthForLvl(int lvl)
+        public int GetTileSetWidthForLvl(int lvl)
         {
             return TileSetBaseWidth * (int)Math.Pow(2, lvl);
         }
 
-        public int GetTilesetHeightForLvl(int lvl)
+        public int GetTileSetHeightForLvl(int lvl)
         {
             return TileSetBaseHeight * (int)Math.Pow(2, lvl);
         }
@@ -47,7 +47,7 @@ namespace Cartomatic.Wms.TileCache
         }
 
         /// <summary>
-        /// Retruns y tile address (y row) at given zoom level
+        /// Returns y tile address (y row) at given zoom level
         /// </summary>
         /// <param name="y"></param>
         /// <param name="zoomLvl"></param>
@@ -70,7 +70,7 @@ namespace Cartomatic.Wms.TileCache
         }
 
         /// <summary>
-        /// Gets the total tile count for the tileset 
+        /// Gets the total tile count for the tile set 
         /// </summary>
         /// <returns></returns>
         public long GetTileCount()
@@ -97,7 +97,7 @@ namespace Cartomatic.Wms.TileCache
         }
 
         /// <summary>
-        /// Gets the tile count for the bouds and specified zoom levels
+        /// Gets the tile count for the bounds and specified zoom levels
         /// </summary>
         /// <param name="b"></param>
         /// <param name="startLvl"></param>
@@ -107,7 +107,7 @@ namespace Cartomatic.Wms.TileCache
         {
             long count = 0;
 
-            for (int i = startLvl; i <= endLvl; i++)
+            for (var i = startLvl; i <= endLvl; i++)
             {
                 count += GetTileCountForZoomLvl(b, i);
             }
@@ -133,11 +133,11 @@ namespace Cartomatic.Wms.TileCache
         /// <returns></returns>
         public long GetTileCountForZoomLvl(Bounds b, int zoomLvl)
         {
-            int minTileX = (int)GetXColumn((double)b.MinX, zoomLvl);
-            int maxTileX = (int)GetXColumn((double)b.MaxX, zoomLvl);
+            var minTileX = (int)GetXColumn((double)b.MinX, zoomLvl);
+            var maxTileX = (int)GetXColumn((double)b.MaxX, zoomLvl);
 
-            int minTileY = (int)GetXColumn((double)b.MinY, zoomLvl);
-            int maxTileY = (int)GetXColumn((double)b.MaxY, zoomLvl);
+            var minTileY = (int)GetXColumn((double)b.MinY, zoomLvl);
+            var maxTileY = (int)GetXColumn((double)b.MaxY, zoomLvl);
 
             return (maxTileX - minTileX) * (maxTileY - minTileY);
         }

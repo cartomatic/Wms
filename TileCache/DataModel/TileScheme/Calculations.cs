@@ -1,6 +1,4 @@
 ﻿using System;
-using Cartomatic.Utils.Dto;
-using Cartomatic.Utils.Serialization;
 
 namespace Cartomatic.Wms.TileCache
 {
@@ -8,12 +6,12 @@ namespace Cartomatic.Wms.TileCache
     public partial class TileScheme
     {
         /// <summary>
-        /// Prepares the tileset for further calculations
+        /// Prepares the tile set for further calculations
         /// </summary>
         public void Prepare()
         {
             if (Ready) return;
-            
+
             CalculateResolutions();
 
             Ready = true;
@@ -31,7 +29,7 @@ namespace Cartomatic.Wms.TileCache
         }
 
         /// <summary>
-        /// Calculates tileset's resolutions
+        /// Calculates tile set's resolutions
         /// </summary>
         private void CalculateResolutions()
         {
@@ -41,12 +39,12 @@ namespace Cartomatic.Wms.TileCache
 
             for (var zl = 0; zl < NumZoomLevels; zl++)
             {
-                Resolutions[zl] = decimal.Round(((MaxResolution ?? 0) * (decimal) (1 / Math.Pow(2, zl))), Precision);
+                Resolutions[zl] = decimal.Round(((MaxResolution ?? 0) * (decimal)(1 / Math.Pow(2, zl))), Precision);
             }
         }
 
         /// <summary>
-        /// Calculates tileset's max resolution
+        /// Calculates tile set's max resolution
         /// </summary>
         private void CalculateMaxResolution()
         {
@@ -63,12 +61,10 @@ namespace Cartomatic.Wms.TileCache
         /// Calculates tile address based on passed bounds
         /// </summary>
         /// <param name="tileBounds">Tile bounds</param>
-        /// <returns>Tile object</returns>
         public Tile CalculateTileAddress(Bounds tileBounds)
         {
             var output = new Tile();
 
-            //check if the tile bounds are valid
             if (!tileBounds.IsValid())
             {
                 output.Valid = false;
@@ -76,7 +72,7 @@ namespace Cartomatic.Wms.TileCache
             }
 
 
-            //check if the tile fits into the tilesetbounds
+            //check if the tile fits into the tile set bounds
             if (
                 tileBounds.MinX < TileSetBounds.MinX ||
                 tileBounds.MinY < TileSetBounds.MinY ||
@@ -114,7 +110,7 @@ namespace Cartomatic.Wms.TileCache
             //Get the tile offset against the tileset's start point
             var offsetX = (double)(tileBounds.MinX - TileSetBounds.MinX);
 
-            
+
             //y may be reversed so depending on how the tilescheme is set adjust offset y
             double offsetY;
             if (ReverseY)
@@ -132,7 +128,7 @@ namespace Cartomatic.Wms.TileCache
             var tileIndexOffsetX = offsetX / (TileSize * tileRes);
             var tileIndexOffsetY = offsetY / (TileSize * tileRes);
 
-            
+
             //get the reminders to see if there are any and if they fit in the allowed margin of pxSize
             var xrmdr = tileIndexOffsetX % 1;
             var yrmdr = tileIndexOffsetY % 1;
@@ -141,7 +137,7 @@ namespace Cartomatic.Wms.TileCache
             //if absolute value of 1 - rmdr is smaller than the rmdr it means that the tile address (row or col)
             //was something like 1.999... instead of 1.000...
             xrmdr = Math.Min(xrmdr, Math.Abs(1 - xrmdr));
-            yrmdr = Math.Min(yrmdr, Math.Abs(1 - yrmdr)); 
+            yrmdr = Math.Min(yrmdr, Math.Abs(1 - yrmdr));
 
 
             //pixel size expressed as the part of the whole column
@@ -172,7 +168,6 @@ namespace Cartomatic.Wms.TileCache
         /// Calculates tile bounds based on passed address
         /// </summary>
         /// <param name="tileAddress">Tile address</param>
-        /// <returns>Tile object</returns>
         public Tile CalculateTileBounds(TileAddress tileAddress)
         {
             var output = new Tile();

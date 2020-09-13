@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cartomatic.Utils.Drawing;
 using Cartomatic.Wms;
 using M = Manifold.Interop;
 
@@ -59,7 +60,7 @@ namespace Cartomatic.Wms
 
             //Get the image format requested
             //Note: this should have been checked in the base driver against formats supported
-            ImageCodecInfo imageEncoder = GetEncoderInfo(GetParam("FORMAT"));
+            var imageEncoder = GetParam("FORMAT").GetEncoderInfo();
 
 
             var bbox = ParseBBOX(GetParam("bbox"), GetParam("version"), MSettings.SRID);

@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Cartomatic.Utils.Serialization;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cartomatic.Utils.Serialization;
 
 namespace Cartomatic.Wms.TileCache
 {
@@ -22,21 +18,9 @@ namespace Cartomatic.Wms.TileCache
         public List<string> SupportedFormats { get; set; }
 
         /// <summary>
-        /// Whether or not png output should be size optimised
-        /// </summary>
-        public bool OptimizePng { get; set; }
-
-        
-        /// <summary>
         /// Dev option - whether or not to stamp the tile address
         /// </summary>
         public bool DevModeStampTileAddress { get; set; }
-
-
-        /// <summary>
-        /// Dev option - whether or not to stamp the tile bounds; not used so far
-        /// </summary>
-        public bool DevModeStampTileBounds { get; set; }
 
 
         /// <summary>

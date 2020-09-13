@@ -1,5 +1,4 @@
-﻿using System;
-using Cartomatic.Utils.Dto;
+﻿using Cartomatic.Utils.Dto;
 using Cartomatic.Utils.Serialization;
 
 namespace Cartomatic.Wms.TileCache

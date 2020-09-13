@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cartomatic.Utils.Drawing;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -21,7 +22,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         {
             var drv = MakeWmsDriver();
 
-            var codecInfo = drv.GetEncoderInfo(format);
+            var codecInfo = format.GetEncoderInfo();
 
             codecInfo.MimeType.Should().Be(expectedMime);
         }
