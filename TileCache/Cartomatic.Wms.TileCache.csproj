@@ -1,12 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Cartomatic.Wms.TileCache</RootNamespace>
+    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <LangVersion>8</LangVersion>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="nquant" Version="1.0.3" />
     <PackageReference Include="system.drawing.common" Version="4.7.0" />
   </ItemGroup>
 
