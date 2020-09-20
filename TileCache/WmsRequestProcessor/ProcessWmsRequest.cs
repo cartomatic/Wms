@@ -1,14 +1,132 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using Cartomatic.OgcSchemas.Wms.Wms_1302;
 using Cartomatic.Utils;
 using Cartomatic.Utils.Web;
+using Cartomatic.Wms.TileCache.DataModel;
 using Cartomatic.Wms.WmsDriverExtensions;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Cartomatic.Wms.TileCache
 {
     public partial class WmsRequestProcessor
     {
+        /// <summary>
+        /// Processes the request that is supposed to be a wms request; All invalid requests - non getmap requests are just proxied
+        /// If a request is a getmap request more checkups are done - for example if requested image 'fits' into a tile scheme used for caching;
+        ///
+        /// this method is a convenience wrapper for proxying and caching a remote WMS
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="response"></param>
+        /// <param name="cfg">tile cache configuration</param>
+        /// <param name="map">map for which a remote url should be resolved</param>
+        /// <param name="maps">a collection of maps to look up a remote url for a map</param>
+        /// <returns></returns>
+        public static async Task<IActionResult> ProcessRequestAsync(
+            HttpRequest request,
+            HttpResponse response,
+            Configuration cfg,
+            string map,
+            Dictionary<string, string> maps
+        )
+        {
+            var query = request.Query;
+
+            if (string.IsNullOrWhiteSpace(map) || !maps.ContainsKey(map))
+                return WmsException(response, $"Unrecognized map: {map}");
+
+
+            var urlBase = maps[map];
+
+            var destUrl = $"{urlBase}?{string.Join("&", query.Select(x => $"{x.Key}={x.Value}"))}";
+
+            var tcOut = await Cartomatic.Wms.TileCache.WmsRequestProcessor.ProcessRequestAsync(
+                cfg.Settings,
+                cfg.TileScheme,
+                destUrl
+            );
+
+            //rewrite whatever content has been returned by the remote server
+            response.ContentType = tcOut.ResponseContentType;
+
+
+
+            if (tcOut.HasFile)
+            {
+                var fs = new FileStream(tcOut.FilePath, FileMode.Open);
+                response.RegisterForDispose(fs);
+                return new FileStreamResult(fs, tcOut.ResponseContentType);
+            }
+
+            if (tcOut.HasData)
+            {
+                //rewrite response if required
+                if (tcOut.ResponseContentType == "application/xml" &&
+                    query["request"].ToString().ToLower() == "getcapabilities")
+                {
+                    using var ms = new System.IO.MemoryStream(tcOut.ResponseBinary);
+                    using var sw = new StreamReader(ms);
+                    var responseStr = await sw.ReadToEndAsync();
+
+                    var replacementUrl = $"{request.Scheme}://{request.Host}{request.Path}?map={map}";
+
+                    responseStr = responseStr
+                        .Replace($"{urlBase}/?", replacementUrl)
+                        .Replace($"{urlBase}?", replacementUrl)
+                        .Replace(urlBase, replacementUrl);
+
+                    return new ObjectResult(responseStr)
+                    {
+                        StatusCode = (int)HttpStatusCode.OK
+                    };
+                }
+                else
+                {
+                    var ms = new MemoryStream(tcOut.ResponseBinary);
+                    response.RegisterForDispose(ms);
+
+                    return new FileStreamResult(ms, tcOut.ResponseContentType);
+                }
+            }
+
+            return new ObjectResult(tcOut)
+            {
+                StatusCode = (int)tcOut.StatusCode
+            };
+        }
+
+        /// <summary>
+        /// Custom wms exception generator
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        private static IActionResult WmsException(HttpResponse response, string message)
+        {
+            var wmsEx = new Cartomatic.OgcSchemas.Wms.Wms_1302.ServiceExceptionReport
+            {
+                ServiceException = new ServiceExceptionType[]
+                {
+                    new ServiceExceptionType
+                    {
+                        Value = message
+                    }
+                }
+            };
+
+            response.ContentType = "text/xml";
+
+            return new ObjectResult(wmsEx)
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            };
+        }
+
         /// <summary>
         /// Processes the request that is supposed to be a wms request; All invalid requests - non getmap requests are just proxied
         /// If a request is a getmap request more checkups are done - for example if requested image 'fits' into a tile scheme used for caching;
@@ -255,7 +373,7 @@ namespace Cartomatic.Wms.TileCache
         /// <typeparam name="T"></typeparam>
         /// <param name="request"></param>
         /// <param name="wmsDrv"></param>
-        private static async Task <Output> HandleWmsRequestAsync<T>(System.Net.HttpWebRequest request, T wmsDrv) where T : WmsDriver
+        private static async Task<Output> HandleWmsRequestAsync<T>(System.Net.HttpWebRequest request, T wmsDrv) where T : WmsDriver
         {
             return wmsDrv != null
                 ? await HandleWmsDriverRequestAsync(request, wmsDrv)
