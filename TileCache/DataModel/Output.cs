@@ -1,4 +1,6 @@
-﻿namespace Cartomatic.Wms.TileCache
+﻿using System.Net;
+
+namespace Cartomatic.Wms.TileCache
 {
     public class Output
     {
@@ -28,6 +30,11 @@
         /// Response text
         /// </summary>
         public string ResponseText { get; set; }
+
+        /// <summary>
+        /// Response status code
+        /// </summary>
+        public HttpStatusCode StatusCode { get; set; }
 
         /// <summary>
         /// binary response data response_binary

@@ -1,6 +1,9 @@
-﻿using Cartomatic.Utils;
+﻿using System.Net;
+using System.Threading.Tasks;
+using Cartomatic.Utils;
 using Cartomatic.Utils.Web;
 using Cartomatic.Wms.WmsDriverExtensions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cartomatic.Wms.TileCache
 {
@@ -15,11 +18,11 @@ namespace Cartomatic.Wms.TileCache
         /// <param name="settings">Tile cache settings object TileCache.Settings</param>
         /// <param name="ts">Tile Scheme used for caching given reques</param>
         /// <param name="url">URL of the request</param>
-        public static Output ProcessRequest(Settings settings, TileScheme ts, string url)
+        public static async Task<Output> ProcessRequestAsync(Settings settings, TileScheme ts, string url)
         {
             //Note: need to pass null casted to base wms driver type so the param is accepted;
             //otherwise the method could not work out the type!
-            return ProcessRequest<WmsDriver>(settings, ts, url, null);
+            return await ProcessRequestAsync<WmsDriver>(settings, ts, url, null);
         }
 
 
@@ -35,7 +38,7 @@ namespace Cartomatic.Wms.TileCache
         /// <param name="ts">Tile Scheme used for caching given request</param>
         /// <param name="url">The actual request URL</param>
         /// <param name="wmsDrv">WmsDriver if the request should be handled by a driver</param>
-        public static Output ProcessRequest<T>(Settings settings, TileScheme ts, string url, T wmsDrv) where T : WmsDriver
+        public static async Task<Output> ProcessRequestAsync<T>(Settings settings, TileScheme ts, string url, T wmsDrv) where T : WmsDriver
         {
             var output = new Output();
 
@@ -51,7 +54,7 @@ namespace Cartomatic.Wms.TileCache
             //if there is not tileset provided, just pass through as it will not be able to neither lookup for the cache nor save file
             if (ts == null)
             {
-                return HandleWmsRequest(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, wmsDrv);
             }
 
             var requestParams = System.Web.HttpUtility.ParseQueryString(request.Address.Query);
@@ -60,7 +63,7 @@ namespace Cartomatic.Wms.TileCache
             var wmsRequest = requestParams["request"];
             if (string.IsNullOrEmpty(wmsRequest) || wmsRequest.ToLower() != "getmap")
             {
-                return HandleWmsRequest(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, wmsDrv);
             }
 
 
@@ -69,7 +72,7 @@ namespace Cartomatic.Wms.TileCache
             var requestedFormatMime = requestParams["format"].ToLower();
             if (!Utils.WmsImageFormatSupported(requestedFormatMime, settings))
             {
-                return HandleWmsRequest(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, wmsDrv);
             }
 
 
@@ -79,7 +82,7 @@ namespace Cartomatic.Wms.TileCache
 
             if (w != ts.TileSize || h != ts.TileSize)
             {
-                output = HandleWmsRequest(request, wmsDrv);
+                output = await HandleWmsRequestAsync(request, wmsDrv);
 
                 //dev opts
                 output.ResponseBinary = Utils.ApplyDevOptions(
@@ -95,7 +98,7 @@ namespace Cartomatic.Wms.TileCache
             //layers present?
             if (string.IsNullOrEmpty(requestParams["layers"]))
             {
-                return HandleWmsRequest(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, wmsDrv);
             }
 
 
@@ -104,7 +107,7 @@ namespace Cartomatic.Wms.TileCache
 
             if (!ts.Ready)
             {
-                output = HandleWmsRequest(request, wmsDrv);
+                output = await HandleWmsRequestAsync(request, wmsDrv);
 
                 //dev opts
                 output.ResponseBinary = Utils.ApplyDevOptions(
@@ -132,7 +135,7 @@ namespace Cartomatic.Wms.TileCache
 
             if (!t.Valid)
             {
-                output = HandleWmsRequest(request, wmsDrv);
+                output = await HandleWmsRequestAsync(request, wmsDrv);
 
                 //dev opts
                 output.ResponseBinary = Utils.ApplyDevOptions(
@@ -192,7 +195,7 @@ namespace Cartomatic.Wms.TileCache
 
 
             //Since we are here it means no cache was found so need to execute a web request or make the wms driver do the job
-            output = HandleWmsRequest(request, wmsDrv);
+            output = await HandleWmsRequestAsync(request, wmsDrv);
 
 
             //check the content type of the format returned by the server or wms driver
@@ -218,6 +221,7 @@ namespace Cartomatic.Wms.TileCache
             //perhaps response status code would give some info
 
             //save file on independent thread so we can return immeadiately as saving file is delegated
+#if NETFULL
             var sf = new Utils.DelegateSaveFileBasedOnRequestParams(Utils.SaveFile);
             sf.BeginInvoke(
                 output.ResponseBinary,
@@ -227,6 +231,11 @@ namespace Cartomatic.Wms.TileCache
                 null,
                 null
             );
+#endif
+
+#if NETSTANDARD2_0 || NETCOREAPP3_1
+            Task.Run(() => Utils.SaveFile(output.ResponseBinary, settings.CacheFolder, requestParams, t));
+#endif
 
 
             //dev opts
@@ -246,11 +255,11 @@ namespace Cartomatic.Wms.TileCache
         /// <typeparam name="T"></typeparam>
         /// <param name="request"></param>
         /// <param name="wmsDrv"></param>
-        private static Output HandleWmsRequest<T>(System.Net.HttpWebRequest request, T wmsDrv) where T : WmsDriver
+        private static async Task <Output> HandleWmsRequestAsync<T>(System.Net.HttpWebRequest request, T wmsDrv) where T : WmsDriver
         {
             return wmsDrv != null
-                ? HandleWmsDriverRequest(request, wmsDrv)
-                : HandleStandardWebRequest(request);
+                ? await HandleWmsDriverRequestAsync(request, wmsDrv)
+                : await HandleStandardWebRequestAsync(request);
         }
 
         /// <summary>
@@ -259,15 +268,20 @@ namespace Cartomatic.Wms.TileCache
         /// <typeparam name="T"></typeparam>
         /// <param name="request"></param>
         /// <param name="wmsDrv"></param>
-        private static Output HandleWmsDriverRequest<T>(System.Net.HttpWebRequest request, T wmsDrv) where T : WmsDriver
+        private static async Task<Output> HandleWmsDriverRequestAsync<T>(System.Net.HttpWebRequest request, T wmsDrv) where T : WmsDriver
         {
             var output = new Output();
 
-            var wmsDrvOut = wmsDrv.HandleRequest(request);
+            var wmsDrvOut = await wmsDrv.HandleRequestAsync(request);
 
             output.ResponseContentType = wmsDrvOut.ResponseContentType;
             output.ResponseBinary = wmsDrvOut.ResponseBinary;
             output.ResponseText = wmsDrvOut.ResponseText;
+            output.StatusCode = wmsDrvOut.WmsDriverException == null
+                ? HttpStatusCode.OK
+                : wmsDrvOut.WmsDriverException.WmsExceptionCode == WmsExceptionCode.NotApplicable
+                    ? HttpStatusCode.InternalServerError
+                    : HttpStatusCode.BadRequest;
             output.HasData = wmsDrvOut.HasData();
 
             return output;
@@ -277,11 +291,11 @@ namespace Cartomatic.Wms.TileCache
         /// Handles a standard web request
         /// </summary>
         /// <param name="request"></param>
-        private static Output HandleStandardWebRequest(System.Net.HttpWebRequest request)
+        private static async Task<Output> HandleStandardWebRequestAsync(System.Net.HttpWebRequest request)
         {
             var output = new Output();
 
-            var response = request.ExecuteRequest();
+            var response = await request.ExecuteRequestAsync();
 
             output.ResponseBinary = response.GetResponseStream().ReadStream();
 
