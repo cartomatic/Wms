@@ -15,7 +15,7 @@ namespace Cartomatic.Wms
         /// </summary>
         /// <param name="capsDoc"></param>
         /// <returns></returns>
-        protected override WMS_Capabilities GenerateCapsLayersSection130(WMS_Capabilities capsDoc)
+        protected override async Task<WMS_Capabilities> GenerateCapsLayersSection130Async(WMS_Capabilities capsDoc)
         {
             var rootL = new Layer();
 

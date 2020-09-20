@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cartomatic.Utils.Web;
 using Cartomatic.Wms;
 using FluentAssertions;
@@ -435,24 +436,24 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void HandleGetMap_WhenPassesValidation_CallsHandleGetMapDriverSpecific()
+        public async Task HandleGetMap_WhenPassesValidation_CallsHandleGetMapDriverSpecific()
         {
             var drv = MakeWmsDriver();
             var request = "http://some.url/?request=GetMap&service=WMS&version=1.3.0&layers=someLayers&styles=&crs=someCrs&bbox=1,2,3,4&width=256&height=256&format=image/png".CreateHttpWebRequest();
 
-            drv.HandleRequest(request);
+            await drv.HandleRequestAsync(request);
 
             drv.HandleGetMapDriverSpecificCalled.Should().BeTrue();
         }
 
         [Test]
-        public void HandleGetMap_WhenParamsOkDriverSpecificGetMapNotImplemented_GeneratesWmsDriverException()
+        public async Task HandleGetMap_WhenParamsOkDriverSpecificGetMapNotImplemented_GeneratesWmsDriverException()
         {
             var drv = MakeWmsDriver();
             drv.CallBaseHandleGetMapDriverSpecific = true;
             var expectedMsg = "IMPLEMENTATION ERROR: GetMap is a mandatory operation for WMS 1.3.0.";
 
-            var response = drv.HandleRequest("http://some.url/?request=GetMap&service=WMS&version=1.3.0&layers=someLayers&styles=&crs=someCrs&bbox=1,2,3,4&width=256&height=256&format=image/png");
+            var response = await drv.HandleRequestAsync("http://some.url/?request=GetMap&service=WMS&version=1.3.0&layers=someLayers&styles=&crs=someCrs&bbox=1,2,3,4&width=256&height=256&format=image/png");
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
@@ -486,13 +487,13 @@ namespace Cartomatic.Wms.WmsDriverTests
 
             public bool CallBaseHandleGetMapDriverSpecific { get; set; }
         
-            protected override IWmsDriverResponse HandleGetMapDriverSpecific()
+            protected override async Task<IWmsDriverResponse> HandleGetMapDriverSpecificAsync()
             {
                 HandleGetMapDriverSpecificCalled = true;
 
                 if (CallBaseHandleGetMapDriverSpecific)
                 {
-                    return base.HandleGetMapDriverSpecific();
+                    return await base.HandleGetMapDriverSpecificAsync();
                 }
                 else
                 {

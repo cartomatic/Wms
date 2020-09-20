@@ -11,16 +11,21 @@ namespace Cartomatic.Wms
     public abstract partial class WmsDriver : IWmsDriver
     {
         /// <summary>
-        /// Handles WMS request in a form of a url
+        /// Handles a WMS request
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public IWmsDriverResponse HandleRequest(string url)
+        public async Task<IWmsDriverResponse> HandleRequestAsync(string url)
         {
-            return HandleRequest(url.CreateHttpWebRequest());
+            return await HandleRequestAsync(url.CreateHttpWebRequest());
         }
 
-        public IWmsDriverResponse HandleRequest(HttpWebRequest request)
+        /// <summary>
+        /// Handles a WMS request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<IWmsDriverResponse> HandleRequestAsync(HttpWebRequest request)
         {
             IWmsDriverResponse output = null;
 
@@ -38,7 +43,7 @@ namespace Cartomatic.Wms
 
                 //when ready delegate request handling based on the required operation
                 var operation = GetParam<string>("request");
-                bool ignoreCase = GetIgnoreCase();
+                var ignoreCase = GetIgnoreCase();
 
                 switch (operation.ToLower())
                 {
@@ -46,7 +51,7 @@ namespace Cartomatic.Wms
                         //make sure the casing is respected
                         if (string.Compare("GetCapabilities", operation, ignoreCase) == 0)
                         {
-                            output = HandleGetCapabilities();
+                            output = await HandleGetCapabilitiesAsync();
                         }
                         else
                         {
@@ -58,7 +63,7 @@ namespace Cartomatic.Wms
                         //make sure the casing is respected
                         if (string.Compare("GetMap", operation, ignoreCase) == 0)
                         {
-                            output = HandleGetMap();
+                            output = await HandleGetMapAsync();
                         }
                         else
                         {
@@ -70,7 +75,7 @@ namespace Cartomatic.Wms
                         //make sure the casing is respected
                         if (string.Compare("GetFeatureInfo", operation, ignoreCase) == 0)
                         {
-                            output = HandleGetFeatureInfo();
+                            output = await HandleGetFeatureInfoAsync();
                         }
                         else
                         {

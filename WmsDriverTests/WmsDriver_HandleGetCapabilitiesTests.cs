@@ -83,11 +83,11 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void HandleGetCapabilities_WhenParamsOk_CallsTheSubsequentMethodsStack()
+        public async Task HandleGetCapabilities_WhenParamsOk_CallsTheSubsequentMethodsStack()
         {
             var drv = MakeWmsDriver();
 
-            drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+            await drv.HandleRequestAsync("http://some.url/?request=GetCapabilities&service=WMS");
 
             drv.GenerateWmsCapabilitiesDocument130Called.Should().BeTrue();
             drv.GenerateCapsServiceSection130Called.Should().BeTrue();
@@ -96,12 +96,12 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void HandleGetCapabilities_WhenParamsOkAndGenerateLayersSectionNotImplemented_GeneratesWmsDriverException()
+        public async Task HandleGetCapabilities_WhenParamsOkAndGenerateLayersSectionNotImplemented_GeneratesWmsDriverException()
         {
             var drv = MakeWmsDriver();
             var expectedMsg = "IMPLEMENTATION ERROR: GetCapabilities is a mandatory operation for WMS 1.3.0.";
 
-            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+            var response = await drv.HandleRequestAsync("http://some.url/?request=GetCapabilities&service=WMS");
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
@@ -135,14 +135,14 @@ namespace Cartomatic.Wms.WmsDriverTests
 
         //get caps must be created, response type must be same as requested
         [Test]
-        public void HandleGetCapabilities_WhenParamsOk_GeneratesCapabilitiesXml()
+        public async Task HandleGetCapabilities_WhenParamsOk_GeneratesCapabilitiesXml()
         {
             var drv = MakeWmsDriver();
 
             //avoid calling base, as it throws on purpose in the default abstract class implementation
             drv.CallBaseInGenerateCapsLayersSection130 = false;
 
-            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+            var response = await drv.HandleRequestAsync("http://some.url/?request=GetCapabilities&service=WMS");
 
             response.ResponseContentType.Should().Be("text/xml");
             response.ResponseText.Should().NotBeNullOrWhiteSpace();
@@ -150,14 +150,14 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void HandleGetCapabilities_WhenParamsOkAndGetFeatureInfoSupported_GeneratesGetFeatureInfoOpSection()
+        public async Task HandleGetCapabilities_WhenParamsOkAndGetFeatureInfoSupported_GeneratesGetFeatureInfoOpSection()
         {
 
             var drv = MakeWmsDriver();
             //avoid calling base, as it throws on purpose in the default abstract class implementation
             drv.CallBaseInGenerateCapsLayersSection130 = false;
 
-            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+            var response = await drv.HandleRequestAsync("http://some.url/?request=GetCapabilities&service=WMS");
 
             response.ResponseContentType.Should().Be("text/xml");
             response.ResponseText.Should().NotBeNullOrWhiteSpace();
@@ -169,14 +169,14 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void HandleGetCapabilities_WhenParamsOkAndVendorOpsDefined_GeneratesExtendedOpsCapabilitiesSection()
+        public async Task HandleGetCapabilities_WhenParamsOkAndVendorOpsDefined_GeneratesExtendedOpsCapabilitiesSection()
         {
             var drv = MakeWmsDriver();
 
             //avoid calling base, as it throws on purpose in the default abstract class implementation
             drv.CallBaseInGenerateCapsLayersSection130 = false;
 
-            var response = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+            var response = await drv.HandleRequestAsync("http://some.url/?request=GetCapabilities&service=WMS");
 
             response.ResponseContentType.Should().Be("text/xml");
             response.ResponseText.Should().NotBeNullOrWhiteSpace();
@@ -227,10 +227,10 @@ namespace Cartomatic.Wms.WmsDriverTests
             /// </summary>
             public bool CallBaseInGenerateCapsLayersSection130 = true;
 
-            protected override WMS_Capabilities GenerateWmsCapabilitiesDocument130()
+            protected override async Task<WMS_Capabilities> GenerateWmsCapabilitiesDocument130Async()
             {
                 GenerateWmsCapabilitiesDocument130Called = true;
-                return base.GenerateWmsCapabilitiesDocument130();
+                return await base.GenerateWmsCapabilitiesDocument130Async();
             }
 
             protected override WMS_Capabilities GenerateCapsServiceSection130(WMS_Capabilities capsDoc)
@@ -245,12 +245,12 @@ namespace Cartomatic.Wms.WmsDriverTests
                 return base.GenerateCapsCapabilitiesSection130(capsDoc);
             }
 
-            protected override WMS_Capabilities GenerateCapsLayersSection130(WMS_Capabilities capsDoc)
+            protected override async Task<WMS_Capabilities> GenerateCapsLayersSection130Async(WMS_Capabilities capsDoc)
             {
                 GenerateCapsLayersSection130Called = true;
                 if (CallBaseInGenerateCapsLayersSection130)
                 {
-                    return base.GenerateCapsLayersSection130(capsDoc);
+                    return await base.GenerateCapsLayersSection130Async(capsDoc);
                 }
                 else
                 {

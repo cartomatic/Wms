@@ -15,23 +15,23 @@ namespace Cartomatic.Wms.WmsDriverTests
     public class WmsDriver_BasicTests
     {
         [Test]
-        public void Handle_Always_CallsPrepareDriver()
+        public async Task Handle_Always_CallsPrepareDriver()
         {
             var drv = MakeWmsDriver() ;
 
-            drv.HandleRequest("http://some.url/");
+            await drv.HandleRequestAsync("http://some.url/");
 
             (drv as FakeWmsDriver).PrepareCalled.Should().BeTrue();
         }
 
         [Test]
-        public void Handle_WhenServiceDescriptionNotProvided_CreatesDefaultWmsServiceDescription()
+        public async Task Handle_WhenServiceDescriptionNotProvided_CreatesDefaultWmsServiceDescription()
         {
             var drv = MakeWmsDriver();
 
             drv.ServiceDescription.Should().BeNull();
 
-            drv.HandleRequest("http://some.url/");
+            await drv.HandleRequestAsync("http://some.url/");
             
             drv.ServiceDescription.Should().NotBeNull();
         }

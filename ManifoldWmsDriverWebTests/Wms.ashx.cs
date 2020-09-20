@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Cartomatic.Wms.WmsDriverExtensions;
 
@@ -18,7 +19,13 @@ namespace Cartomatic.Wms.ManifoldWmsDriverWebTests
         {
             var drv = GetWmsDriver();
 
-            var drvResponse = drv.HandleRequest(context.Request.Url.AbsoluteUri);
+            IWmsDriverResponse drvResponse = null;
+            
+            //async so need to cheet in ashx handler
+            Task.WaitAll(
+        Task.Run(async () => drvResponse = await drv.HandleRequestAsync(context.Request.Url.AbsoluteUri))
+            );
+
 
             drvResponse.TransferToResponse(context.Response);
 

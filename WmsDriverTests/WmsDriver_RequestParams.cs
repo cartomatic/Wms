@@ -16,10 +16,10 @@ namespace Cartomatic.Wms.WmsDriverTests
     public class WmsDriver_RequestParams
     {
         [Test]
-        public void GetParamGeneric_ProperlyExtractsStrings()
+        public async Task GetParamGeneric_ProperlyExtractsStrings()
         {
             var drv = MakeWmsDriver() ;
-            drv.HandleRequest("http://some.url/?param=string");
+            await drv.HandleRequestAsync("http://some.url/?param=string");
 
             var param = drv.GetParam<string>("param");
 
@@ -28,10 +28,10 @@ namespace Cartomatic.Wms.WmsDriverTests
 
         [TestCase("TRUE")]
         [TestCase("true")]
-        public void GetParamGeneric_ProperlyExtractsBools(string pValue)
+        public async Task GetParamGeneric_ProperlyExtractsBools(string pValue)
         {
             var drv = MakeWmsDriver();
-            drv.HandleRequest(string.Format("http://some.url/?param={0}", pValue));
+            await drv.HandleRequestAsync(string.Format("http://some.url/?param={0}", pValue));
 
             var param = drv.GetParam<bool>("param");
 
@@ -39,10 +39,10 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void GetParamGeneric_ProperlyExtractsInts()
+        public async Task GetParamGeneric_ProperlyExtractsInts()
         {
             var drv = MakeWmsDriver();
-            drv.HandleRequest("http://some.url/?param=666");
+            await drv.HandleRequestAsync("http://some.url/?param=666");
 
             var param = drv.GetParam<int>("param");
 
@@ -50,10 +50,10 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void GetParamGeneric_ProperlyExtractsDoubles()
+        public async Task GetParamGeneric_ProperlyExtractsDoubles()
         {
             var drv = MakeWmsDriver();
-            drv.HandleRequest("http://some.url/?param=666.666");
+            await drv.HandleRequestAsync("http://some.url/?param=666.666");
 
             var param = drv.GetParam<double>("param");
 

@@ -17,11 +17,11 @@ namespace WmsDriverManifold.Tests
 
         [Test]
         [Category("ManifoldMapFileDependant")]
-        public void HandleGetCapabilities_WhenParamsOk_GeneratesLayersSectionForAllTheLayers()
+        public async Task HandleGetCapabilities_WhenParamsOk_GeneratesLayersSectionForAllTheLayers()
         {
             var drv = MakeWmsDriver();
 
-            var drvOutput = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+            var drvOutput = await drv.HandleRequestAsync("http://some.url/?request=GetCapabilities&service=WMS");
 
             drvOutput.ResponseText.Should().Contain("<Name>Natural Earth 50m</Name>");
             drvOutput.ResponseText.Should().Contain("<Name>Ne_50m_coastline Drawing</Name>");
@@ -31,12 +31,12 @@ namespace WmsDriverManifold.Tests
 
         [Test]
         [Category("ManifoldMapFileDependant")]
-        public void HandleGetCapabilities_WhenParamsOkAndCombineLayers_GeneratesLayersSectionForTheMapLevelOnly()
+        public async Task HandleGetCapabilities_WhenParamsOkAndCombineLayers_GeneratesLayersSectionForTheMapLevelOnly()
         {
             var drv = MakeWmsDriver();
             drv.CombineLayers = true;
 
-            var drvOutput = drv.HandleRequest("http://some.url/?request=GetCapabilities&service=WMS");
+            var drvOutput = await drv.HandleRequestAsync("http://some.url/?request=GetCapabilities&service=WMS");
 
             drvOutput.ResponseText.Should().Contain("<Name>Natural Earth 50m</Name>");
             drvOutput.ResponseText.Should().NotContain("<Name>Ne_50m_coastline Drawing</Name>");
@@ -58,7 +58,7 @@ namespace WmsDriverManifold.Tests
             {
             }
 
-            protected override IWmsDriverResponse HandleGetCapabilities()
+            protected override async Task<IWmsDriverResponse> HandleGetCapabilitiesAsync()
             {
 
                 //adjust the settings 
@@ -67,7 +67,7 @@ namespace WmsDriverManifold.Tests
                     MSettings.CombineLayers = true;
                 }
 
-                return base.HandleGetCapabilities();
+                return await base.HandleGetCapabilitiesAsync();
             }
         }
     }

@@ -1,15 +1,17 @@
-﻿namespace Cartomatic.Wms
+﻿using System.Threading.Tasks;
+
+namespace Cartomatic.Wms
 {
     public abstract partial class WmsDriver
     {
-        protected virtual IWmsDriverResponse HandleGetMap()
+        protected virtual async Task<IWmsDriverResponse> HandleGetMapAsync()
         {
             Validate(HandleGetMapValidationRules);
 
-            return HandleGetMapDriverSpecific();
+            return await HandleGetMapDriverSpecificAsync();
         }
 
-        protected virtual IWmsDriverResponse HandleGetMapDriverSpecific()
+        protected virtual async Task<IWmsDriverResponse> HandleGetMapDriverSpecificAsync()
         {
             throw new WmsDriverException(string.Format("IMPLEMENTATION ERROR: GetMap is a mandatory operation for WMS {0}.", GetParam<string>("version")));
         }

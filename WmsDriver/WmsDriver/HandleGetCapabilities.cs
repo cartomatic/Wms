@@ -10,7 +10,7 @@ namespace Cartomatic.Wms
 {
     public abstract partial class WmsDriver
     {
-        protected virtual IWmsDriverResponse HandleGetCapabilities()
+        protected virtual async Task<IWmsDriverResponse> HandleGetCapabilitiesAsync()
         {
             var output = new WmsDriverResponse();
 
@@ -22,7 +22,7 @@ namespace Cartomatic.Wms
 
             //TODO - when other versions implemented generated caps doc will depend on the version and will require a proper redirect!
 
-            var capsDoc130 = GenerateWmsCapabilitiesDocument130();
+            var capsDoc130 = await GenerateWmsCapabilitiesDocument130Async();
 
             //TODO - need to return caps in the format specified or in the default for given version. so far so good as service supports 130 only and only xml
             output.ResponseContentType = "text/xml";
@@ -36,12 +36,12 @@ namespace Cartomatic.Wms
         /// Generates capabilities document for version 1.3.0 of the service
         /// </summary>
         /// <returns></returns>
-        protected virtual WMS_Capabilities GenerateWmsCapabilitiesDocument130()
+        protected virtual async Task<WMS_Capabilities> GenerateWmsCapabilitiesDocument130Async()
         {
             var capsDoc = new WMS_Capabilities();
             capsDoc = GenerateCapsServiceSection130(capsDoc);
             capsDoc = GenerateCapsCapabilitiesSection130(capsDoc);
-            capsDoc = GenerateCapsLayersSection130(capsDoc);
+            capsDoc = await GenerateCapsLayersSection130Async(capsDoc);
 
             return capsDoc;
         }
@@ -225,7 +225,7 @@ namespace Cartomatic.Wms
         /// </summary>
         /// <param name="capsDoc"></param>
         /// <returns></returns>
-        protected virtual WMS_Capabilities GenerateCapsLayersSection130(WMS_Capabilities capsDoc)
+        protected virtual async Task<WMS_Capabilities> GenerateCapsLayersSection130Async(WMS_Capabilities capsDoc)
         {
             throw new WmsDriverException(string.Format("IMPLEMENTATION ERROR: GetCapabilities is a mandatory operation for WMS {0}.", GetDeclaredOrMaxSupportedVersion()));
         }

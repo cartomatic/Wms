@@ -13,7 +13,7 @@ namespace Cartomatic.Wms
 {
     public partial class ManifoldWmsDriver
     {
-        protected override IWmsDriverResponse HandleGetMapDriverSpecific()
+        protected override async Task<IWmsDriverResponse> HandleGetMapDriverSpecificAsync()
         {
             Validate(HandleGetMapValidationRulesDriverSpecific);
 

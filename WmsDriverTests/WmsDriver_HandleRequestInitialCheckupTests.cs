@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Contexts;
+using System.Threading.Tasks;
 using Cartomatic.Wms;
 using Cartomatic.Utils.Web;
 using FluentAssertions;
@@ -91,68 +93,68 @@ namespace Cartomatic.Wms.WmsDriverTests
 
         //properly delegates get caps handling
         [Test]
-        public void HandleRequest_WhenRequestIsValidGetCapabilities_CallsHandleGetCapabilities()
+        public async Task HandleRequest_WhenRequestIsValidGetCapabilities_CallsHandleGetCapabilities()
         {
             var drv = MakeWmsDriver();
 
-            drv.HandleRequest("http://some.url/?version=1.3.0&request=GetCapabilities");
+            await drv.HandleRequestAsync("http://some.url/?version=1.3.0&request=GetCapabilities");
 
             drv.HandleGetCapabilitiesCalled.Should().BeTrue();
         }
 
         //properly delegates get map handling
         [Test]
-        public void HandleRequest_WhenRequestIsGetMap_CallsHandleGetMap()
+        public async Task HandleRequest_WhenRequestIsGetMap_CallsHandleGetMap()
         {
             var drv = MakeWmsDriver();
 
-            drv.HandleRequest("http://some.url/?version=1.3.0&request=GetMap");
+            await drv.HandleRequestAsync("http://some.url/?version=1.3.0&request=GetMap");
 
             drv.HandleGetMapCalled.Should().BeTrue();
         }
 
         //properly delegates get feature info handling
         [Test]
-        public void HandleRequest_WhenRequestIsGetFeatureInfo_CallsHandleGetFeatureInfo()
+        public async Task HandleRequest_WhenRequestIsGetFeatureInfo_CallsHandleGetFeatureInfo()
         {
             var drv = MakeWmsDriver();
 
-            drv.HandleRequest("http://some.url/?version=1.3.0&request=GetFeatureInfo");
+            await drv.HandleRequestAsync("http://some.url/?version=1.3.0&request=GetFeatureInfo");
 
             drv.HandleGetFeatureInfoCalled.Should().BeTrue();
         }
 
         
         [Test]
-        public void HandleRequest_WhenRequestIsUnsupported_CallsHandleUnsupported()
+        public async Task HandleRequest_WhenRequestIsUnsupported_CallsHandleUnsupported()
         {
             var drv = MakeWmsDriver();
             var op = "MyUnsupportedOp";
 
-            drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", op));
+            await drv.HandleRequestAsync(string.Format("http://some.url/?version=1.3.0&request={0}", op));
 
             drv.HandleUnsupportedCalled.Should().BeTrue();
             drv.UnsupportedOp.Should().Be(op);
         }
 
         [Test]
-        public void HandleRequest_WhenRequestIsVendorOp_CallsHandleVendorOp()
+        public async Task HandleRequest_WhenRequestIsVendorOp_CallsHandleVendorOp()
         {
             var drv = MakeWmsDriver();
 
-            drv.HandleRequest("http://some.url/?version=1.3.0&request=SomeVendorOp");
+            await drv.HandleRequestAsync("http://some.url/?version=1.3.0&request=SomeVendorOp");
 
             drv.HandleVendorOpCalled.Should().BeTrue();
         }
 
         
         [Test]
-        public void HandleRequest_WhenRequestIsVendorOpButOpIsNotSupported_GenratesWmsDriverException()
+        public async Task HandleRequest_WhenRequestIsVendorOpButOpIsNotSupported_GenratesWmsDriverException()
         {
             var drv = MakeWmsDriver();
             var request = "ThisOpIsNotSupported"; //note: see supported vendor op in drv constructor below.
 
-            var response = drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", request));
+            var response = await drv.HandleRequestAsync(string.Format("http://some.url/?version=1.3.0&request={0}", request));
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
@@ -160,12 +162,12 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void HandleRequest_WhenRequestIsVendorOpAndIsSupportedButDoesNotHaveHandler_GenratesWmsDriverException()
+        public async Task HandleRequest_WhenRequestIsVendorOpAndIsSupportedButDoesNotHaveHandler_GenratesWmsDriverException()
         {
             var drv = MakeWmsDriver();
             var request = "ThisOpIsSupportedButDoesNotHaveHandler"; //note: see supported vendor op in drv constructor below.
 
-            var response = drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", request));
+            var response = await drv.HandleRequestAsync(string.Format("http://some.url/?version=1.3.0&request={0}", request));
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
@@ -174,12 +176,12 @@ namespace Cartomatic.Wms.WmsDriverTests
 
         //properly delegates vendor ops handling
         [Test]
-        public void HandleRequest_WhenRequestIsVendorOpAndOpIsSupportedAndAHandlerIsDefined_CallsAppropriateHandleVendorOp()
+        public async Task HandleRequest_WhenRequestIsVendorOpAndOpIsSupportedAndAHandlerIsDefined_CallsAppropriateHandleVendorOp()
         {
             var drv = MakeWmsDriver();
             var op = "SomeVendorOp"; //note: see supported vendor op in drv constructor below.
 
-            drv.HandleRequest(string.Format("http://some.url/?version=1.3.0&request={0}", op));
+            await drv.HandleRequestAsync(string.Format("http://some.url/?version=1.3.0&request={0}", op));
 
             drv.HandleCustomVendorOpCalled.Should().BeTrue();
         }
@@ -221,19 +223,19 @@ namespace Cartomatic.Wms.WmsDriverTests
             public string UnsupportedOp { get; set; }
 
 
-            protected override IWmsDriverResponse HandleGetCapabilities()
+            protected override async Task<IWmsDriverResponse> HandleGetCapabilitiesAsync()
             {
                 HandleGetCapabilitiesCalled = true;
                 return new WmsDriverResponse();
             }
 
-            protected override IWmsDriverResponse HandleGetMap()
+            protected override async Task<IWmsDriverResponse> HandleGetMapAsync()
             {
                 HandleGetMapCalled = true;
                 return new WmsDriverResponse();
             }
 
-            protected override IWmsDriverResponse HandleGetFeatureInfo()
+            protected override async Task<IWmsDriverResponse> HandleGetFeatureInfoAsync()
             {
                 HandleGetFeatureInfoCalled = true;
                 return new WmsDriverResponse();

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\OgcSchemas\Cartomatic.OgcSchemas.Wms\Cartomatic.OgcSchemas.Wms.csproj" />
     <ProjectReference Include="..\..\Utils\Cartomatic.Utils\Cartomatic.Utils.csproj" />
   </ItemGroup>

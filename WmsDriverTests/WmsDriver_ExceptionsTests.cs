@@ -16,11 +16,11 @@ namespace Cartomatic.Wms.WmsDriverTests
     {
         
         [Test]
-        public void Handle_WhenFailingWithWmsDriverException_ProperlyHandlesWmsResponse()
+        public async Task Handle_WhenFailingWithWmsDriverException_ProperlyHandlesWmsResponse()
         {
             var drv = MakeWmsDriver() as FakeWmsDriverFailsWithWmsDriverException;
 
-            var response = drv.HandleRequest("http://some.url/");
+            var response = await drv.HandleRequestAsync("http://some.url/");
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(drv.WmsExceptionCode);
@@ -34,11 +34,11 @@ namespace Cartomatic.Wms.WmsDriverTests
         }
 
         [Test]
-        public void Handle_WhenFailingWithException_ProperlyHandlesWmsResponse()
+        public async Task Handle_WhenFailingWithException_ProperlyHandlesWmsResponse()
         {
             var drv = MakeWmsDriver(stdEx: true) as FakeWmsDriverFailsWithException;
 
-            var response = drv.HandleRequest("http://some.url/");
+            var response = await drv.HandleRequestAsync("http://some.url/");
 
             response.WmsDriverException.Should().NotBeNull();
             response.WmsDriverException.WmsExceptionCode.Should().Be(WmsExceptionCode.NotApplicable);
