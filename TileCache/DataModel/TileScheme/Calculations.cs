@@ -74,10 +74,10 @@ namespace Cartomatic.Wms.TileCache
 
             //check if the tile fits into the tile set bounds
             if (
-                tileBounds.MinX < TileSetBounds.MinX ||
-                tileBounds.MinY < TileSetBounds.MinY ||
-                tileBounds.MaxX > TileSetBounds.MaxX ||
-                tileBounds.MaxY > TileSetBounds.MaxY
+                decimal.Round((decimal)tileBounds.MinX, Precision) < decimal.Round((decimal)TileSetBounds.MinX, Precision) ||
+                decimal.Round((decimal)tileBounds.MinY, Precision) < decimal.Round((decimal)TileSetBounds.MinY, Precision) ||
+                decimal.Round((decimal)tileBounds.MaxX, Precision) > decimal.Round((decimal)TileSetBounds.MaxX, Precision) ||
+                decimal.Round((decimal)tileBounds.MaxY, Precision) > decimal.Round((decimal)TileSetBounds.MaxY, Precision)
             )
             {
                 output.Valid = false;
