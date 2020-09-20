@@ -12,7 +12,7 @@ namespace Cartomatic.Wms
         /// <summary>
         /// A set of coord systems that flip coords
         /// </summary>
-        protected internal Dictionary<int, bool> CoordsFlippingSrids { get; set; }
+        protected internal static Dictionary<int, bool> CoordsFlippingSrids { get; set; }
 
         /// <summary>
         /// Populates the coords flipping srids holder with some predefined data
@@ -21,7 +21,7 @@ namespace Cartomatic.Wms
         /// DotSpatial????
         /// Or an extract from the epsg db in a form of an embeded sqllite or an object
         /// </summary>
-        protected void PopulateCoordFlippingSridsDict()
+        protected static void PopulateCoordFlippingSridsDict()
         {
             CoordsFlippingSrids = new Dictionary<int, bool>()
             {
@@ -31,15 +31,22 @@ namespace Cartomatic.Wms
         }
 
         /// <summary>
-        /// Adds a coord fliping srid so custom srid can be added in a case the defauld srid dataset does not contain it
+        /// Adds a coord fliping srid so custom srid can be added in a case the default srid dataset does not contain it
         /// </summary>
         /// <param name="srid"></param>
-        public void AddCoordFlippingSrid(int srid)
+        public static void RegisterCoordFlippingSrid(int srid)
         {
-            if (!CoordsFlippingSrids.ContainsKey((srid)))
-            {
-                CoordsFlippingSrids.Add(srid, true);
-            }
+            CoordsFlippingSrids[srid] = true;
+        }
+
+        /// <summary>
+        /// Removes a coord flipping srid from the collection
+        /// </summary>
+        /// <param name="srid"></param>
+        public static void UnregisterCoordFlippingSrid(int srid)
+        {
+            if (CoordsFlippingSrids.ContainsKey(srid))
+                CoordsFlippingSrids.Remove(srid);
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace Cartomatic.Wms
         /// <param name="version"></param>
         /// <param name="srid"></param>
         /// <returns></returns>
-        protected internal virtual bool GetCoordFlip(string version, int? srid)
+        protected internal static bool GetCoordFlip(string version, int? srid)
         {
             bool flip = false;
 

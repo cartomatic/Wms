@@ -201,7 +201,7 @@ namespace Cartomatic.Wms
                         cs = drv.GetParam("srs");
                     }
 
-                    drv.ParseBBOX(drv.GetParam("bbox"), versionStr, cs);
+                    WmsDriver.ParseBBOX(drv.GetParam("bbox"), versionStr, cs);
                 }
             }
         };

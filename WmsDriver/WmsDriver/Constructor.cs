@@ -8,6 +8,11 @@ namespace Cartomatic.Wms
 {
     public abstract partial class WmsDriver
     {
+        static WmsDriver()
+        {
+            PopulateCoordFlippingSridsDict();
+        }
+
         public WmsDriver()
         {
             //just init some of the data containers
@@ -20,8 +25,6 @@ namespace Cartomatic.Wms
             SupportedVersions = new List<string>();
             SupportedVendorOperations = new Dictionary<string, List<string>>();
             SupportedVendorOperationFormats = new Dictionary<string, Dictionary<string, List<string>>>();
-
-            PopulateCoordFlippingSridsDict();
         }
     }
 }

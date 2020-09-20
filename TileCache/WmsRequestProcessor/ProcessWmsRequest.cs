@@ -126,7 +126,7 @@ namespace Cartomatic.Wms.TileCache
             }
 
             //bbox is dependent on the wms version & epsg (starting with 1.3.0, bbox axis order depends on the projection definition)
-            var bbox = wmsDrv.ParseBBOX(requestParams["bbox"], requestParams["version"], crs);
+            var bbox = WmsDriver.ParseBBOX(requestParams["bbox"], requestParams["version"], crs);
 
             var t = ts.CalculateTileAddress(new Bounds(bbox.MinX, bbox.MinY, bbox.MaxX, bbox.MaxY));
 

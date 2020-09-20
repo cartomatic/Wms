@@ -18,7 +18,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void GetCoordFlip_ForVersionLessThan130_AlwaysReturnsFalse(string version, int? srid)
         {
             var drv = MakeWmsDriver();
-            var flip = drv.GetCoordFlip(version, srid);
+            var flip = WmsDriver.GetCoordFlip(version, srid);
 
             flip.Should().BeFalse();
         }
@@ -28,7 +28,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void GetCoordFlip_ForVersion130AndCoordFlipingSrids_ReturnsTrue(int? srid)
         {
             var drv = MakeWmsDriver();
-            var flip = drv.GetCoordFlip("1.3.0", srid);
+            var flip = WmsDriver.GetCoordFlip("1.3.0", srid);
 
             flip.Should().BeTrue();
         }
@@ -39,12 +39,16 @@ namespace Cartomatic.Wms.WmsDriverTests
             var drv = MakeWmsDriver();
             var srid = 666;
 
-            var flipBeforeAdd = drv.GetCoordFlip("1.3.0", srid);
-            drv.AddCoordFlippingSrid(666);
-            var flipAfterAdd = drv.GetCoordFlip("1.3.0", srid);
+            var flipBeforeAdd = WmsDriver.GetCoordFlip("1.3.0", srid);
+            WmsDriver.RegisterCoordFlippingSrid(666);
+            var flipAfterAdd = WmsDriver.GetCoordFlip("1.3.0", srid);
+            WmsDriver.UnregisterCoordFlippingSrid(666);
+            var flipAfterRemove = WmsDriver.GetCoordFlip("1.3.0", srid);
 
-            flipBeforeAdd.Should().Be(false);
-            flipAfterAdd.Should().Be(true);
+
+            flipBeforeAdd.Should().BeFalse();
+            flipAfterAdd.Should().BeTrue();
+            flipAfterRemove.Should().BeFalse();
         }
 
         [Test]
@@ -53,7 +57,7 @@ namespace Cartomatic.Wms.WmsDriverTests
             var drv = MakeWmsDriver();
             var refBbox = new WmsBoundingBox(0,0,2,2);
             
-            var bbox = drv.ParseBBOX("0,0,2,2", "1.1.1", (string)null);
+            var bbox = WmsDriver.ParseBBOX("0,0,2,2", "1.1.1", (string)null);
 
             bbox.Should().BeEquivalentTo(bbox);
         }
@@ -64,7 +68,7 @@ namespace Cartomatic.Wms.WmsDriverTests
             var drv = MakeWmsDriver();
             var refBbox = new WmsBoundingBox(1, 0, 3, 2);
 
-            var bbox = drv.ParseBBOX("0,1,2,3", "1.3.0", "epsg:2180");
+            var bbox = WmsDriver.ParseBBOX("0,1,2,3", "1.3.0", "epsg:2180");
 
             bbox.Should().BeEquivalentTo(refBbox);
         }
@@ -75,7 +79,7 @@ namespace Cartomatic.Wms.WmsDriverTests
             var drv = MakeWmsDriver();
             var refBbox = new WmsBoundingBox(0, 0, 2, 2);
 
-            var bbox = drv.ParseBBOX("0,0,2,2", "1.3.0", (int?)null);
+            var bbox = WmsDriver.ParseBBOX("0,0,2,2", "1.3.0", (int?)null);
 
             bbox.Should().BeEquivalentTo(refBbox);
         }
@@ -84,7 +88,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParseBbox_ForVersionLessThan130BboxPartsInWrongOrder_ThrowsWmsDriverException()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("3,3,2,2", "1.1.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("3,3,2,2", "1.1.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }
@@ -93,7 +97,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParseBbox_ForVersion130BboxPartsInWrongOrderWithNoFlippingEpsg_ThrowsWmsDriverException()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("3,3,2,2", "1.3.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("3,3,2,2", "1.3.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }
@@ -102,7 +106,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParseBbox_ForVersion130BboxPartsInWrongOrderWithFlippingEpsg_ThrowsWmsDriverException()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("5,6,3,4", "1.3.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("5,6,3,4", "1.3.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }
@@ -111,7 +115,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParsBbox_InvalidParamValueWithTruncatedBboxParts_Should_Throw()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("5,3,4", "1.3.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("5,3,4", "1.3.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }
@@ -120,7 +124,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParsBbox_InvalidParamValueBboxMinX_Should_Throw()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("x,0,1,1", "1.3.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("x,0,1,1", "1.3.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }
@@ -129,7 +133,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParsBbox_InvalidParamValueBboxMinY_Should_Throw()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("0,x,1,1", "1.3.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("0,x,1,1", "1.3.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }
@@ -138,7 +142,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParsBbox_InvalidParamValueBboxMaxX_Should_Throw()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("0,0,x,1", "1.3.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("0,0,x,1", "1.3.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }
@@ -147,7 +151,7 @@ namespace Cartomatic.Wms.WmsDriverTests
         public void ParsBbox_InvalidParamValueBboxMaxY_Should_Throw()
         {
             var drv = MakeWmsDriver();
-            Action a = () => drv.ParseBBOX("0,0,1,x", "1.3.0", (int?)null);
+            Action a = () => WmsDriver.ParseBBOX("0,0,1,x", "1.3.0", (int?)null);
 
             a.Should().Throw<WmsDriverException>();
         }

@@ -15,7 +15,7 @@ namespace Cartomatic.Wms
         /// <param name="version"></param>
         /// <param name="epsg"></param>
         /// <returns></returns>
-        public WmsBoundingBox ParseBBOX(string bbox, string version, string epsg)
+        public static WmsBoundingBox ParseBBOX(string bbox, string version, string epsg)
         {
             int srid;
             if (!string.IsNullOrEmpty(epsg) && int.TryParse(epsg.ToLower().Replace("epsg:", ""), out srid))
@@ -35,7 +35,7 @@ namespace Cartomatic.Wms
         /// <param name="version"></param>
         /// <param name="srid"></param>
         /// <returns></returns>
-        public WmsBoundingBox ParseBBOX(string bbox, string version, int? srid)
+        public static WmsBoundingBox ParseBBOX(string bbox, string version, int? srid)
         {
             var strVals = bbox.Split(new[] { ',' });
 
