@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Cartomatic.Wms.TileCache
@@ -406,32 +407,51 @@ namespace Cartomatic.Wms.TileCache
             return output;
         }
 
+        private static HttpClient httpClient = new HttpClient();
+
         /// <summary>
         /// Handles a standard web request
         /// </summary>
+        /// <param name="origRequest"></param>
         /// <param name="request"></param>
         private static async Task<Output> HandleStandardWebRequestAsync(System.Net.HttpWebRequest request)
         {
             var output = new Output();
 
-            var response = await request.ExecuteRequestAsync();
+            //Note: in netcore std request seems to lock all the sockets after a while and therefore crash the connectivity
+            //using cached http client instead
 
-            if (response != null)
+            //using (var response = await request.ExecuteRequestAsync())
+            //using (var s = response.GetResponseStream())
+            //{
+            //    if(response != null)
+            //    {
+            //        output.ResponseBinary = s.ReadStream();
+            //        //response could have returned exception, therefore the content type may be different than the requested one
+            //        output.ResponseContentType = response.ContentType;
+            //        output.HasData = true;
+            //    }
+            //    else
+            //    {
+            //        //kurcze, to nie zawsze jest timout, czasem exception...
+            //        output.StatusCode = HttpStatusCode.BadRequest;
+            //        output.ResponseText = "Request timeout";
+            //    }
+            //}
+
+            var result = await httpClient.GetAsync(request.RequestUri);
+
+            if (result.IsSuccessStatusCode)
             {
-                output.ResponseBinary = response.GetResponseStream().ReadStream();
-
-                //response could have returned exception, therefore the content type may be different than the requested one
-                output.ResponseContentType = response.ContentType;
-
-                response.Close();
-                response.Dispose();
-
+                output.ResponseContentType = result.Content.Headers.ContentType.MediaType;
+                output.StatusCode = result.StatusCode;
+                output.ResponseBinary = await result.Content.ReadAsByteArrayAsync();
                 output.HasData = true;
             }
             else
             {
-                output.StatusCode = HttpStatusCode.RequestTimeout;
-                output.ResponseText = "Request timeout";
+                output.StatusCode = result.StatusCode;
+                output.ResponseText = result.ReasonPhrase;
             }
 
             return output;
