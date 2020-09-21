@@ -31,11 +31,12 @@ namespace Cartomatic.Wms.TileCache
             HttpRequest request,
             HttpResponse response,
             Configuration cfg,
-            string map,
             Dictionary<string, string> maps
         )
         {
             var query = request.Query;
+
+            var map = query["map"];
 
             if (string.IsNullOrWhiteSpace(map) || !maps.ContainsKey(map))
                 return WmsException(response, $"Unrecognized map: {map}");
@@ -415,14 +416,23 @@ namespace Cartomatic.Wms.TileCache
 
             var response = await request.ExecuteRequestAsync();
 
-            output.ResponseBinary = response.GetResponseStream().ReadStream();
+            if (response != null)
+            {
+                output.ResponseBinary = response.GetResponseStream().ReadStream();
 
-            //response could have returned exception, therefore the content type may be different than the requested one
-            output.ResponseContentType = response.ContentType;
+                //response could have returned exception, therefore the content type may be different than the requested one
+                output.ResponseContentType = response.ContentType;
 
-            response.Close();
+                response.Close();
+                response.Dispose();
 
-            output.HasData = true;
+                output.HasData = true;
+            }
+            else
+            {
+                output.StatusCode = HttpStatusCode.RequestTimeout;
+                output.ResponseText = "Request timeout";
+            }
 
             return output;
         }
