@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Cartomatic.Wms.TileCache
@@ -174,7 +175,7 @@ namespace Cartomatic.Wms.TileCache
             //if there is not tileset provided, just pass through as it will not be able to neither lookup for the cache nor save file
             if (ts == null)
             {
-                return await HandleWmsRequestAsync(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, settings,  wmsDrv);
             }
 
             var requestParams = System.Web.HttpUtility.ParseQueryString(request.Address.Query);
@@ -183,7 +184,7 @@ namespace Cartomatic.Wms.TileCache
             var wmsRequest = requestParams["request"];
             if (string.IsNullOrEmpty(wmsRequest) || wmsRequest.ToLower() != "getmap")
             {
-                return await HandleWmsRequestAsync(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, settings,  wmsDrv);
             }
 
 
@@ -192,7 +193,7 @@ namespace Cartomatic.Wms.TileCache
             var requestedFormatMime = requestParams["format"].ToLower();
             if (!Utils.WmsImageFormatSupported(requestedFormatMime, settings))
             {
-                return await HandleWmsRequestAsync(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, settings,  wmsDrv);
             }
 
 
@@ -202,7 +203,7 @@ namespace Cartomatic.Wms.TileCache
 
             if (w != ts.TileSize || h != ts.TileSize)
             {
-                output = await HandleWmsRequestAsync(request, wmsDrv);
+                output = await HandleWmsRequestAsync(request, settings,  wmsDrv);
 
                 //dev opts
                 output.ResponseBinary = Utils.ApplyDevOptions(
@@ -218,7 +219,7 @@ namespace Cartomatic.Wms.TileCache
             //layers present?
             if (string.IsNullOrEmpty(requestParams["layers"]))
             {
-                return await HandleWmsRequestAsync(request, wmsDrv);
+                return await HandleWmsRequestAsync(request, settings,  wmsDrv);
             }
 
 
@@ -227,7 +228,7 @@ namespace Cartomatic.Wms.TileCache
 
             if (!ts.Ready)
             {
-                output = await HandleWmsRequestAsync(request, wmsDrv);
+                output = await HandleWmsRequestAsync(request, settings,  wmsDrv);
 
                 //dev opts
                 output.ResponseBinary = Utils.ApplyDevOptions(
@@ -255,7 +256,7 @@ namespace Cartomatic.Wms.TileCache
 
             if (!t.Valid)
             {
-                output = await HandleWmsRequestAsync(request, wmsDrv);
+                output = await HandleWmsRequestAsync(request, settings,  wmsDrv);
 
                 //dev opts
                 output.ResponseBinary = Utils.ApplyDevOptions(
@@ -315,7 +316,7 @@ namespace Cartomatic.Wms.TileCache
 
 
             //Since we are here it means no cache was found so need to execute a web request or make the wms driver do the job
-            output = await HandleWmsRequestAsync(request, wmsDrv);
+            output = await HandleWmsRequestAsync(request, settings,  wmsDrv);
 
 
             //check the content type of the format returned by the server or wms driver
@@ -374,12 +375,13 @@ namespace Cartomatic.Wms.TileCache
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="request"></param>
+        /// <param name="settings"></param>
         /// <param name="wmsDrv"></param>
-        private static async Task<Output> HandleWmsRequestAsync<T>(System.Net.HttpWebRequest request, T wmsDrv) where T : WmsDriver
+        private static async Task<Output> HandleWmsRequestAsync<T>(System.Net.HttpWebRequest request, Settings settings, T wmsDrv) where T : WmsDriver
         {
             return wmsDrv != null
                 ? await HandleWmsDriverRequestAsync(request, wmsDrv)
-                : await HandleStandardWebRequestAsync(request);
+                : await HandleStandardWebRequestAsync(request, settings);
         }
 
         /// <summary>
@@ -407,39 +409,17 @@ namespace Cartomatic.Wms.TileCache
             return output;
         }
 
-        private static HttpClient httpClient = new HttpClient();
 
         /// <summary>
         /// Handles a standard web request
         /// </summary>
-        /// <param name="origRequest"></param>
         /// <param name="request"></param>
-        private static async Task<Output> HandleStandardWebRequestAsync(System.Net.HttpWebRequest request)
+        private static async Task<Output> HandleStandardWebRequestAsync(System.Net.HttpWebRequest request, Settings settings)
         {
             var output = new Output();
 
-            //Note: in netcore std request seems to lock all the sockets after a while and therefore crash the connectivity
-            //using cached http client instead
 
-            //using (var response = await request.ExecuteRequestAsync())
-            //using (var s = response.GetResponseStream())
-            //{
-            //    if(response != null)
-            //    {
-            //        output.ResponseBinary = s.ReadStream();
-            //        //response could have returned exception, therefore the content type may be different than the requested one
-            //        output.ResponseContentType = response.ContentType;
-            //        output.HasData = true;
-            //    }
-            //    else
-            //    {
-            //        //kurcze, to nie zawsze jest timout, czasem exception...
-            //        output.StatusCode = HttpStatusCode.BadRequest;
-            //        output.ResponseText = "Request timeout";
-            //    }
-            //}
-
-            var result = await httpClient.GetAsync(request.RequestUri);
+            var result = await GetHttpClient(settings).GetAsync(request.RequestUri);
 
             if (result.IsSuccessStatusCode)
             {
@@ -456,5 +436,38 @@ namespace Cartomatic.Wms.TileCache
 
             return output;
         }
+
+        /// <summary>
+        /// default pool size
+        /// </summary>
+        private static int _dfltClientPoolSize = 4;
+
+        /// <summary>
+        /// http client use count
+        /// </summary>
+        private static long _clientUseCount;
+
+        /// <summary>
+        /// http client pool
+        /// </summary>
+        private static HttpClient[] _httpClientPool;
+
+        /// <summary>
+        /// returns a next http client from a pool
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        private static HttpClient GetHttpClient(Settings settings)
+        {
+            var nextClientIdx = Interlocked.Increment(ref _clientUseCount)  % (settings.HttpClientPoolSize ?? _dfltClientPoolSize);
+
+            _httpClientPool ??= new HttpClient[settings.HttpClientPoolSize ?? _dfltClientPoolSize];
+
+            _httpClientPool[nextClientIdx] ??= new HttpClient();
+
+            return _httpClientPool[nextClientIdx];
+        }
+
+
     }
 }

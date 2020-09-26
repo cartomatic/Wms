@@ -22,6 +22,10 @@ namespace Cartomatic.Wms.TileCache
         /// </summary>
         public bool DevModeStampTileAddress { get; set; }
 
+        /// <summary>
+        /// Size of the http client pool size; defaults to 4
+        /// </summary>
+        public int? HttpClientPoolSize { get; set; }
 
         /// <summary>
         /// Reads the tile cache settings from json
