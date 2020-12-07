@@ -136,10 +136,13 @@ namespace Cartomatic.Wms.TileCache
             var minTileX = (int)GetXColumn((double)b.MinX, zoomLvl);
             var maxTileX = (int)GetXColumn((double)b.MaxX, zoomLvl);
 
-            var minTileY = (int)GetXColumn((double)b.MinY, zoomLvl);
-            var maxTileY = (int)GetXColumn((double)b.MaxY, zoomLvl);
+            var minTileY = ReverseY ? (int)GetYColumn((double)b.MaxY, zoomLvl) : (int)GetYColumn((double)b.MinY, zoomLvl);
+            var maxTileY = ReverseY ? (int)GetYColumn((double)b.MinY, zoomLvl) : (int)GetYColumn((double)b.MaxY, zoomLvl);
 
-            return (maxTileX - minTileX) * (maxTileY - minTileY);
+            var xTileCount = maxTileX - minTileX + 1; //+1 adds a tile as simple subtraction removes it
+            var yTileCount = maxTileY - minTileY + 1;
+
+            return (xTileCount) * (yTileCount);
         }
     }
 }
