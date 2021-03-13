@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Cartomatic.Wms.TileCache
 {
     public partial class Utils
     {
-        private static Dictionary<string, string> _mimeToFileExtensionCache { get; set; } = new Dictionary<string, string>();
+        private static ConcurrentDictionary<string, string> _mimeToFileExtensionCache { get; set; } = new ConcurrentDictionary<string, string>();
 
         /// <summary>
         /// Returns a file extension for given mime
@@ -16,9 +17,15 @@ namespace Cartomatic.Wms.TileCache
             if (!_mimeToFileExtensionCache.ContainsKey(mime))
             {
                 var mimeInfo = Cartomatic.Utils.Web.ContentType.GetContentTypeInfo(mime);
-                _mimeToFileExtensionCache[mime] = mimeInfo.extension;
+                if (!_mimeToFileExtensionCache.TryAdd(mime, mimeInfo.extension))
+                {
+                    return mimeInfo.extension;
+                }
             }
-            return _mimeToFileExtensionCache[mime];
+
+            return _mimeToFileExtensionCache.TryGetValue(mime, out var extension) 
+                ? extension 
+                : Cartomatic.Utils.Web.ContentType.GetContentTypeInfo(mime).extension;
         }
     }
 }
