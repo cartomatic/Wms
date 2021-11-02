@@ -60,6 +60,13 @@ namespace Cartomatic.Wms.TileCache
             //serviceUrl = httpUtils.EncodeUrl(serviceUrl);
 
 
+            var endpoint = requestParams["endpoint"];
+            if (!string.IsNullOrEmpty(endpoint))
+            {
+                if (!string.IsNullOrEmpty(output)) output += "\\";
+                output += endpoint;
+            }
+
 
             //extract the map param if any - some wms use map (qgis for example or our implementation of wms for manifold)
             //this is needed if more than one map is served by wms; otherwise cache would have random other stuff comming from different maps
@@ -68,7 +75,7 @@ namespace Cartomatic.Wms.TileCache
             //In a case this is a qgis wms or sharpmap wms, map param specifies a file path
             //need to extract the actual file name from there
 
-            if (map.IsAbsolute()) //check if this is an absolute path - for services that need to read a file it should be
+            if (!string.IsNullOrWhiteSpace(map) && map.IsAbsolute()) //check if this is an absolute path - for services that need to read a file it should be
             //if (map.IndexOf(".qgs") > -1)
             {
                 map = System.IO.Path.GetFileName(map);

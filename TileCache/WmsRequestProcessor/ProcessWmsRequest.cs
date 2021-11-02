@@ -26,26 +26,26 @@ namespace Cartomatic.Wms.TileCache
         /// <param name="request"></param>
         /// <param name="response"></param>
         /// <param name="cfg">tile cache configuration</param>
-        /// <param name="map">map for which a remote url should be resolved</param>
-        /// <param name="maps">a collection of maps to look up a remote url for a map</param>
+        /// <param name="endpoints">a collection of maps to look up a remote url for a map</param>
         /// <returns></returns>
         public static async Task<IActionResult> ProcessRequestAsync(
             HttpRequest request,
             HttpResponse response,
             Configuration cfg,
-            Dictionary<string, string> maps
+            Dictionary<string, string> endpoints
         )
         {
             var query = request.Query;
 
-            var map = query["map"];
+            var endpoint = query["endpoint"];
 
-            if (string.IsNullOrWhiteSpace(map) || !maps.ContainsKey(map))
-                return WmsException(response, $"Unrecognized map: {map}");
+            if (string.IsNullOrWhiteSpace(endpoint) || !endpoints.ContainsKey(endpoint))
+                return WmsException(response, $"Unrecognized endpoint: {endpoint}");
 
 
-            var urlBase = maps[map];
+            var urlBase = endpoints[endpoint];
 
+            //discard map param - manifold wms driver uses it
             var destUrl = $"{urlBase}?{string.Join("&", query.Select(x => $"{x.Key}={x.Value}"))}";
 
             var tcOut = await Cartomatic.Wms.TileCache.WmsRequestProcessor.ProcessRequestAsync(
@@ -76,7 +76,7 @@ namespace Cartomatic.Wms.TileCache
                     using var sw = new StreamReader(ms);
                     var responseStr = await sw.ReadToEndAsync();
 
-                    var replacementUrl = $"{request.Scheme}://{request.Host}{request.Path}?map={map}";
+                    var replacementUrl = $"{request.Scheme}://{request.Host}{request.Path}?map={endpoint}";
 
                     responseStr = responseStr
                         .Replace($"{urlBase}/?", replacementUrl)
