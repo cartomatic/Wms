@@ -51,5 +51,13 @@ namespace Cartomatic.Wms
 
             return ser.SerializeToXml();
         }
+
+        /// <inheritdoc />
+        public IWmsDriverResponse GenerateExceptionResponse(Exception ex)
+            => HandleWmsDriverException(ex);
+
+        /// <inheritdoc />
+        public IWmsDriverResponse GenerateExceptionResponse(string msg)
+            => GenerateExceptionResponse(new Exception(msg));
     }
 }
