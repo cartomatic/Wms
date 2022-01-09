@@ -21,7 +21,7 @@ namespace Cartomatic.Wms.ManifoldWmsDriverWebTests
 
             IWmsDriverResponse drvResponse = null;
             
-            //async so need to cheet in ashx handler
+            //async so need to cheat in ashx handler
             Task.WaitAll(
         Task.Run(async () => drvResponse = await drv.HandleRequestAsync(context.Request.Url.AbsoluteUri))
             );
