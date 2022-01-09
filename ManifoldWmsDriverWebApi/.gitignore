@@ -1,0 +1,5 @@
+_docfx/restapi/api.json
+_docfx/obj/
+_auth/
+_branchUpdatesUpload/
+_branchUpdatesPending/
