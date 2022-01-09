@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Net;
 
 namespace Cartomatic.Wms
@@ -66,7 +67,7 @@ namespace Cartomatic.Wms
                         destinationType = nulableUnderlyingType;
                     }
 
-                    pValue = (T)Convert.ChangeType(GetParam(pName), destinationType);
+                    pValue = (T)Convert.ChangeType(GetParam(pName), destinationType, CultureInfo.InvariantCulture);
 
 
                     if (!ExtractedRequestParams.ContainsKey(pName.ToLower()))
