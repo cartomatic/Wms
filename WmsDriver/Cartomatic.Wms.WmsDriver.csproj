@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Cartomatic.Utils\Cartomatic.Utils\Cartomatic.Utils.csproj" />
     <ProjectReference Include="..\..\OgcSchemas\Cartomatic.OgcSchemas.Wms\Cartomatic.OgcSchemas.Wms.csproj" />
-    <ProjectReference Include="..\..\Utils\Cartomatic.Utils\Cartomatic.Utils.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">

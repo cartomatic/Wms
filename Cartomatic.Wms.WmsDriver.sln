@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cartomatic", "Cartomatic", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cartomatic.OgcSchemas.Wms", "..\OgcSchemas\Cartomatic.OgcSchemas.Wms\Cartomatic.OgcSchemas.Wms.csproj", "{36D27005-01C5-452A-856D-4A68FF0150B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cartomatic.Utils", "..\Utils\Cartomatic.Utils\Cartomatic.Utils.csproj", "{66F46897-F481-4259-95D2-28219D162C93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cartomatic.Utils", "..\Cartomatic.Utils\Cartomatic.Utils\Cartomatic.Utils.csproj", "{66F46897-F481-4259-95D2-28219D162C93}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cartomatic.Wms.WmsDriver", "WmsDriver\Cartomatic.Wms.WmsDriver.csproj", "{41264806-EA47-42DD-8943-08B340AF43AE}"
 EndProject

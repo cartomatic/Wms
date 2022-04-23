@@ -272,13 +272,13 @@
       <Project>{b04cb06e-4a82-4638-83c6-79c6c5b0078a}</Project>
       <Name>Cartomatic.Wms.ManifoldWmsDriver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Cartomatic.Utils\Cartomatic.Utils\Cartomatic.Utils.csproj">
+      <Project>{66f46897-f481-4259-95d2-28219d162c93}</Project>
+      <Name>Cartomatic.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OgcSchemas\Cartomatic.OgcSchemas.Wms\Cartomatic.OgcSchemas.Wms.csproj">
       <Project>{36d27005-01c5-452a-856d-4a68ff0150b8}</Project>
       <Name>Cartomatic.OgcSchemas.Wms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utils\Cartomatic.Utils\Cartomatic.Utils.csproj">
-      <Project>{66f46897-f481-4259-95d2-28219d162c93}</Project>
-      <Name>Cartomatic.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\WmsDriver\Cartomatic.Wms.WmsDriver.csproj">
       <Project>{41264806-ea47-42dd-8943-08b340af43ae}</Project>
