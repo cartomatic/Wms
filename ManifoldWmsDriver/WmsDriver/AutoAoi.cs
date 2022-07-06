@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Cartomatic.Wms;
 using Cartomatic.Utils.Data;
@@ -17,7 +18,7 @@ namespace Cartomatic.Wms
         /// <summary>
         /// A locker used when performin AOI based data refreshes
         /// </summary>
-        protected object _aoiRefreshLocker;
+        protected object _aoiRefreshLocker = new object();
 
         /// <summary>
         /// Performs an AOI based data refresh of linked components; only drawing components get refreshed
